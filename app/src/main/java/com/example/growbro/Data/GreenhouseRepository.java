@@ -1,8 +1,10 @@
 package com.example.growbro.Data;
 
 import com.example.growbro.Models.Greenhouse;
+import com.example.growbro.Models.Plant;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GreenhouseRepository {
     private static GreenhouseRepository instance;
@@ -17,7 +19,7 @@ public class GreenhouseRepository {
             instance = new GreenhouseRepository();
         return instance;
     }
-    public ArrayList<Greenhouse> getGreenhouseList(){
+    public List<Greenhouse> getGreenhouseList(){
         return greenhouseDAO.getGreenhouseList();
     }
     public void updateGreenhouse(Greenhouse greenhouse){
@@ -25,5 +27,23 @@ public class GreenhouseRepository {
     }
     public Greenhouse getGreenhouse(int id){
         return greenhouseDAO.getGreenhouse(id);
+    }
+    public void apiGetCurrentData(int userId, int greenhouseId){
+        greenhouseDAO.apiGetCurrentData(userId, greenhouseId);
+    }
+    public void apiWaterNow(int userId, int greenhouseId){
+        greenhouseDAO.apiWaterNow(userId, greenhouseId);
+    }
+    public void apiLogin(String username, String password){
+        greenhouseDAO.apiLogin(username, password);
+    }
+    public void apiGetGreenhouseList(int userId){
+        greenhouseDAO.apiGetGreenhouseList(userId);
+    }
+    public void apiGetGreenhouse(int userId, int greenhouseId){
+        greenhouseDAO.apiGetGreenhouse(userId, greenhouseId);
+    }
+    public void apiAddPlant(int userId, int greenhouseId, Plant plant){
+        greenhouseDAO.apiAddPlant(userId, greenhouseId, plant);
     }
 }

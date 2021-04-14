@@ -4,6 +4,7 @@ import com.example.growbro.Models.Data.Data;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Greenhouse {
     private String name;
@@ -14,9 +15,9 @@ public class Greenhouse {
     private double waterVolume;
     private String waterTimeOfDay;
     private Timestamp lastWaterDate;
-    private ArrayList<Data> currentData;
+    private List<Data> currentData;
 
-    public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, ArrayList<Data> currentData) {
+    public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, List<Data> currentData) {
         this.name = name;
         this.id = id;
         this.ownerId = ownerId;
@@ -60,7 +61,46 @@ public class Greenhouse {
         return lastWaterDate;
     }
 
-    public ArrayList<Data> getCurrentData() {
+    public List<Data> getCurrentData() {
         return currentData;
+    }
+
+    public void setCurrentData(List<Data> currentData) {
+        this.currentData = currentData;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public void setListPlants(ArrayList<Plant> listPlants) {
+        this.listPlants = listPlants;
+    }
+
+    public void setWaterFrequency(int waterFrequency) {
+        this.waterFrequency = waterFrequency;
+    }
+
+    public void setWaterVolume(double waterVolume) {
+        this.waterVolume = waterVolume;
+    }
+
+    public void setWaterTimeOfDay(String waterTimeOfDay) {
+        this.waterTimeOfDay = waterTimeOfDay;
+    }
+
+    public void setLastWaterDate(Timestamp lastWaterDate) {
+        this.lastWaterDate = lastWaterDate;
+    }
+    public void addPlant(Plant plant){
+        listPlants.add(plant);
     }
 }

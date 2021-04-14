@@ -8,6 +8,7 @@ import com.example.growbro.Data.GreenhouseRepository;
 import com.example.growbro.Models.Greenhouse;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeViewModel extends ViewModel {
 
@@ -23,7 +24,7 @@ public class HomeViewModel extends ViewModel {
     public LiveData<String> getText() {
         return mText;
     }
-    public ArrayList<Greenhouse> getGreenhouseList(){
+    public List<Greenhouse> getGreenhouseList(){
         return repository.getGreenhouseList();
     }
     public void updateGreenhouse(Greenhouse greenhouse){

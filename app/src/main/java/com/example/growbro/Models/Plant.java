@@ -46,4 +46,5 @@ public class Plant {
     public void setRanges(ArrayList<Range> ranges) {
         this.ranges = ranges;
     }
+
 }
