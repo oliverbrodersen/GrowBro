@@ -33,4 +33,9 @@ public class HomeViewModel extends ViewModel {
     public Greenhouse getGreenhouse(int id){
         return repository.getGreenhouse(id);
     }
+
+    public void waterNow(int userid, int greenhouseid)
+        {
+            repository.apiWaterNow(userid,greenhouseid);
+        }
 }
