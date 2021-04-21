@@ -18,7 +18,7 @@ public class HomeViewModel extends ViewModel {
     public HomeViewModel() {
         repository = GreenhouseRepository.getInstance();
         mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        mText.setValue(repository.getGreenhouseList().get(0).getCurrentDataCo2().getData() + "");
     }
 
     public LiveData<String> getText() {

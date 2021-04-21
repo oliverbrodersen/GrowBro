@@ -1,6 +1,7 @@
 package com.example.growbro.Models;
 
 import com.example.growbro.Models.Data.Data;
+import com.example.growbro.Models.Data.DataType;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -59,6 +60,38 @@ public class Greenhouse {
 
     public Timestamp getLastWaterDate() {
         return lastWaterDate;
+    }
+
+    public Data getCurrentDataCo2(){
+        for (Data d:currentData) {
+            if (d.getType() == DataType.CO2)
+                return d;
+        }
+        return null;
+    }
+    public Data getCurrentDataHumidity(){
+
+        for (Data d:currentData) {
+            if (d.getType() == DataType.HUMIDITY)
+                return d;
+        }
+        return null;
+    }
+    public Data getCurrentDataTemperature(){
+
+        for (Data d:currentData) {
+            if (d.getType() == DataType.TEMPERATURE)
+                return d;
+        }
+        return null;
+    }
+    public Data getCurrentDataLuminance(){
+
+        for (Data d:currentData) {
+            if (d.getType() == DataType.LUMINANCE)
+                return d;
+        }
+        return null;
     }
 
     public List<Data> getCurrentData() {
