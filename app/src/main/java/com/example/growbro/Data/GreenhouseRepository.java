@@ -43,6 +43,9 @@ public class GreenhouseRepository {
     public void apiGetGreenhouse(int userId, int greenhouseId){
         greenhouseDAO.apiGetGreenhouse(userId, greenhouseId);
     }
+    public void getDummyData(int userId, int greenhouseId){
+        greenhouseDAO.getDummyData(userId, greenhouseId);
+    }
     public void apiAddPlant(int userId, int greenhouseId, Plant plant){
         greenhouseDAO.apiAddPlant(userId, greenhouseId, plant);
     }

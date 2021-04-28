@@ -15,6 +15,9 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface GrowBroApi {
+    @GET("/User/{userId}/Greenhouse/{greenhouseId}/CurrentData")
+    Call<String> getDummyData(@Path("userId") int userId, @Path("greenhouseId") int greenhouseId);
+
     @Headers("Content-Type: application/json")
     @GET("/user")
     Call<User> login(@Body String body);
