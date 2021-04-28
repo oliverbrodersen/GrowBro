@@ -2,7 +2,7 @@ package com.example.growbro.Data;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.growbro.Models.Data.Data;
+import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.Models.Plant;
 
@@ -35,7 +35,7 @@ public class GreenhouseRepository {
         greenhouseDAO.apiGetCurrentData(userId, greenhouseId);
     }
 
-    public MutableLiveData<List<Data>> getLiveData(int greenhouseId){
+    public MutableLiveData<List<SensorData>> getLiveData(int greenhouseId){
         return greenhouseDAO.getLiveData(greenhouseId);
     }
     public void apiWaterNow(int userId, int greenhouseId){
@@ -50,8 +50,8 @@ public class GreenhouseRepository {
     public void apiGetGreenhouse(int userId, int greenhouseId){
         greenhouseDAO.apiGetGreenhouse(userId, greenhouseId);
     }
-    public void getDummyData(int userId, int greenhouseId){
-        greenhouseDAO.getDummyData(userId, greenhouseId);
+    public void getDummyData(int greenhouseId){
+        greenhouseDAO.getDummyData(greenhouseId);
     }
     public void apiAddPlant(int userId, int greenhouseId, Plant plant){
         greenhouseDAO.apiAddPlant(userId, greenhouseId, plant);

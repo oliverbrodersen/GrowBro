@@ -2,8 +2,7 @@ package com.example.growbro.Models;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.growbro.Models.Data.Data;
-import com.example.growbro.Models.Data.DataType;
+import com.example.growbro.Models.Data.SensorData;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -18,9 +17,9 @@ public class Greenhouse {
     private double waterVolume;
     private String waterTimeOfDay;
     private Timestamp lastWaterDate;
-    private MutableLiveData<List<Data>> currentData;
+    private MutableLiveData<List<SensorData>> currentData;
 
-    public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, List<Data> currentData) {
+    public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, List<SensorData> currentData) {
         this.name = name;
         this.id = id;
         this.ownerId = ownerId;
@@ -29,7 +28,7 @@ public class Greenhouse {
         this.waterVolume = waterVolume;
         this.waterTimeOfDay = waterTimeOfDay;
         this.lastWaterDate = lastWaterDate;
-        this.currentData = new MutableLiveData<List<Data>>();
+        this.currentData = new MutableLiveData<List<SensorData>>();
         this.currentData.setValue(currentData);
     }
 
@@ -65,47 +64,47 @@ public class Greenhouse {
         return lastWaterDate;
     }
 
-    public Data getCurrentDataCo2(){
-        for (Data d:currentData.getValue()) {
-            if (d.getType() == DataType.CO2)
+    public SensorData getCurrentDataCo2(){
+        for (SensorData d:currentData.getValue()) {
+            if (d.getType().equals("CO2"))
                 return d;
         }
         return null;
     }
-    public Data getCurrentDataHumidity(){
+    public SensorData getCurrentDataHumidity(){
 
-        for (Data d:currentData.getValue()) {
-            if (d.getType() == DataType.HUMIDITY)
+        for (SensorData d:currentData.getValue()) {
+            if (d.getType().equals("Humidity"))
                 return d;
         }
         return null;
     }
-    public Data getCurrentDataTemperature(){
+    public SensorData getCurrentDataTemperature(){
 
-        for (Data d:currentData.getValue()) {
-            if (d.getType() == DataType.TEMPERATURE)
+        for (SensorData d:currentData.getValue()) {
+            if (d.getType().equals("Temperature"))
                 return d;
         }
         return null;
     }
-    public Data getCurrentDataLuminance(){
+    public SensorData getCurrentDataLuminance(){
 
-        for (Data d:currentData.getValue()) {
-            if (d.getType() == DataType.LUMINANCE)
+        for (SensorData d:currentData.getValue()) {
+            if (d.getType().equals("CO2"))
                 return d;
         }
         return null;
     }
 
-    public List<Data> getCurrentData() {
+    public List<SensorData> getCurrentData() {
         return currentData.getValue();
     }
 
-    public MutableLiveData<List<Data>> getCurentLiveData(){
+    public MutableLiveData<List<SensorData>> getCurentLiveData(){
         return currentData;
     }
 
-    public void setCurrentData(List<Data> currentData) {
+    public void setCurrentData(List<SensorData> currentData) {
         this.currentData.setValue(currentData);
     }
 

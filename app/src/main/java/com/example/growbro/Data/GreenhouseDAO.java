@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.growbro.Models.Data.ApiCurrentDataPackage;
 import com.example.growbro.Models.Data.ApiReceipt;
-import com.example.growbro.Models.Data.Data;
-import com.example.growbro.Models.Data.DataCO2;
+import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.Models.Plant;
 import com.example.growbro.Models.User;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +31,9 @@ public class GreenhouseDAO {
     private GreenhouseDAO() {
         //Dummy data
         greenhouseList = new ArrayList<>();
-        ArrayList<Data> data = new ArrayList<>();
+        ArrayList<SensorData> data = new ArrayList<>();
+        SensorData d = new SensorData("CO2",5);
+        data.add(d);
         Greenhouse greenhouse = new Greenhouse("name",1,1,null,3,3,"idk",null, data);
         greenhouseList.add(greenhouse);
     }
@@ -52,7 +54,7 @@ public class GreenhouseDAO {
         }
         return null;
     }
-    public MutableLiveData<List<Data>> getLiveData(int greenhouseId){
+    public MutableLiveData<List<SensorData>> getLiveData(int greenhouseId){
         return getGreenhouse(greenhouseId).getCurentLiveData();
     }
 
@@ -87,24 +89,26 @@ public class GreenhouseDAO {
                 }
         );
     }
-    public void getDummyData(int userId, int greenhouseId){
+    public void getDummyData(int greenhouseId){
         GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
-        Call<String> call = growBroApi.getDummyData(userId,greenhouseId);
+        Call<ApiCurrentDataPackage> call = growBroApi.getDummyData();
         call.enqueue(
-                new Callback<String>(){
-
+                new Callback<ApiCurrentDataPackage>(){
                     @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
+                    public void onResponse(Call<ApiCurrentDataPackage> call, Response<ApiCurrentDataPackage> response) {
                         if (response.code() == 200){
                             Log.d("API",response.body().toString());
-                            ArrayList<Data> cd = new ArrayList<>();
-                            cd.add(new DataCO2(Integer.parseInt(response.body().toString())));
-                            getGreenhouse(greenhouseId).setCurrentData(cd);
+                            //ArrayList<Data> cd = new ArrayList<>();
+                            //cd.add(new DataCO2(Integer.parseInt(response.body().toString())));
+                            //Gson gson = new Gson();
+                            //ApiCurrentDataPackage apiCurrentDataPackage =
+                            //        gson.fromJson(response.body(),ApiCurrentDataPackage.class);
+                            getGreenhouse(greenhouseId).setCurrentData(response.body().getData());
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<String> call, Throwable t) {
+                    public void onFailure(Call<ApiCurrentDataPackage> call, Throwable t) {
                         Log.e("1Api error", t.toString());
                     }
                 }

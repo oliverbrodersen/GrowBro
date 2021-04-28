@@ -6,13 +6,11 @@ public class Plant {
     private String name;
     private int plantId;
     private int image;
-    private ArrayList<Range> ranges;
 
-    public Plant(String name, int plantId, int image, ArrayList<Range> ranges) {
+    public Plant(String name, int plantId, int image) {
         this.name = name;
         this.plantId = plantId;
         this.image = image;
-        this.ranges = ranges;
     }
 
     public String getName() {
@@ -37,14 +35,6 @@ public class Plant {
 
     public void setImage(int image) {
         this.image = image;
-    }
-
-    public ArrayList<Range> getRanges() {
-        return ranges;
-    }
-
-    public void setRanges(ArrayList<Range> ranges) {
-        this.ranges = ranges;
     }
 
 }

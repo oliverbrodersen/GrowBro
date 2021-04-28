@@ -14,7 +14,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.growbro.Models.Data.Data;
+import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.R;
 
 import java.util.List;
@@ -41,17 +41,11 @@ public class HomeFragment extends Fragment {
                     }
             });
 
-        homeViewModel.getLiveData(1).observe(getViewLifecycleOwner(), new Observer<List<Data>>() {
+        homeViewModel.getLiveData(1).observe(getViewLifecycleOwner(), new Observer<List<SensorData>>() {
             @Override
-            public void onChanged(List<Data> data) {
-
-            }
-        });
-
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+            public void onChanged(List<SensorData> data) {
+                if (data != null)
+                    textView.setText(data.get(0).getValue() + "");
             }
         });
         return root;
