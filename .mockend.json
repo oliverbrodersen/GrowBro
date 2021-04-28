@@ -1,10 +1,13 @@
 {
-  "CurrentData": {
-    "sensorData": "SensorData[]"
+  "Post": {
+    "title": "string",
+    "views": "int",
+    "published": "boolean",
+    "createdAt": "date",
+    "comments": "Comment[]"
   },
-  "SensorData": {
-    "type": "string",
-    "value": "int",
-    "currentData": "CurrentData"
+  "Comment": {
+    "body": "string",
+    "post": "Post"
   }
 }
