@@ -1,5 +1,7 @@
 package com.example.growbro.Models;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.growbro.Models.Data.Data;
 import com.example.growbro.Models.Data.DataType;
 
@@ -16,7 +18,7 @@ public class Greenhouse {
     private double waterVolume;
     private String waterTimeOfDay;
     private Timestamp lastWaterDate;
-    private List<Data> currentData;
+    private MutableLiveData<List<Data>> currentData;
 
     public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, List<Data> currentData) {
         this.name = name;
@@ -27,7 +29,8 @@ public class Greenhouse {
         this.waterVolume = waterVolume;
         this.waterTimeOfDay = waterTimeOfDay;
         this.lastWaterDate = lastWaterDate;
-        this.currentData = currentData;
+        this.currentData = new MutableLiveData<List<Data>>();
+        this.currentData.setValue(currentData);
     }
 
     public String getName() {
@@ -63,7 +66,7 @@ public class Greenhouse {
     }
 
     public Data getCurrentDataCo2(){
-        for (Data d:currentData) {
+        for (Data d:currentData.getValue()) {
             if (d.getType() == DataType.CO2)
                 return d;
         }
@@ -71,7 +74,7 @@ public class Greenhouse {
     }
     public Data getCurrentDataHumidity(){
 
-        for (Data d:currentData) {
+        for (Data d:currentData.getValue()) {
             if (d.getType() == DataType.HUMIDITY)
                 return d;
         }
@@ -79,7 +82,7 @@ public class Greenhouse {
     }
     public Data getCurrentDataTemperature(){
 
-        for (Data d:currentData) {
+        for (Data d:currentData.getValue()) {
             if (d.getType() == DataType.TEMPERATURE)
                 return d;
         }
@@ -87,7 +90,7 @@ public class Greenhouse {
     }
     public Data getCurrentDataLuminance(){
 
-        for (Data d:currentData) {
+        for (Data d:currentData.getValue()) {
             if (d.getType() == DataType.LUMINANCE)
                 return d;
         }
@@ -95,11 +98,15 @@ public class Greenhouse {
     }
 
     public List<Data> getCurrentData() {
+        return currentData.getValue();
+    }
+
+    public MutableLiveData<List<Data>> getCurentLiveData(){
         return currentData;
     }
 
     public void setCurrentData(List<Data> currentData) {
-        this.currentData = currentData;
+        this.currentData.setValue(currentData);
     }
 
     public void setName(String name) {

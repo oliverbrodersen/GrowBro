@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.growbro.Data.GreenhouseRepository;
+import com.example.growbro.Models.Data.Data;
 import com.example.growbro.Models.Greenhouse;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class HomeViewModel extends ViewModel {
         repository.getDummyData(1,1);
         mText = new MutableLiveData<>();
         mText.setValue(repository.getGreenhouseList().get(0).getCurrentDataCo2().getData() + "");
+
     }
 
     public LiveData<String> getText() {
@@ -33,6 +35,9 @@ public class HomeViewModel extends ViewModel {
     }
     public Greenhouse getGreenhouse(int id){
         return repository.getGreenhouse(id);
+    }
+    public MutableLiveData<List<Data>> getLiveData(int greenhouseId){
+        return repository.getLiveData(greenhouseId);
     }
 
     public void waterNow(int userid, int greenhouseid)

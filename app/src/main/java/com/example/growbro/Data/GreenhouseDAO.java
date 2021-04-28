@@ -2,6 +2,8 @@ package com.example.growbro.Data;
 
 import android.util.Log;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.growbro.Models.Data.ApiCurrentDataPackage;
 import com.example.growbro.Models.Data.ApiReceipt;
 import com.example.growbro.Models.Data.Data;
@@ -49,6 +51,9 @@ public class GreenhouseDAO {
                 return gh;
         }
         return null;
+    }
+    public MutableLiveData<List<Data>> getLiveData(int greenhouseId){
+        return getGreenhouse(greenhouseId).getCurentLiveData();
     }
 
     public boolean updateGreenhouse(Greenhouse greenhouse){

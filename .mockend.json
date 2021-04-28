@@ -1,0 +1,10 @@
+{
+  "CurrentData": {
+    "sensorData": "SensorData[]"
+  },
+  "SensorData": {
+    "type": "string",
+    "value": "int",
+    "currentData": "CurrentData"
+  }
+}
