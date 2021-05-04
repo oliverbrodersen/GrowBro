@@ -55,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        /*
+        Create sensordata json for mock api
+
         SensorData co2 = new SensorData("CO2", 1200);
         SensorData humidity = new SensorData("Humidity", 32);
         SensorData temp = new SensorData("Temperature", 16);
@@ -70,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = gson.toJson(apiCurrentDataPackage);
 
-        Log.d("json", json);
+        Log.d("json", json);*/
     }
 
     @Override

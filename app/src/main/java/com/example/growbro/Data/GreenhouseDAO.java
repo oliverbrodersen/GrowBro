@@ -1,9 +1,6 @@
 package com.example.growbro.Data;
 
 import android.util.Log;
-
-import androidx.lifecycle.MutableLiveData;
-
 import com.example.growbro.Models.Data.ApiCurrentDataPackage;
 import com.example.growbro.Models.Data.ApiReceipt;
 import com.example.growbro.Models.Data.SensorData;
@@ -12,11 +9,13 @@ import com.example.growbro.Models.Plant;
 import com.example.growbro.Models.User;
 import com.google.gson.Gson;
 
+import androidx.lifecycle.MutableLiveData;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -98,11 +97,10 @@ public class GreenhouseDAO {
                     public void onResponse(Call<ApiCurrentDataPackage> call, Response<ApiCurrentDataPackage> response) {
                         if (response.code() == 200){
                             Log.d("API",response.body().toString());
-                            //ArrayList<Data> cd = new ArrayList<>();
-                            //cd.add(new DataCO2(Integer.parseInt(response.body().toString())));
-                            //Gson gson = new Gson();
-                            //ApiCurrentDataPackage apiCurrentDataPackage =
-                            //        gson.fromJson(response.body(),ApiCurrentDataPackage.class);
+                            //Timestamp bliver sat her og IKKE hentet fra api
+                            //Ændre når vi er færdige med at bruge mock api
+                            //getGreenhouse(greenhouseId).setLastMeasurement(response.body().getLastDataPoint());
+                            getGreenhouse(greenhouseId).setLastMeasurement(new Timestamp(new Date().getTime()));
                             getGreenhouse(greenhouseId).setCurrentData(response.body().getData());
                         }
                     }

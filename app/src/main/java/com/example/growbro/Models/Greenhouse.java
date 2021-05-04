@@ -17,6 +17,7 @@ public class Greenhouse {
     private double waterVolume;
     private String waterTimeOfDay;
     private Timestamp lastWaterDate;
+    private Timestamp lastMeasurement;
     private MutableLiveData<List<SensorData>> currentData;
 
     public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, List<SensorData> currentData) {
@@ -38,6 +39,18 @@ public class Greenhouse {
 
     public int getId() {
         return id;
+    }
+
+    public Timestamp getLastMeasurement() {
+        return lastMeasurement;
+    }
+
+    public void setLastMeasurement(Timestamp lastMeasurement) {
+        this.lastMeasurement = lastMeasurement;
+    }
+
+    public void setCurrentData(MutableLiveData<List<SensorData>> currentData) {
+        this.currentData = currentData;
     }
 
     public int getOwnerId() {
