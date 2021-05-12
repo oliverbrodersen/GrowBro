@@ -24,7 +24,8 @@ public class HomeViewModel extends ViewModel {
 
     public HomeViewModel() {
         repository = GreenhouseRepository.getInstance();
-        repository.getDummyData(1);
+        //repository.getDummyData(1);
+        repository.apiGetCurrentData(3,1);
         minutesToNextMeasurement = new MutableLiveData<>();
         minutesToNextMeasurement.setValue("15 minutes");
     }
@@ -43,7 +44,7 @@ public class HomeViewModel extends ViewModel {
                         long diffInMillies = Math.abs(nextMeasurement.getTime() - now.getTime());
                         Log.d("timer", "Next reading in " + String.valueOf(TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS)) + " minutes");
                         //TODO Skal finde ud af hvordan vi kan opdateret viewet fra seperat thread
-                        //minutesToNextMeasurement.setValue(String.valueOf(TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS)) + " minutes");
+                        minutesToNextMeasurement.postValue(String.valueOf(TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS)) + " minutes");
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -52,8 +53,8 @@ public class HomeViewModel extends ViewModel {
         };
 
         //Creates new timer with the task and schedules it to start immediately
-        Timer timer = new Timer("Timer");
-        timer.schedule(task, 0);
+        //Timer timer = new Timer("Timer");
+        //timer.schedule(task, 0);
     }
 
     public MutableLiveData<String> getMinutesToNextMeasurement() {

@@ -3,6 +3,7 @@ package com.example.growbro.Data;
 import android.util.Log;
 import com.example.growbro.Models.Data.ApiCurrentDataPackage;
 import com.example.growbro.Models.Data.ApiReceipt;
+import com.example.growbro.Models.Data.CurrentDataResultFromApi;
 import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.Models.Plant;
@@ -57,6 +58,7 @@ public class GreenhouseDAO {
         return getGreenhouse(greenhouseId).getCurentLiveData();
     }
 
+
     public boolean updateGreenhouse(Greenhouse greenhouse){
         for (int i = 0; i < greenhouseList.size(); i++) {
             if (greenhouseList.get(i).getId() == greenhouse.getId()){
@@ -65,25 +67,26 @@ public class GreenhouseDAO {
                 return true;
             }
         }
-        System.out.println("Greenhouse was not found in DAO");
+        Log.d("Greenhouse", "Greenhouse to be updated, was not found in DAO");
         return false;
     }
     public void apiGetCurrentData(int userId, int greenhouseId){
         GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
-        Call<ApiCurrentDataPackage> call = growBroApi.getCurrentData(userId,greenhouseId);
+        Call<CurrentDataResultFromApi> call = growBroApi.getCurrentData(userId,greenhouseId);
         call.enqueue(
-                new Callback<ApiCurrentDataPackage>(){
-
+                new Callback<CurrentDataResultFromApi>(){
                     @Override
-                    public void onResponse(Call<ApiCurrentDataPackage> call, Response<ApiCurrentDataPackage> response) {
+                    public void onResponse(Call<CurrentDataResultFromApi> call, Response<CurrentDataResultFromApi> response) {
                         if (response.code() == 200){
+                            Log.d("Api", "Response: " + response.body().getData());
+
                             getGreenhouse(greenhouseId).setCurrentData(response.body().getData());
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<ApiCurrentDataPackage> call, Throwable t) {
-                        Log.e("Api error", t.toString());
+                    public void onFailure(Call<CurrentDataResultFromApi> call, Throwable t) {
+                        Log.e("Api error", "apiGetCurrentData failed: " + t.toString());
                     }
                 }
         );
@@ -96,7 +99,7 @@ public class GreenhouseDAO {
                     @Override
                     public void onResponse(Call<ApiCurrentDataPackage> call, Response<ApiCurrentDataPackage> response) {
                         if (response.code() == 200){
-                            Log.d("API",response.body().toString());
+                            Log.d("API","Dummy data response: " + response.body().toString());
                             //Timestamp bliver sat her og IKKE hentet fra api
                             //Ændre når vi er færdige med at bruge mock api
                             //getGreenhouse(greenhouseId).setLastMeasurement(response.body().getLastDataPoint());
@@ -107,7 +110,7 @@ public class GreenhouseDAO {
 
                     @Override
                     public void onFailure(Call<ApiCurrentDataPackage> call, Throwable t) {
-                        Log.e("1Api error", t.toString());
+                        Log.e("Api error", "getDummyData failed: " + t.toString());
                     }
                 }
         );
@@ -126,7 +129,7 @@ public class GreenhouseDAO {
 
                     @Override
                     public void onFailure(Call<ApiReceipt> call, Throwable t) {
-                        Log.e("Api error", t.toString());
+                        Log.e("Api error", "apiWaterNow failed: " + t.toString());
                     }
                 }
         );

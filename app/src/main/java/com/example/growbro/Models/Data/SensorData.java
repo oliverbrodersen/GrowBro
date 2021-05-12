@@ -1,15 +1,17 @@
 package com.example.growbro.Models.Data;
 
+import androidx.annotation.NonNull;
+
 public class SensorData {
     private String type;
-    private double value;
+    private float data;
 
     public SensorData() {
     }
 
-    public SensorData(String type, double value) {
+    public SensorData(String type, float data) {
         this.type = type;
-        this.value = value;
+        this.data = data;
     }
 
     public String getType() {
@@ -20,11 +22,17 @@ public class SensorData {
         this.type = type;
     }
 
-    public double getValue() {
-        return value;
+    public double getData() {
+        return data;
     }
 
-    public void setValue(double value) {
-        this.value = value;
+    public void setData(float data) {
+        this.data = data;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Type: " + type + ", Value: " + data;
     }
 }

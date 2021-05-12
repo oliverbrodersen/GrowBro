@@ -15,9 +15,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
     private static Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-            .baseUrl("https://274b55d5-e981-4849-895d-f83db4bdf775.mock.pstmn.io")
+            .baseUrl("https://192.168.87.118:5001")
             .client(getUnsafeOkHttpClient().build())
             .addConverterFactory(GsonConverterFactory.create());
+    //Postman url
+    //https://274b55d5-e981-4849-895d-f83db4bdf775.mock.pstmn.io
 
     private static Retrofit retrofit = retrofitBuilder.build();
 

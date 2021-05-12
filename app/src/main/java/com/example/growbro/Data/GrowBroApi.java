@@ -2,6 +2,7 @@ package com.example.growbro.Data;
 
 import com.example.growbro.Models.Data.ApiCurrentDataPackage;
 import com.example.growbro.Models.Data.ApiReceipt;
+import com.example.growbro.Models.Data.CurrentDataResultFromApi;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.Models.User;
 
@@ -32,8 +33,8 @@ public interface GrowBroApi {
     @GET("/user/{userId}/greenhouse/{greenhouseId}")
     Call<Greenhouse> getGreenhouse(@Path("userId")int userId, @Path("greenhouseId") int greenhouseId);
 
-    @GET("/user/{userId}/greenhouse/{greenhouseId}/currentData")
-    Call<ApiCurrentDataPackage> getCurrentData(@Path("userId")int userId, @Path("greenhouseId") int greenhouseId);
+    @GET("/User/{userId}/Greenhouse/{greenhouseId}/CurrentData")
+    Call<CurrentDataResultFromApi> getCurrentData(@Path("userId")int userId, @Path("greenhouseId") int greenhouseId);
 
     @Headers("Content-Type: application/json")
     @GET("user/{userId}/greenhouse/{greenhouseId}/averageData")
