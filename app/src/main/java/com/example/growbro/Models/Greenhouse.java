@@ -18,9 +18,10 @@ public class Greenhouse {
     private String waterTimeOfDay;
     private Timestamp lastWaterDate;
     private Timestamp lastMeasurement;
+    private boolean windowIsOpen;
     private MutableLiveData<List<SensorData>> currentData;
 
-    public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, List<SensorData> currentData) {
+    public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, List<SensorData> currentData, boolean windowIsOpen) {
         this.name = name;
         this.id = id;
         this.ownerId = ownerId;
@@ -31,6 +32,15 @@ public class Greenhouse {
         this.lastWaterDate = lastWaterDate;
         this.currentData = new MutableLiveData<List<SensorData>>();
         this.currentData.setValue(currentData);
+        this.windowIsOpen = windowIsOpen;
+    }
+
+    public boolean isWindowIsOpen() {
+        return windowIsOpen;
+    }
+
+    public void setWindowIsOpen(boolean windowIsOpen) {
+        this.windowIsOpen = windowIsOpen;
     }
 
     public String getName() {

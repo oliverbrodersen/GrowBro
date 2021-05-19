@@ -4,14 +4,14 @@ import androidx.annotation.NonNull;
 
 public class SensorData {
     private String type;
-    private float data;
-
+    private float value;
+    //TODO value hedder data når den kommer fra den rigtige API
     public SensorData() {
     }
 
     public SensorData(String type, float data) {
         this.type = type;
-        this.data = data;
+        this.value = data;
     }
 
     public String getType() {
@@ -22,17 +22,17 @@ public class SensorData {
         this.type = type;
     }
 
-    public double getData() {
-        return data;
+    public double getValue() {
+        return value;
     }
 
-    public void setData(float data) {
-        this.data = data;
+    public void setValue(float value) {
+        this.value = value;
     }
 
     @NonNull
     @Override
     public String toString() {
-        return "Type: " + type + ", Value: " + data;
+        return "Type: " + type + ", Value: " + value;
     }
 }

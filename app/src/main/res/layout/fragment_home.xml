@@ -4,179 +4,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".ui.home.HomeFragment">
 
-    <Button
-        android:id="@+id/bSendData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="20dp"
-        android:text="Send"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-    <EditText
-        android:id="@+id/etSendData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="..."
-        app:layout_constraintStart_toEndOf="@+id/bSendData"
-        app:layout_constraintTop_toTopOf="@+id/bSendData" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="100dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="32dp"
-        app:cardCornerRadius="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/co2Header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="CO" />
-
-            <TextView
-                android:id="@+id/tvCo2"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginHorizontal="10dp"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:autoSizeTextType="uniform"
-                android:autoSizeMinTextSize="2sp"
-                android:autoSizeMaxTextSize="200sp"
-                android:autoSizeStepGranularity="2sp"
-                android:text="" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView1"
-        android:layout_width="100dp"
-        android:layout_height="120dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="32dp"
-        app:cardCornerRadius="15dp"
-        app:layout_constraintStart_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/humidityHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Humidity"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/tvHumidity"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginHorizontal="10dp"
-                android:autoSizeMaxTextSize="200sp"
-                android:autoSizeMinTextSize="2sp"
-                android:autoSizeStepGranularity="2sp"
-                android:autoSizeTextType="uniform"
-                android:gravity="center"
-                android:text=""
-                android:textAlignment="center" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
-        android:layout_width="100dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="15dp"
-        app:cardCornerRadius="15dp"
-        app:layout_constraintEnd_toStartOf="@+id/cardView"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tempHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Temperature"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/tvTemp"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginHorizontal="10dp"
-                android:autoSizeMaxTextSize="200sp"
-                android:autoSizeMinTextSize="2sp"
-                android:autoSizeStepGranularity="2sp"
-                android:autoSizeTextType="uniform"
-                android:gravity="center"
-                android:text=""
-                android:textAlignment="center" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imageView3"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:background="@color/accent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/backgroun_light"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    </ImageView>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/greenhouseListRV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:clipToPadding="false"
+                android:paddingTop="46dp"
+                android:paddingBottom="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/myGreenhousesChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:backgroundTint="@color/white"
+                    android:text="My GrowBros"
+                    android:textColor="@color/green_dark" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/friendsGreenhouses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:backgroundTint="@color/white"
+                    android:text="Friends GrowBros"
+                    android:textColor="@color/green_dark" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:fontFamily="@font/roboto"
-            android:textSize="10dp"
-            android:text="Next reading in " />
-        <TextView
-            android:id="@+id/minutesLeftTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:fontFamily="@font/roboto_bold"
-            android:textSize="10dp"
-            android:text="" /></LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

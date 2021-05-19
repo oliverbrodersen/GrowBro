@@ -60,4 +60,8 @@ public class GreenhouseRepository {
     public void sendText(String value) {
 //TODO: make it
     }
+
+    public MutableLiveData<List<Greenhouse>> getGreenhouseListAsLiveData() {
+        return greenhouseDAO.getGreenhouseListAsLiveData();
+    }
 }

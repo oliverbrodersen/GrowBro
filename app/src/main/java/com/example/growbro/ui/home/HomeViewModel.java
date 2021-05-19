@@ -78,4 +78,8 @@ public class HomeViewModel extends ViewModel {
         {
             repository.apiWaterNow(userid,greenhouseid);
         }
+
+    public LiveData<List<Greenhouse>> getGreenhouseListAsLiveData() {
+        return repository.getGreenhouseListAsLiveData();
+    }
 }

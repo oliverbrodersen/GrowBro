@@ -7,7 +7,20 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="green_bg">#9bc66d</color>
     <color name="green_dark">#689733</color>
     <color name="green">#87B94E</color>
+    <color name="green_light">#AFD881</color>
+    <color name="green_extralight">#D4EDB8</color>
     <color name="accent">#BCEF82</color>
+    <color name="temperatureAccent">#EFC382</color>
+    <color name="humidityAccent">#82D0EF</color>
+    <color name="co2Accent">#EF8282</color>
+
+
+    <color name="goodHealth">#87B94E</color>
+    <color name="mediocreHealth">#E4AD3E</color>
+    <color name="criticalHealth">#D84734</color>
+
+
 </resources>
