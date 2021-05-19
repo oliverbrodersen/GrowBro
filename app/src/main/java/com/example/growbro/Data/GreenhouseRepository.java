@@ -56,4 +56,8 @@ public class GreenhouseRepository {
     public void apiAddPlant(int userId, int greenhouseId, Plant plant){
         greenhouseDAO.apiAddPlant(userId, greenhouseId, plant);
     }
+
+    public void sendText(String value) {
+//TODO: make it
+    }
 }
