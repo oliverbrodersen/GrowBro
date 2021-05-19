@@ -34,7 +34,13 @@ public class GreenhouseDAO {
         ArrayList<SensorData> data = new ArrayList<>();
         SensorData d = new SensorData("CO2",5);
         data.add(d);
-        Greenhouse greenhouse = new Greenhouse("name",1,1,null,3,3,"idk",null, data);
+        ArrayList<Plant> plantArrayList = new ArrayList<>();
+        plantArrayList.add(new Plant("Monstera", 1, "https://cdn.shopify.com/s/files/1/0059/8835/2052/products/Monstera_delisiosa_4_FGT_450x.jpg"));
+        plantArrayList.add(new Plant("Pothos", 2, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1603654968-il_570xN.2485154742_kpa5.jpg"));
+        plantArrayList.add(new Plant("Aglaonema", 3, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1603654887-1427228256-chinese-evergreen-plants-little-water.jpg"));
+        plantArrayList.add(new Plant("Asparagus Fern", 4, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1554477330-beautiful-asparagus-fern-plant-in-a-basket-royalty-free-image-972247932-1546889240.jpg"));
+        plantArrayList.add(new Plant("Chinese Money Plant", 5, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1557177323-pilea-peperomioides-money-plant-in-the-pot-single-royalty-free-image-917778022-1557177295.jpg"));
+        Greenhouse greenhouse = new Greenhouse("name",1,1,plantArrayList,3,3,"idk",new Timestamp(new Date().getTime()), data);
         greenhouseList.add(greenhouse);
     }
 

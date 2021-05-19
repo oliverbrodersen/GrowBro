@@ -5,12 +5,12 @@ import java.util.ArrayList;
 public class Plant {
     private String name;
     private int plantId;
-    private int image;
+    private String imageUrl;
 
-    public Plant(String name, int plantId, int image) {
+    public Plant(String name, int plantId, String imageUrl) {
         this.name = name;
         this.plantId = plantId;
-        this.image = image;
+        this.imageUrl = imageUrl;
     }
 
     public String getName() {
@@ -29,12 +29,12 @@ public class Plant {
         this.plantId = plantId;
     }
 
-    public int getImage() {
-        return image;
+    public String getImage() {
+        return imageUrl;
     }
 
-    public void setImage(int image) {
-        this.image = image;
+    public void setImage(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
 }
