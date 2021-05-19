@@ -59,4 +59,32 @@ public class UserDAO {
     public User getCurrentUser() {
         return currentUser;
     }
+
+    public void signOut() {
+        currentUser = null;
+    }
+
+    public void apiSignIn(String userName, String password) {
+        currentUser = new User(-1, userName, password); //Dummy Data
+        /*
+        User userToLogin = new User(-1, userName, password);
+        //TODO Find ud af (snak med DAI?) om login skal ske med query-parameters (GET-request) eller via info i body på en måde
+        //https://i.imgur.com/tdKpReE.png , https://i.imgur.com/7oFXQRE.png , https://i.imgur.com/2g5jEMN.png
+        GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
+        // prepare call in Retrofit 2.0
+            Call<User> call = growBroApi.login(userName, password);
+            call.enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    if (response.code() == 200) {
+                        currentUser = response.body();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+                    Log.e("Api error", t.toString());
+                }
+            }); */
+    }
 }

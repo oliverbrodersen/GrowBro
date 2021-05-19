@@ -1,6 +1,7 @@
 package com.example.growbro.ui.home;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -21,6 +22,8 @@ import com.example.growbro.ui.signin.SignInActivity;
 
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
@@ -36,13 +39,6 @@ public class HomeFragment extends Fragment {
         final TextView temperatureTextView = root.findViewById(R.id.tvTemp);
         final TextView minutesLeft = root.findViewById(R.id.minutesLeftTV);
         final Button button = root.findViewById(R.id.bSendData);
-
-        //Check if user is signed in. Null if not
-        if(homeViewModel.getCurrentUser() == null){ //TODO This is for when user is already signed in. Not working yet.
-            Intent intent = new Intent(getActivity(), SignInActivity.class);
-            startActivity(intent);
-        }
-
 
         //start countdown timer
         homeViewModel.startTimerToNextMeasurement(1);

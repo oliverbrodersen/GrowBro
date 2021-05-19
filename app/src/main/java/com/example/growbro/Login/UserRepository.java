@@ -17,13 +17,20 @@ public class UserRepository {
         return instance;
     }
 
-    public void login(String userName, String password) {
-        User user = new User(-1, userName, password); //-1 for userid here, because real userid will be set by database
-        userDAO.apiAddUser(user);
-    }
-
     public User getCurrentUser() {
         return userDAO.getCurrentUser();
     }
 
+    public void signIn(String userName, String password) {
+        userDAO.apiSignIn(userName, password);
+    }
+
+    public void signOut() {
+        userDAO.signOut();
+    }
+
+    public void addUser(String userName, String password) {
+        User user = new User(-1, userName, password); //-1 for userid here, because real userid will be set by database
+        userDAO.apiAddUser(user);
+    }
 }

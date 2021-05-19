@@ -12,11 +12,19 @@ public class SignInViewModel extends ViewModel {
        userRepository = UserRepository.getInstance();
     }
 
-    public void login(String userName, String password) {
-            userRepository.login(userName, password);
-    }
-
     public User getCurrentUser() {
         return UserRepository.getInstance().getCurrentUser();
+    }
+
+    public void signIn(String userName, String password) {
+        userRepository.signIn(userName, password);
+    }
+
+    public void signOut() {
+        userRepository.signOut();
+    }
+
+    public void addUser(String userName, String password) {
+        userRepository.addUser(userName, password);
     }
 }
