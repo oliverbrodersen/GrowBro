@@ -18,4 +18,11 @@ public class User {
     public String getUserName() {
         return userName;
     }
+
+    public void setUserId(int userId) {
+    }
+
+    public String getPassword() {
+        return passWord;
+    }
 }

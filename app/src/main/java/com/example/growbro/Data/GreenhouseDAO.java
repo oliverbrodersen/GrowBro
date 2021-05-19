@@ -315,31 +315,5 @@ public class GreenhouseDAO {
             e.printStackTrace();
         }
     }
-    public void apiAddUser(User user){
-        GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
-        // prepare call in Retrofit 2.0
-        try {
-            JSONObject paramObject = new JSONObject();
-            paramObject.put("User", user);
-            Call<ApiReceipt> call = growBroApi.addUser(paramObject.toString());
-            call.enqueue(
-                    new Callback<ApiReceipt>(){
-                        @Override
-                        public void onResponse(Call<ApiReceipt> call, Response<ApiReceipt> response) {
-                            if (response.code() == 200){
-                                //TODO
-                                //Bring user to login screen
-                            }
-                        }
 
-                        @Override
-                        public void onFailure(Call<ApiReceipt> call, Throwable t) {
-                            Log.e("Api error", t.toString());
-                        }
-                    }
-            );
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 }

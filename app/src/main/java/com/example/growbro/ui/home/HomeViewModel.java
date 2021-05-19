@@ -7,8 +7,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.growbro.Data.GreenhouseRepository;
+import com.example.growbro.Login.UserRepository;
 import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
+import com.example.growbro.Models.User;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -78,4 +80,8 @@ public class HomeViewModel extends ViewModel {
         {
             repository.apiWaterNow(userid,greenhouseid);
         }
+
+    public User getCurrentUser() {
+        return UserRepository.getInstance().getCurrentUser();
+    }
 }

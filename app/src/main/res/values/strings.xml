@@ -11,4 +11,6 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="already_registred_login_here">Already Registred ? Login here</string>
 </resources>
