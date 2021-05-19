@@ -14,11 +14,11 @@
         android:layout_marginStart="44dp"
         android:layout_marginTop="208dp"
         android:layout_marginEnd="44dp"
-        android:layout_marginBottom="381dp"
+        android:layout_marginBottom="14dp"
         android:ems="10"
-        android:hint="Username"
+        android:hint="@string/username"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        app:layout_constraintBottom_toTopOf="@+id/edtEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +30,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="44dp"
         android:layout_marginEnd="44dp"
-        android:layout_marginBottom="29dp"
+        android:layout_marginBottom="14dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
@@ -45,38 +45,36 @@
         android:layout_height="0dp"
         android:layout_marginStart="44dp"
         android:layout_marginEnd="44dp"
-        android:layout_marginBottom="152dp"
+        android:layout_marginBottom="153dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/txtCreateText"
+        app:layout_constraintBottom_toTopOf="@+id/txtalreadyRegistered"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/btnSignUp"
         android:layout_width="222dp"
         android:layout_height="106dp"
-        android:layout_marginTop="143dp"
-        android:layout_marginBottom="145dp"
+        android:layout_marginTop="115dp"
+        android:layout_marginBottom="117dp"
         android:src="@drawable/btn_sign_up"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/progressBar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtEmail"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/edtextPassword" />
 
     <TextView
-        android:id="@+id/txtCreateText"
+        android:id="@+id/txtalreadyRegistered"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="145dp"
+        android:layout_marginBottom="53dp"
         android:text="Already Registred ? Login here"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/imageView3"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        app:layout_constraintStart_toStartOf="@+id/btnSignUp"
         app:layout_constraintTop_toBottomOf="@+id/edtextPassword" />
 
 
@@ -85,10 +83,10 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="45dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="45dp"
+        android:layout_marginBottom="44dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/txtalreadyRegistered" />
 </androidx.constraintlayout.widget.ConstraintLayout>
