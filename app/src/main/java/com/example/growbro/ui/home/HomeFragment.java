@@ -34,8 +34,9 @@ public class HomeFragment extends Fragment {
         final TextView minutesLeft = root.findViewById(R.id.minutesLeftTV);
         final Button button = root.findViewById(R.id.bSendData);
 
-        //start countdown timer
-        homeViewModel.startTimerToNextMeasurement(1);
+
+        ////start countdown timer
+        //homeViewModel.startTimerToNextMeasurement(1);
 
         //Observe timer and bind to view
         homeViewModel.getMinutesToNextMeasurement().observe(getViewLifecycleOwner(), new Observer<String>() {
