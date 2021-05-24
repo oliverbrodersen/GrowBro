@@ -1,23 +1,21 @@
 package com.example.growbro.ui.greenhousetab.greenhouse;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.growbro.R;
 
 public class GreenhouseFragment extends Fragment {
 
     public static final String ARG_SELECTED_GREENHOUSE_ID = "selectedGreenhouseId";
-    private int selectedGreenhouseId;
+    private String selectedGreenhouseId;
 
     private GreenhouseViewModel mViewModel;
 
@@ -26,7 +24,7 @@ public class GreenhouseFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
-        selectedGreenhouseId = args.getInt(ARG_SELECTED_GREENHOUSE_ID);
+        selectedGreenhouseId = args.getString(ARG_SELECTED_GREENHOUSE_ID);
 
     }
 

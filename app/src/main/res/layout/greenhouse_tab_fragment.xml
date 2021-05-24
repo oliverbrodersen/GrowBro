@@ -8,7 +8,7 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/green_bg"/>
+        android:background="@color/green_extralight"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"

@@ -36,8 +36,7 @@ public class SignInActivity extends AppCompatActivity {
 
         //Check if user is signed in
         if (sharedPreferences.getBoolean("signed_in",false)) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            goToActivity();
         }
 
         editTextUsername = findViewById(R.id.edtUsername);
@@ -79,8 +78,7 @@ public class SignInActivity extends AppCompatActivity {
             else
                 signInViewModel.signIn(userName, password);
 
-            startActivity(new Intent(this, MainActivity.class));
-
+            goToActivity();
         });
 
         textView.setOnClickListener(view -> {
@@ -97,5 +95,11 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+    }
+    public void goToActivity(){
+        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+        startActivity(intent);
+        this.finishAfterTransition();
     }
 }

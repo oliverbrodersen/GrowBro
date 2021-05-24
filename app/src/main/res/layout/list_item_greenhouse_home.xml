@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="416dp"
+    android:layout_height="wrap_content"
     android:padding="5dp">
 
     <androidx.cardview.widget.CardView
@@ -57,14 +57,18 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/windowIsOpen">
+                android:weightSum="100"
+                app:layout_constraintTop_toBottomOf="@+id/windowIsOpen"
+                tools:layout_editor_absoluteX="16dp">
 
                 <LinearLayout
-                    android:layout_width="150dp"
+                    android:layout_width="fill_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="50"
                     android:orientation="vertical">
 
                     <TextView
@@ -85,8 +89,9 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="150dp"
+                    android:layout_width="fill_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="50"
                     android:orientation="vertical">
 
                     <TextView
@@ -111,22 +116,43 @@
                 android:id="@+id/plantRV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:background="@color/green_light"
+                android:clipToPadding="false"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
-                android:clipToPadding="false"
+                android:paddingTop="32dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="24dp"
+                android:background="@color/green_light"
+                android:text="Plants"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
             <LinearLayout
+                android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="125dp"
-                android:orientation="horizontal"
-                android:gravity="center"
+                android:layout_height="157dp"
                 android:background="@color/green_extralight"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="32dp"
+                android:weightSum="100"
+                android:paddingHorizontal="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -134,24 +160,26 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardTemperature"
-                    app:cardCornerRadius="16dp"
-                    android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="6dp"
                     android:layout_width="90dp"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent"
+                    android:layout_weight="20"
+                    android:layout_marginHorizontal="6dp"
+                    android:layout_marginVertical="16dp"
+                    app:cardCornerRadius="16dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
+
                         <TextView
                             android:id="@+id/titleTemperature"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textAlignment="center"
                             android:layout_marginHorizontal="8dp"
                             android:layout_marginTop="12dp"
                             android:fontFamily="@font/roboto"
                             android:text="Temperature"
+                            android:textAlignment="center"
                             android:textSize="12dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -177,8 +205,8 @@
                             android:id="@+id/accentTemperature"
                             android:layout_width="match_parent"
                             android:layout_height="8dp"
-                            android:text=""
                             android:background="@color/temperatureAccent"
+                            android:text=""
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent" />
@@ -187,11 +215,12 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardHumidity"
-                    app:cardCornerRadius="16dp"
-                    android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="6dp"
                     android:layout_width="90dp"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent"
+                    android:layout_weight="20"
+                    android:layout_marginHorizontal="6dp"
+                    android:layout_marginVertical="16dp"
+                    app:cardCornerRadius="16dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -201,11 +230,11 @@
                             android:id="@+id/titleHumidity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textAlignment="center"
                             android:layout_marginHorizontal="8dp"
                             android:layout_marginTop="12dp"
                             android:fontFamily="@font/roboto"
                             android:text="Humidity"
+                            android:textAlignment="center"
                             android:textSize="12dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -225,12 +254,13 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/titleHumidity" />
+
                         <TextView
                             android:id="@+id/accentHumidity"
                             android:layout_width="match_parent"
                             android:layout_height="8dp"
-                            android:text=""
                             android:background="@color/humidityAccent"
+                            android:text=""
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent" />
@@ -239,11 +269,12 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardCO2"
-                    app:cardCornerRadius="16dp"
-                    android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="6dp"
                     android:layout_width="90dp"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="20"
+                    android:layout_marginHorizontal="6dp"
+                    android:layout_marginVertical="16dp"
+                    app:cardCornerRadius="16dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -253,11 +284,11 @@
                             android:id="@+id/titleCO2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textAlignment="center"
                             android:layout_marginHorizontal="8dp"
                             android:layout_marginTop="12dp"
                             android:fontFamily="@font/roboto"
                             android:text="CO²"
+                            android:textAlignment="center"
                             android:textSize="12dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -288,18 +319,31 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent" />
+
                         <TextView
                             android:id="@+id/accentCO2"
                             android:layout_width="match_parent"
                             android:layout_height="8dp"
-                            android:text=""
                             android:background="@color/co2Accent"
+                            android:text=""
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Current data"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@+id/linearLayout2"
+                app:layout_constraintTop_toBottomOf="@+id/plantRV" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
