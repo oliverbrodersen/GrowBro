@@ -15,8 +15,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -342,4 +345,13 @@ public class GreenhouseDAO {
         }
     }
 
+    public HashMap<Long, Float> getSensorDataHistory(String parameterName, String selectedGreenhouseId) {
+        HashMap<Long, Float> hashMap = new HashMap<>(); //Dummy Data //TODO use API instead
+        hashMap.put(Instant.now().getEpochSecond(), 1f);
+        hashMap.put(Instant.now().minus(1, ChronoUnit.DAYS).getEpochSecond(), 42f);
+        hashMap.put(Instant.now().minus(2, ChronoUnit.DAYS).getEpochSecond(), 33f);
+        hashMap.put(Instant.now().minus(3, ChronoUnit.DAYS).getEpochSecond(), 37f);
+        hashMap.put(Instant.now().minus(4, ChronoUnit.DAYS).getEpochSecond(), 52f);
+        return hashMap;
+    }
 }
