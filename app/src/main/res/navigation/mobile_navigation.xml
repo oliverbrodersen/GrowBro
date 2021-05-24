@@ -22,4 +22,19 @@
         android:name="com.example.growbro.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/greenhouseTabFragment"
+        android:name="com.example.growbro.ui.greenhousetab.GreenhouseTabFragment"
+        android:label="greenhouse_tab_fragment"
+        tools:layout="@layout/greenhouse_tab_fragment" />
+    <fragment
+        android:id="@+id/greenhouseFragment"
+        android:name="com.example.growbro.ui.greenhousetab.greenhouse.GreenhouseFragment"
+        android:label="greenhouse_fragment"
+        tools:layout="@layout/greenhouse_fragment" />
+    <fragment
+        android:id="@+id/statisticsFragment"
+        android:name="com.example.growbro.ui.greenhousetab.statistics.StatisticsFragment"
+        android:label="statistics_fragment"
+        tools:layout="@layout/statistics_fragment" />
 </navigation>

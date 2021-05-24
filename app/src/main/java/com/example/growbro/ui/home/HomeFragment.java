@@ -1,35 +1,28 @@
 package com.example.growbro.ui.home;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.navigation.NavDirections;
 
-import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.R;
-import com.example.growbro.ui.signin.SignInActivity;
+import com.example.growbro.ui.greenhousetab.GreenhouseTabFragment;
+import com.example.growbro.ui.greenhousetab.greenhouse.GreenhouseFragment;
 import com.example.growbro.ui.home.rv.GreenhouseRVAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.Context.MODE_PRIVATE;
-
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnListItemClickListener {
 
     private HomeViewModel homeViewModel;
     private RecyclerView greenhouseRV;
@@ -46,7 +39,7 @@ public class HomeFragment extends Fragment {
         greenhouseRV.hasFixedSize();
         greenhouseRV.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        greenhouseRVAdapter = new GreenhouseRVAdapter();
+        greenhouseRVAdapter = new GreenhouseRVAdapter(this);
         greenhouseRV.setAdapter(greenhouseRVAdapter);
 
         //Binds current sensor data to view
@@ -77,5 +70,16 @@ public class HomeFragment extends Fragment {
             }
         });
         return root;
+    }
+
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+        GreenhouseTabFragment greenhouseTabFragment = new GreenhouseTabFragment();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        Bundle bundle = new Bundle();
+        List<Greenhouse> greenhouseList = homeViewModel.getGreenhouseList();
+        bundle.putString("greenhouseId", greenhouseList.get(clickedItemIndex).getId()+"");
+        greenhouseTabFragment.setArguments(bundle);
+        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, greenhouseTabFragment).addToBackStack("TAG").commit();
     }
 }

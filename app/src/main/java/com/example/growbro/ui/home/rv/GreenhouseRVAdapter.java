@@ -24,8 +24,10 @@ import java.util.List;
 public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapter.ViewHolder> {
 
     private ArrayList<Greenhouse> greenhouseArrayList;
+    final private OnListItemClickListener mOnListItemClickListener;
 
-    public GreenhouseRVAdapter() {
+    public GreenhouseRVAdapter(OnListItemClickListener mOnListItemClickListener) {
+        this.mOnListItemClickListener = mOnListItemClickListener;
     }
 
     public void setDataset(ArrayList<Greenhouse> greenhouseArrayList){
@@ -86,7 +88,7 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
         return greenhouseArrayList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView greenhouseName;
 
         TextView valueTemperature;
@@ -99,6 +101,7 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             greenhouseName = itemView.findViewById(R.id.greenhouseName);
             plantRV = itemView.findViewById(R.id.plantRV);
             valueTemperature = itemView.findViewById(R.id.valueTemperature);
@@ -113,5 +116,14 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
             plantRV.setLayoutManager(layoutManager);
             plantRVAdapter = new PlantRVAdapter();
         }
+
+        @Override
+        public void onClick(View v) {
+            mOnListItemClickListener.onListItemClick(getAdapterPosition());
+        }
+    }
+
+    public interface OnListItemClickListener {
+        void onListItemClick(int clickedItemIndex);
     }
 }
