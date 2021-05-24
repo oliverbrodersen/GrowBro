@@ -76,6 +76,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
+                        android:textSize="10dp"
                         android:text="Next measurement in"
                         android:textAlignment="center" />
 
@@ -99,6 +100,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
+                        android:textSize="10dp"
                         android:text="Watering in"
                         android:textAlignment="center" />
 
@@ -160,7 +162,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardTemperature"
-                    android:layout_width="90dp"
+                    android:layout_width="70dp"
                     android:layout_height="match_parent"
                     android:layout_weight="20"
                     android:layout_marginHorizontal="6dp"
@@ -180,7 +182,7 @@
                             android:fontFamily="@font/roboto"
                             android:text="Temperature"
                             android:textAlignment="center"
-                            android:textSize="12dp"
+                            android:textSize="11dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -215,7 +217,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardHumidity"
-                    android:layout_width="90dp"
+                    android:layout_width="70dp"
                     android:layout_height="match_parent"
                     android:layout_weight="20"
                     android:layout_marginHorizontal="6dp"
@@ -269,7 +271,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardCO2"
-                    android:layout_width="90dp"
+                    android:layout_width="70dp"
                     android:layout_height="match_parent"
                     android:layout_weight="20"
                     android:layout_marginHorizontal="6dp"
