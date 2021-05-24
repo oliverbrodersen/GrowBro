@@ -1,6 +1,9 @@
 package com.example.growbro.Data;
 
 import android.util.Log;
+
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.growbro.Models.Data.ApiCurrentDataPackage;
 import com.example.growbro.Models.Data.ApiReceipt;
 import com.example.growbro.Models.Data.CurrentDataResultFromApi;
@@ -8,9 +11,7 @@ import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.Models.Plant;
 import com.example.growbro.Models.User;
-import com.google.gson.Gson;
 
-import androidx.lifecycle.MutableLiveData;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,7 +54,7 @@ public class GreenhouseDAO {
 
 
         Greenhouse greenhouse1 = new Greenhouse("Stue drivhus",1,1,plantArrayList,3,3,"idk",new Timestamp(new Date().getTime()), data, true);
-        Greenhouse greenhouse2 = new Greenhouse("Altan drivhus",1,1,plantArrayList2,3,3,"idk",new Timestamp(new Date().getTime()), data, false);
+        Greenhouse greenhouse2 = new Greenhouse("Altan drivhus",2,1,plantArrayList2,3,3,"idk",new Timestamp(new Date().getTime()), data, false);
         greenhouseArrayList.add(greenhouse1);
         greenhouseArrayList.add(greenhouse2);
 

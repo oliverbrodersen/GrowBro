@@ -22,10 +22,8 @@ public class StatisticsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Bundle args = getArguments();
         selectedGreenhouseId = args.getString(ARG_SELECTED_GREENHOUSE_ID);
-
     }
 
     @Override
