@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_signup">
+    android:background="@drawable/ic_background_signup">
 
 
     <EditText
@@ -42,7 +42,7 @@
         android:id="@+id/imageView4"
         android:layout_width="233dp"
         android:layout_height="87dp"
-        android:src="@drawable/btn_login"
+        android:src="@drawable/ic_btn_login"
         app:layout_constraintBottom_toBottomOf="@+id/createText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
