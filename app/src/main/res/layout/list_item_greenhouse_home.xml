@@ -184,6 +184,8 @@
                             android:textAlignment="center"
                             android:textSize="10dp"
                             android:singleLine="true"
+                            android:ellipsize="none"
+                            android:scrollHorizontally="false"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />

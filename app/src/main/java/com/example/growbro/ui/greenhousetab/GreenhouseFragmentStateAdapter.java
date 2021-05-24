@@ -1,6 +1,7 @@
 package com.example.growbro.ui.greenhousetab;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -29,10 +30,10 @@ public class GreenhouseFragmentStateAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         Fragment fragment = fragments.get(position);
-
         Bundle args = new Bundle();
         args.putString(GreenhouseFragment.ARG_SELECTED_GREENHOUSE_ID, selectedGreenhouseId);
         fragment.setArguments(args);
+        Log.i("fragment", position + "");
         return fragment;
     }
 
