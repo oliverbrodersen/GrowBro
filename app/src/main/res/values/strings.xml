@@ -10,4 +10,13 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="already_registred_login_here">Already Registred ? Login here</string>
+    <string name="menu_signout">Sign out</string>
+    <string name="new_user">New user? Register now</string>
+    <string name="sign_in">Sign in</string>
+    <string name="reenter_password">Reenter password</string>
+    <string name="sign_up">Sign up</string>
+    <string name="already_have_an_account">Already have an account? Sign in</string>
 </resources>
