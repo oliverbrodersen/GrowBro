@@ -29,10 +29,15 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class StatisticsFragment extends Fragment {
 
@@ -41,6 +46,8 @@ public class StatisticsFragment extends Fragment {
 
     private StatisticsViewModel statisticsViewModel;
     private LineChart lineChart;
+
+    private static final int DEFAULT_TIME_RANGE = 14; //14 days
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,9 +66,12 @@ public class StatisticsFragment extends Fragment {
 
         Spinner spinner = (Spinner) root.findViewById(R.id.spinner_parameters_statistics);
 
-        String[] parameterNames = statisticsViewModel.getParameterStrings(selectedGreenhouseId);
+        String[] parameterNames = {"Temperature", "CO2", "Humidity"};
+        Timestamp timestampFrom= new Timestamp(Instant.now().minus(DEFAULT_TIME_RANGE, ChronoUnit.DAYS).getEpochSecond());
+        Timestamp timestampTo= new Timestamp(Instant.now().getEpochSecond());
 
-        setLineData(parameterNames[0]); //parameter at index 0 is currently the default parameter for the chart
+        int userId = getActivity().getSharedPreferences("login",MODE_PRIVATE).getInt("current_user_id", -1);
+        setLineData(userId, parameterNames[0], timestampFrom, timestampTo); //parameter at index 0 is currently the default parameter for the chart
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, parameterNames);
@@ -73,7 +83,7 @@ public class StatisticsFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setLineData(parameterNames[position]);
+                setLineData(userId, parameterNames[position], timestampFrom, timestampTo);
                 lineChart.invalidate();
                 Log.v("item", (String) parent.getItemAtPosition(position));
             }
@@ -89,10 +99,22 @@ public class StatisticsFragment extends Fragment {
     }
 
     //https://learntodroid.com/how-to-display-a-line-chart-in-your-android-app/
-    private void setLineData(String parameterName) {
-        ArrayList<Entry> chartEntries = statisticsViewModel.getChartEntries(parameterName, selectedGreenhouseId);
+    private void setLineData(int userId, String parameterName, Timestamp timeFrom, Timestamp timeTo) {
+        ArrayList<Entry> chartEntries = statisticsViewModel.getChartEntries(userId, parameterName, selectedGreenhouseId, timeFrom, timeTo);
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        LineDataSet lineDataSet = new LineDataSet(chartEntries, parameterName + "");
+        String unit = "";
+        switch (parameterName) {
+            case "Temperature":
+                unit = "°C";
+                break;
+            case "CO2":
+                unit = "ppm";
+                break;
+            case "Humidity":
+                unit = "%";
+                break;
+        }
+        LineDataSet lineDataSet = new LineDataSet(chartEntries, parameterName + " (" + unit +  ")");
         lineDataSet.setDrawCircles(true);
         lineDataSet.setCircleRadius(4);
         lineDataSet.setDrawValues(false);

@@ -7,6 +7,7 @@ import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.Models.Plant;
 import com.github.mikephil.charting.data.Entry;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,9 +69,9 @@ public class GreenhouseRepository {
         return greenhouseDAO.getGreenhouseListAsLiveData();
     }
 
-    public ArrayList<Entry> getChartEntries(String parameterName, String selectedGreenhouseId) {
+    public ArrayList<Entry> getChartEntries(int userId, String parameterName, String selectedGreenhouseId, Timestamp timeFrom, Timestamp timeTo) {
 
-        HashMap<Long, Float> sensorDataList = greenhouseDAO.getSensorDataHistory(parameterName, selectedGreenhouseId);
+        HashMap<Long, Float> sensorDataList = greenhouseDAO.apiGetSensorDataHistory(userId, parameterName, selectedGreenhouseId, timeFrom, timeTo);
 
         ArrayList<Entry> chartEntries = new ArrayList<>();
 

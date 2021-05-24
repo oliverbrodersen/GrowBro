@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,10 +32,12 @@ import retrofit2.Response;
 public class GreenhouseDAO {
     private static GreenhouseDAO instance;
     private MutableLiveData<List<Greenhouse>> greenhouseList;
+    private MutableLiveData<List<ApiCurrentDataPackage>> sensorDataHistory; //TODO rename ApiCurrentDataPackage to DataPackage ?
 
     private GreenhouseDAO() {
         //Dummy data
         greenhouseList = new MutableLiveData<>();
+        sensorDataHistory = new MutableLiveData<>();
         ArrayList<Greenhouse> greenhouseArrayList = new ArrayList<>();
 
         //Responsible for getting data from postman
@@ -346,13 +349,78 @@ public class GreenhouseDAO {
         }
     }
 
-    public HashMap<Long, Float> getSensorDataHistory(String parameterName, String selectedGreenhouseId) {
-        HashMap<Long, Float> hashMap = new HashMap<>(); //Dummy Data //TODO use API instead
-        hashMap.put(Instant.now().getEpochSecond(), 1f);
-        hashMap.put(Instant.now().minus(1, ChronoUnit.DAYS).getEpochSecond(), 42f);
-        hashMap.put(Instant.now().minus(2, ChronoUnit.DAYS).getEpochSecond(), 33f);
-        hashMap.put(Instant.now().minus(3, ChronoUnit.DAYS).getEpochSecond(), 37f);
-        hashMap.put(Instant.now().minus(4, ChronoUnit.DAYS).getEpochSecond(), 52f);
-        return hashMap;
+    public HashMap<Long, Float> apiGetSensorDataHistory(int userId, String parameterName, String selectedGreenhouseId, Timestamp timeFrom, Timestamp timeTo) {
+        HashMap<Long, Float> dummyHashMap = new HashMap<>();
+
+        //Dummy Data //TODO use API instead
+        Random rn = new Random();
+        int dummyDataPoints = 14;
+        Long key;
+        Float value;
+        ChronoUnit unit = ChronoUnit.DAYS;
+        Instant now = Instant.now();
+
+        switch (parameterName) {
+            case "Temperature":
+                for (int i = 0; i < dummyDataPoints; i++) {
+                    key = now.minus(i, unit).getEpochSecond();
+                    value = 20 * (1F * rn.nextFloat() * 1.5F);
+                    dummyHashMap.put(key, value);
+                }
+                break;
+            case "CO2":
+                for (int i = 0; i < dummyDataPoints; i++) {
+                    key = now.minus(i, unit).getEpochSecond();
+                    value = 900 * (0.8F * rn.nextFloat() * 1.2F);
+                    dummyHashMap.put(key, value);
+                }
+                break;
+            case "Humidity":
+                for (int i = 0; i < dummyDataPoints; i++) {
+                    key = now.minus(i, unit).getEpochSecond();
+                    value = 50 * (0.8F * rn.nextFloat() * 1.2F);
+                    dummyHashMap.put(key, value);
+                }
+                break;
+        }
+        /*
+        GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
+
+        //Getting
+        try {
+            JSONObject paramObject = new JSONObject();
+            paramObject.put("timeFrom", timeFrom);
+            paramObject.put("timeTo", timeTo);
+            Call<List<ApiCurrentDataPackage>> call = growBroApi.getAverageDataHistory(userId, selectedGreenhouseId, paramObject.toString());
+            call.enqueue(
+                new Callback<List<ApiCurrentDataPackage>>(){
+                    @Override
+                    public void onResponse(Call<List<ApiCurrentDataPackage>> call, Response<List<ApiCurrentDataPackage>> response) {
+                        if (response.code() == 200){
+                            sensorDataHistory.setValue(response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<ApiCurrentDataPackage>> call, Throwable t) {
+                        Log.e("Api error", t.toString());
+                    }
+                }
+            );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        HashMap<Long, Float> realHashMap = new HashMap<>();
+        for (ApiCurrentDataPackage dataPackage : sensorDataHistory.getValue()){
+            for(SensorData sensorData : dataPackage.getData())
+                if(sensorData.getType().equals(parameterName))
+                    realHashMap.put(dataPackage.getLastDataPoint().getTime(), (float) sensorData.getValue()); //TODO cast længere oppe (det er view logic at værdien skal være en float)
+        }
+
+        return realHashMap;
+        */
+
+        return dummyHashMap;
     }
 }

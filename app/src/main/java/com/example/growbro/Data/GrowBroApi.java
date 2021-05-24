@@ -6,6 +6,7 @@ import com.example.growbro.Models.Data.CurrentDataResultFromApi;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.Models.User;
 
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -39,6 +40,9 @@ public interface GrowBroApi {
     @Headers("Content-Type: application/json")
     @GET("user/{userId}/greenhouse/{greenhouseId}/averageData")
     Call<ApiCurrentDataPackage> getAverageData(@Path("userId")int userId, @Path("greenhouseId") int greenhouseId, @Body String body);
+
+    @GET("/user/{userId}/greenhouse/{greenhouseId}/averageDataHistory") //TODO Snak med DAI om at vi nok gerne vil have sådan et endpoint her
+    Call<List<ApiCurrentDataPackage>> getAverageDataHistory(@Path("userId") int userId, @Path("greenhouseId") String greenhouseId, @Body String body);
 
     @POST("/user/{userId}/greenhouse/{greenhouseId}/waternow")
     Call<ApiReceipt> waterNow(@Path("userId")int userId, @Path("greenhouseId") int greenhouseId);

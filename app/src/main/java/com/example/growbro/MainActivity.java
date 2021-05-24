@@ -112,6 +112,10 @@ public class MainActivity extends AppCompatActivity {
         } else {
             //Let user stay signed in after closing app
             sharedPreferences.edit().putBoolean("signed_in", true).apply();
+
+            //Save userid for use after app restart
+            if(signInViewModel.getCurrentUser() != null)
+                sharedPreferences.edit().putInt("current_user_id", signInViewModel.getCurrentUser().getUserId()).apply();
         }
     }
 
