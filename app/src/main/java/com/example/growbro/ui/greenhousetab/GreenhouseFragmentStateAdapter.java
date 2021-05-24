@@ -15,9 +15,9 @@ import java.util.List;
 public class GreenhouseFragmentStateAdapter extends FragmentStateAdapter {
 
     private List<Fragment> fragments = new ArrayList<>();
-    private int selectedGreenhouseId;
+    private String selectedGreenhouseId;
 
-    public GreenhouseFragmentStateAdapter(Fragment fragment, int selectedAreaId) {
+    public GreenhouseFragmentStateAdapter(Fragment fragment, String selectedAreaId) {
         super(fragment);
 
         this.selectedGreenhouseId = selectedAreaId;
@@ -31,7 +31,7 @@ public class GreenhouseFragmentStateAdapter extends FragmentStateAdapter {
         Fragment fragment = fragments.get(position);
 
         Bundle args = new Bundle();
-        args.putInt(GreenhouseFragment.ARG_SELECTED_GREENHOUSE_ID, selectedGreenhouseId);
+        args.putString(GreenhouseFragment.ARG_SELECTED_GREENHOUSE_ID, selectedGreenhouseId);
         fragment.setArguments(args);
         return fragment;
     }

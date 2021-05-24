@@ -78,7 +78,7 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         Bundle bundle = new Bundle();
         List<Greenhouse> greenhouseList = homeViewModel.getGreenhouseList();
-        bundle.putString("greenhouseId", greenhouseList.get(clickedItemIndex).getId()+"");
+        bundle.putString("selectedGreenhouseId", greenhouseList.get(clickedItemIndex).getId()+"");
         greenhouseTabFragment.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, greenhouseTabFragment).addToBackStack("TAG").commit();
     }

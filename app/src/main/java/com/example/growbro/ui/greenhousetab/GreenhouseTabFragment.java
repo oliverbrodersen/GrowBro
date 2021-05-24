@@ -29,12 +29,12 @@ public class GreenhouseTabFragment extends Fragment {
     ViewPager2 viewPager;
     private final String[] titles = new String[]{"Greenhouse", "Statistics"};
 
-    private int selectedGreenhouseId;
+    private String selectedGreenhouseId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        selectedGreenhouseId = getArguments().getInt(getString(R.string.selectedGreenhouseId));
+        selectedGreenhouseId = getArguments().getString(getString(R.string.selectedGreenhouseId));
     }
 
     @Override

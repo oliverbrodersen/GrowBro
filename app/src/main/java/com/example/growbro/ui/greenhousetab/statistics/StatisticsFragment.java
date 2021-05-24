@@ -18,7 +18,7 @@ import com.example.growbro.ui.greenhousetab.greenhouse.GreenhouseViewModel;
 public class StatisticsFragment extends Fragment {
 
     public static final String ARG_SELECTED_GREENHOUSE_ID = "selectedGreenhouseId";
-    private int selectedGreenhouseId;
+    private String selectedGreenhouseId;
 
     private GreenhouseViewModel mViewModel;
 
@@ -27,7 +27,7 @@ public class StatisticsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
-        selectedGreenhouseId = args.getInt(ARG_SELECTED_GREENHOUSE_ID);
+        selectedGreenhouseId = args.getString(ARG_SELECTED_GREENHOUSE_ID);
 
     }
 
