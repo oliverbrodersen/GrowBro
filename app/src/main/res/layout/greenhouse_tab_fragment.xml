@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white">
 
@@ -8,7 +9,10 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/green_extralight"/>
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextColor="@color/green_dark"
+        app:tabIndicatorColor="@color/white"
+        android:background="@color/green_bg"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"
