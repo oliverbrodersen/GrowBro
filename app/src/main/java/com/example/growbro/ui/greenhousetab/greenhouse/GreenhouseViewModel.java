@@ -15,5 +15,18 @@ public class GreenhouseViewModel extends ViewModel {
     public Greenhouse getGreenhouseFromId(int selectedGreenhouseId) {
         return repository.getGreenhouse(selectedGreenhouseId);
     }
+
+    public void openWindow(int userId, int greenhouseId)
+        {
+            repository.openWindow(userId,greenhouseId);
+        }
+
+    public void water(int userId, int greenhouseId)
+        {
+            repository.apiWaterNow(userId,greenhouseId);
+        }
+
+
+
     // TODO: Implement the ViewModel
 }

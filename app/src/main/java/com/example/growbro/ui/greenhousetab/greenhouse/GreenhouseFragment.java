@@ -5,6 +5,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.R;
 import com.example.growbro.ui.home.rv.PlantRVAdapter;
+import com.google.android.material.chip.Chip;
 
 import java.util.List;
 
@@ -60,6 +62,14 @@ public class GreenhouseFragment extends Fragment {
 
         plantRVAdapter.setPlantArrayList(greenhouse.getListPlants());
         plantRV.setAdapter(plantRVAdapter);
+
+        Chip water = root.findViewById(R.id.waterButton);
+        water.setOnClickListener(v ->
+                mViewModel.water(greenhouse.getOwnerId(),greenhouse.getId()));
+
+        Chip window = root.findViewById(R.id.windowButton);
+        window.setOnClickListener(v ->
+                mViewModel.openWindow(greenhouse.getOwnerId(),greenhouse.getId()));
 
         greenhouse.getCurentLiveData().observeForever(new Observer<List<SensorData>>() {
             @Override
