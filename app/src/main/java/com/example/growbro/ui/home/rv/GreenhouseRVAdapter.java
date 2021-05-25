@@ -1,5 +1,6 @@
 package com.example.growbro.ui.home.rv;
 
+import android.os.CountDownTimer;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +15,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.R;
+import com.example.growbro.ui.home.HomeViewModel;
 import com.google.android.material.chip.Chip;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapter.ViewHolder> {
 
     private ArrayList<Greenhouse> greenhouseArrayList;
+    private HashMap<Integer, Integer> nextMeasurementMinutesByGreenhouseId;
     final private OnListItemClickListener mOnListItemClickListener;
+
 
     public GreenhouseRVAdapter(OnListItemClickListener mOnListItemClickListener) {
         this.mOnListItemClickListener = mOnListItemClickListener;
@@ -32,6 +37,10 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
 
     public void setDataset(ArrayList<Greenhouse> greenhouseArrayList){
         this.greenhouseArrayList = greenhouseArrayList;
+    }
+
+    public void setNextMeasurementMinutesByGreenhouseId(HashMap<Integer, Integer> minutes) {
+        nextMeasurementMinutesByGreenhouseId = minutes;
     }
 
     @NonNull
@@ -81,7 +90,17 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
                 }
             }
         });
+
+        greenhouse.getMinutesToNextMeasurementLiveData().observeForever(new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                holder.nextMeasureValue.setText(integer+" minutes");
+                holder.nextWaterValue.setText(integer+" minutes");
+            }
+        });
+        greenhouse.startCountDownTimer();
     }
+
 
     @Override
     public int getItemCount() {
@@ -94,10 +113,14 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
         TextView valueTemperature;
         TextView valueHumidity;
         TextView valueCO2;
+        TextView nextWaterValue;
+        TextView nextMeasureValue;
 
         Chip windowIsOpen;
         RecyclerView plantRV;
         PlantRVAdapter plantRVAdapter;
+
+        HomeViewModel homeViewModel;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -108,6 +131,8 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
             valueHumidity = itemView.findViewById(R.id.valueHumidity);
             valueCO2 = itemView.findViewById(R.id.valueCO2);
             windowIsOpen = itemView.findViewById(R.id.windowIsOpen);
+            nextWaterValue = itemView.findViewById(R.id.next_water_value_list_item);
+            nextMeasureValue = itemView.findViewById(R.id.next_measure_value_list_item);
 
             plantRV.hasFixedSize();
             LinearLayoutManager layoutManager

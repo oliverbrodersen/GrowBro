@@ -1,5 +1,8 @@
 package com.example.growbro.Models;
 
+import android.os.CountDownTimer;
+
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.growbro.Models.Data.SensorData;
@@ -20,6 +23,9 @@ public class Greenhouse {
     private Timestamp lastMeasurement;
     private boolean windowIsOpen;
     private MutableLiveData<List<SensorData>> currentData;
+    private MutableLiveData<Integer> minutesToNextMeasurement;
+    private CountDownTimer countDownTimer;
+    private static final int MEASUREMENT_INTERVAL_IN_MINUTES = 15;
 
     public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, List<SensorData> currentData, boolean windowIsOpen) {
         this.name = name;
@@ -30,9 +36,11 @@ public class Greenhouse {
         this.waterVolume = waterVolume;
         this.waterTimeOfDay = waterTimeOfDay;
         this.lastWaterDate = lastWaterDate;
-        this.currentData = new MutableLiveData<List<SensorData>>();
+        this.currentData = new MutableLiveData<>();
         this.currentData.setValue(currentData);
         this.windowIsOpen = windowIsOpen;
+        minutesToNextMeasurement = new MutableLiveData<>();
+        setMinutesToNextMeasurement();
     }
 
     public boolean isWindowIsOpen() {
@@ -165,4 +173,48 @@ public class Greenhouse {
     public void addPlant(Plant plant){
         listPlants.add(plant);
     }
+
+    public LiveData<Integer> getMinutesToNextMeasurementLiveData() {
+        return minutesToNextMeasurement;
+    }
+
+    public void setMinutesToNextMeasurement() {
+        minutesToNextMeasurement.setValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastWaterDate));
+    }
+
+    public static long getMinutesSince(Timestamp timestamp)
+    {
+        long before = timestamp.getTime();
+        long now = new Timestamp(System.currentTimeMillis()).getTime();
+
+        return (now - before) / (1000 * 60);
+    }
+
+public void startCountDownTimer(){
+    setMinutesToNextMeasurement();
+    long millisInFuture = getMinutesToNextMeasurementLiveData().getValue();
+
+    millisInFuture = millisInFuture*60*1000; //Countdown kan testes hurtigere ved at fjerne et nul (så countdown hurtigere er forbi)
+
+    if(countDownTimer != null)
+        countDownTimer.cancel();
+
+    countDownTimer = new CountDownTimer(millisInFuture, 1000) {
+        long remainingTime;
+
+        public void onTick(long millisUntilFinished) {
+            remainingTime = millisUntilFinished;
+            long seconds = remainingTime / 1000;
+            long minutes = 1 + seconds / 60;
+
+            minutesToNextMeasurement.postValue((int) minutes);   //Countdown kan testes hurtigere ved at bruge seconds i stedet for minutes (så værdien opdateres ved hvert countdown-interval)
+        }
+
+        public void onFinish() {
+            lastWaterDate.setTime(System.currentTimeMillis()); //TODO call API via GreenhouseRepository instead?
+            this.cancel();
+            startCountDownTimer();
+        }
+    }.start();
+}
 }

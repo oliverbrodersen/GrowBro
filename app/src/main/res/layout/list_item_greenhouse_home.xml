@@ -81,7 +81,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/textView9"
+                        android:id="@+id/next_measure_value_list_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_bold"
@@ -105,7 +105,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/textView8"
+                        android:id="@+id/next_water_value_list_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_bold"
