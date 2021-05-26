@@ -23,4 +23,18 @@ public class GreenhouseViewModel extends ViewModel {
         //TODO update method so that it is not static and returns from userRepository.getCurrentUser().getUserId()
         return 1;
     }
+
+    public void openWindow(int userId, int greenhouseId)
+        {
+            repository.openWindow(userId,greenhouseId);
+        }
+
+    public void water(int userId, int greenhouseId)
+        {
+            repository.apiWaterNow(userId,greenhouseId);
+        }
+
+
+
+    // TODO: Implement the ViewModel
 }

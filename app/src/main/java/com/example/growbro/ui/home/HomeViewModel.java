@@ -85,11 +85,6 @@ public class HomeViewModel extends ViewModel {
         return repository.getLiveData(greenhouseId);
     }
 
-    public void waterNow(int userid, int greenhouseid)
-        {
-            repository.apiWaterNow(userid,greenhouseid);
-        }
-
     public LiveData<List<Greenhouse>> getGreenhouseListAsLiveData() {
         return repository.getGreenhouseListAsLiveData();
     }
