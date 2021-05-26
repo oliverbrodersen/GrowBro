@@ -65,6 +65,8 @@ public class GreenhouseFragment extends Fragment {
         CardView inviteView = root.findViewById(R.id.inviteFriendView);
         EditText inviteEditText = root.findViewById(R.id.inviteEditText);
 
+        TextView nextMeasureValue = root.findViewById(R.id.next_measure_value_greenhouse_fragment);
+        TextView nextWaterValue = root.findViewById(R.id.next_water_value_greenhouse_fragment);
         plantRV = root.findViewById(R.id.plantRVgreenhouse);
         plantRV.hasFixedSize();
         LinearLayoutManager layoutManager
@@ -102,6 +104,15 @@ public class GreenhouseFragment extends Fragment {
                 }
             }
         });
+
+        greenhouse.getMinutesToNextMeasurementLiveData().observeForever(new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                nextMeasureValue.setText(integer+" minutes");
+                nextWaterValue.setText(integer+" minutes");
+            }
+        });
+        greenhouse.startCountDownTimer();
 
         name.setText(greenhouse.getName());
 

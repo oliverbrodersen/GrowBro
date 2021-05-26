@@ -62,8 +62,11 @@ public class GreenhouseDAO {
         plantArrayList2.add(new Plant("Citron træ", 7, "https://www.gardeningknowhow.com/wp-content/uploads/2015/05/lemon-tree.jpg"));
         plantArrayList2.add(new Plant("Basilikum", 8, "https://kaere-hjem.imgix.net/s3fs-public/media/article/is-12854_preview.jpg"));
 
-        Greenhouse greenhouse1 = new Greenhouse("Stue drivhus",1,1,plantArrayList,3,3,"idk",new Timestamp(new Date().getTime()), data, true);
-        Greenhouse greenhouse2 = new Greenhouse("Altan drivhus",2,1,plantArrayList2,3,3,"idk",new Timestamp(new Date().getTime()), data, false);
+        Timestamp lastMeasurement1 = new Timestamp(System.currentTimeMillis() - (2 * 60 * 1000)); //Stue drivhus, 2 minutes ago
+        Timestamp lastMeasurement2 = new Timestamp(System.currentTimeMillis() - (14 * 60 * 1000)); //Altan drivhus, 14 minutes ago
+
+        Greenhouse greenhouse1 = new Greenhouse("Stue drivhus",1,1,plantArrayList,3,3,"idk",lastMeasurement1, data, true);
+        Greenhouse greenhouse2 = new Greenhouse("Altan drivhus",2,1,plantArrayList2,3,3,"idk",lastMeasurement2, data, false);
         greenhouseArrayList.add(greenhouse1);
         greenhouseArrayList.add(greenhouse2);
 
@@ -78,7 +81,6 @@ public class GreenhouseDAO {
         friendsGreenhouseArrayList.add(greenhouse3);
 
         greenhouseList.setValue(greenhouseArrayList);
-        friendsGreenhouseList.setValue(friendsGreenhouseArrayList);
     }
 
     public static GreenhouseDAO getInstance() {

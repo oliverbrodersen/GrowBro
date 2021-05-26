@@ -21,6 +21,7 @@ import com.example.growbro.ui.home.rv.GreenhouseRVAdapter;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnListItemClickListener {
@@ -116,6 +117,13 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
                         }
                     });
                 }
+            }
+        });
+
+        homeViewModel.getMinutesToNextMeasurement().observe(getViewLifecycleOwner(), new Observer<HashMap<Integer, Integer>>() {
+            @Override
+            public void onChanged(HashMap<Integer, Integer> data) {
+                greenhouseRVAdapter.setNextMeasurementMinutesByGreenhouseId((HashMap<Integer, Integer>) data);
             }
         });
         return root;

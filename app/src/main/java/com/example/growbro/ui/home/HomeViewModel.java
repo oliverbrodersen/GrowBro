@@ -13,23 +13,25 @@ import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.Models.User;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class HomeViewModel extends ViewModel {
 
-    private MutableLiveData<String> minutesToNextMeasurement;
+    MutableLiveData<HashMap<Integer, Integer>> mNextMeasurementMinutes;
     private GreenhouseRepository repository;
 
     public HomeViewModel() {
         repository = GreenhouseRepository.getInstance();
         //repository.getDummyData(1);
         repository.apiGetCurrentData(3,1);
-        minutesToNextMeasurement = new MutableLiveData<>();
-        minutesToNextMeasurement.setValue("15 minutes");
+        mNextMeasurementMinutes = new MutableLiveData<>();
+        mNextMeasurementMinutes.setValue(new HashMap<>());
     }
-    public void startTimerToNextMeasurement(int greenhouseId){
+
+ /*   public void startTimerToNextMeasurement(int greenhouseId){
         //Task to be executed in timer
         TimerTask task = new TimerTask() {
             public void run() {
@@ -55,10 +57,19 @@ public class HomeViewModel extends ViewModel {
         //Creates new timer with the task and schedules it to start immediately
         //Timer timer = new Timer("Timer");
         //timer.schedule(task, 0);
+    } */
+
+    public MutableLiveData<HashMap<Integer, Integer>> getMinutesToNextMeasurement() {
+
+        if(mNextMeasurementMinutes.getValue().isEmpty()){
+        HashMap<Integer, Integer> nextMeasurementMinutes = new HashMap<>();
+        for (Greenhouse greenhouse : getGreenhouseList()) {
+            nextMeasurementMinutes.put(greenhouse.getId(), greenhouse.getMinutesToNextMeasurementLiveData().getValue());
+        }
+        mNextMeasurementMinutes.setValue(nextMeasurementMinutes);
     }
 
-    public MutableLiveData<String> getMinutesToNextMeasurement() {
-        return minutesToNextMeasurement;
+        return mNextMeasurementMinutes;
     }
 
     public List<Greenhouse> getGreenhouseList(){

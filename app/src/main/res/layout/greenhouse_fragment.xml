@@ -258,7 +258,7 @@
                 android:textSize="10dp" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/next_measure_value_greenhouse_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_bold"
@@ -284,7 +284,7 @@
                 android:textSize="10dp" />
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/next_water_value_greenhouse_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_bold"
