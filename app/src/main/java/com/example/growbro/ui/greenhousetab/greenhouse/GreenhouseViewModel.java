@@ -26,12 +26,12 @@ public class GreenhouseViewModel extends ViewModel {
 
     public void openWindow(int userId, int greenhouseId)
         {
-            repository.openWindow(userId,greenhouseId);
+            greenhouseRepository.openWindow(userId,greenhouseId);
         }
 
     public void water(int userId, int greenhouseId)
         {
-            repository.apiWaterNow(userId,greenhouseId);
+            greenhouseRepository.apiWaterNow(userId,greenhouseId);
         }
 
 
