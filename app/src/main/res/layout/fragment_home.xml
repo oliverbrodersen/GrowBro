@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/green_bg"
 
     tools:context=".ui.home.HomeFragment">
 
@@ -29,11 +30,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/showingTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Showing my GrowBros"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/greenhouseListRV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="24dp"
                 android:clipToPadding="false"
                 android:paddingTop="46dp"
                 android:paddingBottom="30dp"
@@ -44,6 +57,7 @@
             </androidx.recyclerview.widget.RecyclerView>
 
             <LinearLayout
+                android:id="@+id/linearLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -70,6 +84,7 @@
                     android:text="Friends GrowBros"
                     android:textColor="@color/green_dark" />
             </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

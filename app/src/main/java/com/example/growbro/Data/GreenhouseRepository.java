@@ -2,6 +2,7 @@ package com.example.growbro.Data;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.growbro.Login.UserRepository;
 import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.Models.Plant;
@@ -16,9 +17,11 @@ import java.util.Map;
 public class GreenhouseRepository {
     private static GreenhouseRepository instance;
     private GreenhouseDAO greenhouseDAO;
+    private UserRepository userRepository;
 
     private GreenhouseRepository(){
         greenhouseDAO = GreenhouseDAO.getInstance();
+        userRepository = UserRepository.getInstance();
     }
 
     public static GreenhouseRepository getInstance() {
@@ -62,7 +65,7 @@ public class GreenhouseRepository {
     }
 
     public void sendText(String value) {
-//TODO: make it
+        //TODO: make it
     }
 
     public MutableLiveData<List<Greenhouse>> getGreenhouseListAsLiveData() {
@@ -86,5 +89,11 @@ public class GreenhouseRepository {
             }
         }
         return chartEntries;
+    }
+
+    public MutableLiveData<List<Greenhouse>> getFriendsGreenhouseList() {
+        //TODO insert userID from userRepository.getCurrentUser().getUserId() instead of static value
+        greenhouseDAO.apiGetFriendsGreenhouseList(1);
+        return greenhouseDAO.getFriendsGreenhouseListAsLiveData();
     }
 }

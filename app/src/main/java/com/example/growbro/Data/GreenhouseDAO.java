@@ -32,13 +32,16 @@ import retrofit2.Response;
 public class GreenhouseDAO {
     private static GreenhouseDAO instance;
     private MutableLiveData<List<Greenhouse>> greenhouseList;
+    private MutableLiveData<List<Greenhouse>> friendsGreenhouseList;
     private MutableLiveData<List<ApiCurrentDataPackage>> sensorDataHistory; //TODO rename ApiCurrentDataPackage to DataPackage ?
 
     private GreenhouseDAO() {
         //Dummy data
         greenhouseList = new MutableLiveData<>();
+        friendsGreenhouseList = new MutableLiveData<>();
         sensorDataHistory = new MutableLiveData<>();
         ArrayList<Greenhouse> greenhouseArrayList = new ArrayList<>();
+        ArrayList<Greenhouse> friendsGreenhouseArrayList = new ArrayList<>();
 
         //Responsible for getting data from postman
         getDummyData(1);
@@ -48,6 +51,7 @@ public class GreenhouseDAO {
         data.add(d);
         ArrayList<Plant> plantArrayList = new ArrayList<>();
         ArrayList<Plant> plantArrayList2 = new ArrayList<>();
+        ArrayList<Plant> plantArrayList3 = new ArrayList<>();
         plantArrayList.add(new Plant("Monstera", 1, "https://cdn.shopify.com/s/files/1/0059/8835/2052/products/Monstera_delisiosa_4_FGT_450x.jpg"));
         plantArrayList.add(new Plant("Pothos", 2, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1603654968-il_570xN.2485154742_kpa5.jpg"));
         plantArrayList.add(new Plant("Aglaonema", 3, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1603654887-1427228256-chinese-evergreen-plants-little-water.jpg"));
@@ -58,13 +62,23 @@ public class GreenhouseDAO {
         plantArrayList2.add(new Plant("Citron træ", 7, "https://www.gardeningknowhow.com/wp-content/uploads/2015/05/lemon-tree.jpg"));
         plantArrayList2.add(new Plant("Basilikum", 8, "https://kaere-hjem.imgix.net/s3fs-public/media/article/is-12854_preview.jpg"));
 
-
         Greenhouse greenhouse1 = new Greenhouse("Stue drivhus",1,1,plantArrayList,3,3,"idk",new Timestamp(new Date().getTime()), data, true);
         Greenhouse greenhouse2 = new Greenhouse("Altan drivhus",2,1,plantArrayList2,3,3,"idk",new Timestamp(new Date().getTime()), data, false);
         greenhouseArrayList.add(greenhouse1);
         greenhouseArrayList.add(greenhouse2);
 
+        plantArrayList3.add(new Plant("Citron træ", 7, "https://www.gardeningknowhow.com/wp-content/uploads/2015/05/lemon-tree.jpg"));
+        plantArrayList3.add(new Plant("Chinese Money Plant", 5, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1557177323-pilea-peperomioides-money-plant-in-the-pot-single-royalty-free-image-917778022-1557177295.jpg"));
+        plantArrayList3.add(new Plant("Monstera", 1, "https://cdn.shopify.com/s/files/1/0059/8835/2052/products/Monstera_delisiosa_4_FGT_450x.jpg"));
+        plantArrayList3.add(new Plant("Pothos", 2, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1603654968-il_570xN.2485154742_kpa5.jpg"));
+        plantArrayList3.add(new Plant("Aglaonema", 3, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1603654887-1427228256-chinese-evergreen-plants-little-water.jpg"));
+        plantArrayList3.add(new Plant("Asparagus Fern", 4, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1554477330-beautiful-asparagus-fern-plant-in-a-basket-royalty-free-image-972247932-1546889240.jpg"));
+
+        Greenhouse greenhouse3 = new Greenhouse("Adams drivhus",3,2, plantArrayList3,3,3,"idk",new Timestamp(new Date().getTime()), data, true);
+        friendsGreenhouseArrayList.add(greenhouse3);
+
         greenhouseList.setValue(greenhouseArrayList);
+        friendsGreenhouseList.setValue(friendsGreenhouseArrayList);
     }
 
     public static GreenhouseDAO getInstance() {
@@ -81,6 +95,10 @@ public class GreenhouseDAO {
             if (gh.getId() == id)
                 return gh;
         }
+        for (Greenhouse gh:friendsGreenhouseList.getValue()) {
+            if (gh.getId() == id)
+                return gh;
+        }
         return null;
     }
     public MutableLiveData<List<SensorData>> getLiveData(int greenhouseId){
@@ -90,6 +108,10 @@ public class GreenhouseDAO {
     public MutableLiveData<List<Greenhouse>> getGreenhouseListAsLiveData(){
         return greenhouseList;
     }
+    public MutableLiveData<List<Greenhouse>> getFriendsGreenhouseListAsLiveData(){
+        return friendsGreenhouseList;
+    }
+
 
     public boolean updateGreenhouse(Greenhouse greenhouse){
         for (int i = 0; i < greenhouseList.getValue().size(); i++) {
@@ -233,6 +255,25 @@ public class GreenhouseDAO {
                     public void onResponse(Call<List<Greenhouse>> call, Response<List<Greenhouse>> response) {
                         if (response.code() == 200){
                             greenhouseList.setValue(response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Greenhouse>> call, Throwable t) {
+                        Log.e("Api error", t.toString());
+                    }
+                }
+        );
+    }
+    public void apiGetFriendsGreenhouseList(int userId){
+        GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
+        Call<List<Greenhouse>> call = growBroApi.getGreenhouseList(userId);
+        call.enqueue(
+                new Callback<List<Greenhouse>>(){
+                    @Override
+                    public void onResponse(Call<List<Greenhouse>> call, Response<List<Greenhouse>> response) {
+                        if (response.code() == 200){
+                            friendsGreenhouseList.setValue(response.body());
                         }
                     }
 

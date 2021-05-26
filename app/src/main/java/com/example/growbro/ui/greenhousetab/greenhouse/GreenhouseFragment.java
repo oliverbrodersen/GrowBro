@@ -1,14 +1,22 @@
 package com.example.growbro.ui.greenhousetab.greenhouse;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -50,6 +58,13 @@ public class GreenhouseFragment extends Fragment {
         TextView valueCO2 = root.findViewById(R.id.valueCO2);
         TextView valueHumidity = root.findViewById(R.id.valueHumidity);
         TextView valueTemperature = root.findViewById(R.id.valueTemperature);
+        Button inviteButton = root.findViewById(R.id.inviteButton);
+        Button settingsButton = root.findViewById(R.id.settingsButton);
+        Button deleteButton = root.findViewById(R.id.deleteButton);
+        ImageButton sendInviteButton = root.findViewById(R.id.sendInviteButton);
+        CardView inviteView = root.findViewById(R.id.inviteFriendView);
+        EditText inviteEditText = root.findViewById(R.id.inviteEditText);
+
         plantRV = root.findViewById(R.id.plantRVgreenhouse);
         plantRV.hasFixedSize();
         LinearLayoutManager layoutManager
@@ -89,6 +104,45 @@ public class GreenhouseFragment extends Fragment {
         });
 
         name.setText(greenhouse.getName());
+
+        //Remove functionality, if the greenhouse belongs to a friend
+        if (mViewModel.getCurrentUserId() != greenhouse.getOwnerId()){
+            inviteButton.setVisibility(View.GONE);
+            settingsButton.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            inviteButton.setVisibility(View.VISIBLE);
+            settingsButton.setVisibility(View.VISIBLE);
+            deleteButton.setVisibility(View.GONE);
+        }
+
+        //Set onclick listeners for buttons
+        inviteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (inviteView.getVisibility() == View.VISIBLE){
+                    inviteView.setVisibility(View.GONE);
+                    hideKeyboard(getActivity());
+                }
+                else
+                    inviteView.setVisibility(View.VISIBLE);
+            }
+        });
+
+        sendInviteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (inviteEditText.getText().toString().equals("") || inviteEditText.getText() == null)
+                    inviteEditText.setError("Please enter a username");
+                else{
+                    Toast.makeText(getContext(), "Invite sent to " + inviteEditText.getText(), Toast.LENGTH_SHORT).show();
+                    inviteView.setVisibility(View.GONE);
+                    inviteEditText.setText("");
+                    hideKeyboard(getActivity());
+                }
+            }
+        });
         return root;
     }
 
@@ -96,5 +150,17 @@ public class GreenhouseFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
-
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        view.clearFocus();
+        view.requestFocus();
+        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
 }

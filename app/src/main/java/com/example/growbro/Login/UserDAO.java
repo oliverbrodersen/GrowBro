@@ -2,12 +2,16 @@ package com.example.growbro.Login;
 
 import android.util.Log;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.growbro.Data.GrowBroApi;
 import com.example.growbro.Data.ServiceGenerator;
 import com.example.growbro.Models.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -16,8 +20,11 @@ import retrofit2.Response;
 public class UserDAO {
     private static UserDAO instance;
     private User currentUser;
+    private MutableLiveData<ArrayList<User>> friendList;
 
     public UserDAO() {
+        friendList = new MutableLiveData<>();
+        friendList.setValue(new ArrayList<User>());
     }
 
     public static UserDAO getInstance() {
@@ -25,6 +32,26 @@ public class UserDAO {
             instance = new UserDAO();
         }
         return instance;
+    }
+
+    public MutableLiveData<ArrayList<User>> getFriendList() {
+        if (friendList.getValue().isEmpty())
+            apiGetFriends();
+        return friendList;
+    }
+
+    public void apiGetFriends(){
+        //TODO get from api
+        User user1 = new User(5,"Markus", "123456");
+        User user2 = new User(5,"Anne", "123456");
+        User user3 = new User(5,"Sonny", "123456");
+
+        ArrayList<User> userArrayList = new ArrayList<>();
+        userArrayList.add(user1);
+        userArrayList.add(user2);
+        userArrayList.add(user3);
+
+        friendList.setValue(userArrayList);
     }
 
     public void apiAddUser(User user){

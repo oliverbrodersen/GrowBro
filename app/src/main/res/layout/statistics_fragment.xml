@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/green_bg"
     tools:context=".ui.greenhousetab.statistics.StatisticsFragment">
 
     <LinearLayout
@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="10dp"
+            app:cardCornerRadius="18dp"
             app:cardElevation="10dp"
             app:cardBackgroundColor="@color/white">
 
@@ -27,6 +28,7 @@
                 android:id="@+id/spinner_parameters_statistics"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingLeft="16dp"
                 android:overlapAnchor="false"/>
 
         </androidx.cardview.widget.CardView>
@@ -36,7 +38,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="19"
-            android:layout_margin="10dp"
+            android:layout_margin="16dp"
+            app:cardCornerRadius="18dp"
             app:cardElevation="10dp"
             app:cardBackgroundColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -45,8 +48,9 @@
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/chart_line_greenhouse"
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:layout_marginTop="10dp" />
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginVertical="12dp" />
 
         </androidx.cardview.widget.CardView>
 

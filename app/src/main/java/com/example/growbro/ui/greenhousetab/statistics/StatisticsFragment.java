@@ -1,16 +1,8 @@
 package com.example.growbro.ui.greenhousetab.statistics;
 
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +10,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.growbro.R;
 import com.github.mikephil.charting.charts.Chart;
@@ -119,8 +117,8 @@ public class StatisticsFragment extends Fragment {
         lineDataSet.setCircleRadius(4);
         lineDataSet.setDrawValues(false);
         lineDataSet.setLineWidth(3);
-        lineDataSet.setColor(Color.BLACK);
-        lineDataSet.setCircleColor(Color.BLUE);
+        lineDataSet.setColor(Color.parseColor("#689733"));
+        lineDataSet.setCircleColor(Color.parseColor("#9bc66d"));
         dataSets.add(lineDataSet);
 
         LineData lineData = new LineData(dataSets);
@@ -130,7 +128,7 @@ public class StatisticsFragment extends Fragment {
         else lineChart.setData(null);
 
         lineChart.setNoDataText("No entries for " + parameterName.toLowerCase() + " yet");
-        lineChart.setNoDataTextColor(ContextCompat.getColor(getActivity(), R.color.black));
+        lineChart.setNoDataTextColor(ContextCompat.getColor(getActivity(), R.color.red));
         Paint paint = lineChart.getPaint(Chart.PAINT_INFO);
         paint.setTextSize(60f);
     }

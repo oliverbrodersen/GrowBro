@@ -12,10 +12,8 @@ import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.Models.User;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
@@ -87,5 +85,9 @@ public class HomeViewModel extends ViewModel {
 
     public User getCurrentUser() {
         return UserRepository.getInstance().getCurrentUser();
+    }
+
+    public MutableLiveData<List<Greenhouse>> getFriendsGreenhouseList() {
+        return repository.getFriendsGreenhouseList();
     }
 }

@@ -3,17 +3,24 @@ package com.example.growbro.ui.greenhousetab.greenhouse;
 import androidx.lifecycle.ViewModel;
 
 import com.example.growbro.Data.GreenhouseRepository;
+import com.example.growbro.Login.UserRepository;
 import com.example.growbro.Models.Greenhouse;
 
 public class GreenhouseViewModel extends ViewModel {
-    private GreenhouseRepository repository;
+    private GreenhouseRepository greenhouseRepository;
+    private UserRepository userRepository;
 
     public GreenhouseViewModel() {
-        repository = GreenhouseRepository.getInstance();
+        greenhouseRepository = GreenhouseRepository.getInstance();
+        userRepository = UserRepository.getInstance();
     }
 
     public Greenhouse getGreenhouseFromId(int selectedGreenhouseId) {
-        return repository.getGreenhouse(selectedGreenhouseId);
+        return greenhouseRepository.getGreenhouse(selectedGreenhouseId);
     }
-    // TODO: Implement the ViewModel
+
+    public int getCurrentUserId(){
+        //TODO update method so that it is not static and returns from userRepository.getCurrentUser().getUserId()
+        return 1;
+    }
 }

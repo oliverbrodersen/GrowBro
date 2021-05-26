@@ -16,6 +16,7 @@
     <color name="temperatureAccent">#EFC382</color>
     <color name="humidityAccent">#82D0EF</color>
     <color name="co2Accent">#EF8282</color>
+    <color name="red">#EA5D4B</color>
 
 
     <color name="goodHealth">#87B94E</color>
