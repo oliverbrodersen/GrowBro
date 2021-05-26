@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class HomeViewModel extends ViewModel {
 
     MutableLiveData<HashMap<Integer, Integer>> mNextMeasurementMinutes;
+    MutableLiveData<HashMap<Integer, Integer>> mNextWaterMinutes;
     private GreenhouseRepository repository;
 
     public HomeViewModel() {
@@ -29,6 +30,8 @@ public class HomeViewModel extends ViewModel {
         repository.apiGetCurrentData(3,1);
         mNextMeasurementMinutes = new MutableLiveData<>();
         mNextMeasurementMinutes.setValue(new HashMap<>());
+        mNextWaterMinutes = new MutableLiveData<>();
+        mNextWaterMinutes.setValue(new HashMap<>());
     }
 
  /*   public void startTimerToNextMeasurement(int greenhouseId){
@@ -71,6 +74,21 @@ public class HomeViewModel extends ViewModel {
 
         return mNextMeasurementMinutes;
     }
+
+    public MutableLiveData<HashMap<Integer, Integer>> getMinutesToNextWater() {
+
+        if(mNextWaterMinutes.getValue().isEmpty()){
+            HashMap<Integer, Integer> nextWaterMinutes = new HashMap<>();
+            for (Greenhouse greenhouse : getGreenhouseList()) {
+                nextWaterMinutes.put(greenhouse.getId(), greenhouse.getMinutesToNextWaterLiveData().getValue());
+            }
+            mNextWaterMinutes.setValue(nextWaterMinutes);
+        }
+
+        return mNextWaterMinutes;
+    }
+
+
 
     public List<Greenhouse> getGreenhouseList(){
         return repository.getGreenhouseList();

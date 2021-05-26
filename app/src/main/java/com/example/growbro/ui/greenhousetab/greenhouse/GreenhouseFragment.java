@@ -11,7 +11,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -118,11 +117,31 @@ public class GreenhouseFragment extends Fragment {
         greenhouse.getMinutesToNextMeasurementLiveData().observeForever(new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
+
+                if (greenhouse.isTimeToRestartMeasurementTimer()) {
+                    greenhouse.startCountDownTimerNextMeasurement();
+                    greenhouse.setIsTimeToRestartMeasurementTimer(false);
+                }
+
                 nextMeasureValue.setText(integer+" minutes");
-                nextWaterValue.setText(integer+" minutes");
             }
         });
-        greenhouse.startCountDownTimer();
+        //greenhouse.startCountDownTimerNextMeasurement(); Not necessary to start countdown here since it was already started in HomeFragment
+
+        greenhouse.getMinutesToNextWaterLiveData().observeForever(new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+
+                if (greenhouse.isTimeToRestartWaterTimer()) {
+                    greenhouse.startCountDownTimerNextWater();
+                    greenhouse.setIsTimeToRestartWaterTimer(false);
+                }
+
+                nextWaterValue.setText(integer+" minutes");
+
+            }
+        });
+        //greenhouse.startCountDownTimerNextMeasurement();  Not necessary to start countdown here since it was already started in HomeFragment
 
         name.setText(greenhouse.getName());
 

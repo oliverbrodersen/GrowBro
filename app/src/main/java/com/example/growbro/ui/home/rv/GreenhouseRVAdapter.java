@@ -1,6 +1,5 @@
 package com.example.growbro.ui.home.rv;
 
-import android.os.CountDownTimer;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +27,7 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
 
     private ArrayList<Greenhouse> greenhouseArrayList;
     private HashMap<Integer, Integer> nextMeasurementMinutesByGreenhouseId;
+    private HashMap<Integer, Integer> nextWaterMinutesByGreenhouseId;
     final private OnListItemClickListener mOnListItemClickListener;
 
 
@@ -42,6 +42,11 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
     public void setNextMeasurementMinutesByGreenhouseId(HashMap<Integer, Integer> minutes) {
         nextMeasurementMinutesByGreenhouseId = minutes;
     }
+
+    public void setNextWaterMinutesByGreenhouseId(HashMap<Integer, Integer> minutes) {
+        nextWaterMinutesByGreenhouseId = minutes;
+    }
+
 
     @NonNull
     @NotNull
@@ -94,11 +99,30 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
         greenhouse.getMinutesToNextMeasurementLiveData().observeForever(new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
+
+                if (greenhouse.isTimeToRestartMeasurementTimer()) {
+                    greenhouse.startCountDownTimerNextMeasurement();
+                    greenhouse.setIsTimeToRestartMeasurementTimer(false);
+                }
+
                 holder.nextMeasureValue.setText(integer+" minutes");
+            }
+        });
+        greenhouse.startCountDownTimerNextMeasurement();
+
+        greenhouse.getMinutesToNextWaterLiveData().observeForever(new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+
+                if (greenhouse.isTimeToRestartWaterTimer()) {
+                    greenhouse.startCountDownTimerNextWater();
+                    greenhouse.setIsTimeToRestartWaterTimer(false);
+                }
+
                 holder.nextWaterValue.setText(integer+" minutes");
             }
         });
-        greenhouse.startCountDownTimer();
+        greenhouse.startCountDownTimerNextWater();
     }
 
 
