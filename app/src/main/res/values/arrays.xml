@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="initial_slider_values_temperature">
+        <item>0.0</item>
+        <item>30.0</item>
+    </array>
+    <array name="initial_slider_values_humidity">
+        <item>15.0</item>
+        <item>80.0</item>
+    </array>
+    <array name="initial_slider_values_co2">
+        <item>200.0</item>
+        <item>1200.0</item>
+    </array>
+</resources>

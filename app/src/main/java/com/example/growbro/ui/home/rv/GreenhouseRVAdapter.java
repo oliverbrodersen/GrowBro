@@ -7,7 +7,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,6 +66,21 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
         holder.greenhouseName.setText(greenhouse.getName());
         holder.plantRVAdapter.setPlantArrayList(greenhouse.getListPlants());
         holder.plantRV.setAdapter(holder.plantRVAdapter);
+
+        holder.addPlantCard.setVisibility(View.GONE);
+        if (position == greenhouseArrayList.size()-1){
+            holder.addPlantCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    NavOptions navOptions = new NavOptions.Builder()
+                            .setPopUpTo(R.id.nav_home, true)
+                            .build();
+
+                    Navigation.findNavController(v).navigate(R.id.action_nav_home_to_editGreenhouseFragment, null, navOptions);
+                }
+            });
+            holder.addPlantCard.setVisibility(View.VISIBLE);
+        }
 
         if (greenhouse.isWindowIsOpen())
             holder.windowIsOpen.setVisibility(View.VISIBLE);
@@ -131,7 +149,7 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
         return greenhouseArrayList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, PlantRVAdapter.OnListItemClickListener{
         TextView greenhouseName;
 
         TextView valueTemperature;
@@ -143,6 +161,7 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
         Chip windowIsOpen;
         RecyclerView plantRV;
         PlantRVAdapter plantRVAdapter;
+        CardView addPlantCard;
 
         HomeViewModel homeViewModel;
 
@@ -151,6 +170,7 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
             itemView.setOnClickListener(this);
             greenhouseName = itemView.findViewById(R.id.greenhouseName);
             plantRV = itemView.findViewById(R.id.plantRV);
+            addPlantCard = itemView.findViewById(R.id.addCardView);
             valueTemperature = itemView.findViewById(R.id.valueTemperature);
             valueHumidity = itemView.findViewById(R.id.valueHumidity);
             valueCO2 = itemView.findViewById(R.id.valueCO2);
@@ -163,12 +183,17 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
                     = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
 
             plantRV.setLayoutManager(layoutManager);
-            plantRVAdapter = new PlantRVAdapter();
+            plantRVAdapter = new PlantRVAdapter(this, false);
         }
 
         @Override
         public void onClick(View v) {
             mOnListItemClickListener.onListItemClick(getAdapterPosition());
+        }
+
+        @Override
+        public void onPlantListItemClick(int clickedItemIndex) {
+            //Unclickable
         }
     }
 

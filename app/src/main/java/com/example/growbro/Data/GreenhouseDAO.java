@@ -339,31 +339,36 @@ public class GreenhouseDAO {
         this.greenhouseList.setValue(greenhouseList);
     }
     public void apiAddGreenhouse(int userId, Greenhouse greenhouse){
-        GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
-        // prepare call in Retrofit 2.0
-        try {
-            JSONObject paramObject = new JSONObject();
-            paramObject.put("Greenhouse", greenhouse);
-            Call<Integer> call = growBroApi.addGreenhouse(userId, paramObject.toString());
-            call.enqueue(
-                    new Callback<Integer>(){
-                        @Override
-                        public void onResponse(Call<Integer> call, Response<Integer> response) {
-                            if (response.code() == 200){
-                                greenhouse.setId(response.body());
-                                updateGreenhouse(greenhouse);
-                            }
-                        }
+        //Så længe den er lokal
+        ArrayList<Greenhouse> glist = (ArrayList<Greenhouse>) greenhouseList.getValue();
+        glist.add(greenhouse);
+        greenhouseList.setValue(glist);
 
-                        @Override
-                        public void onFailure(Call<Integer> call, Throwable t) {
-                            Log.e("Api error", t.toString());
-                        }
-                    }
-            );
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        //GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
+        //// prepare call in Retrofit 2.0
+        //try {
+        //    JSONObject paramObject = new JSONObject();
+        //    paramObject.put("Greenhouse", greenhouse);
+        //    Call<Integer> call = growBroApi.addGreenhouse(userId, paramObject.toString());
+        //    call.enqueue(
+        //            new Callback<Integer>(){
+        //                @Override
+        //                public void onResponse(Call<Integer> call, Response<Integer> response) {
+        //                    if (response.code() == 200){
+        //                        greenhouse.setId(response.body());
+        //                        updateGreenhouse(greenhouse);
+        //                    }
+        //                }
+//
+        //                @Override
+        //                public void onFailure(Call<Integer> call, Throwable t) {
+        //                    Log.e("Api error", t.toString());
+        //                }
+        //            }
+        //    );
+        //} catch (JSONException e) {
+        //    e.printStackTrace();
+        //}
     }
     public void apiAddPlant(int userId, int greenhouseId, Plant plant){
         GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();

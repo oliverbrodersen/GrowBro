@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavOptions;
@@ -19,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.R;
-import com.example.growbro.ui.greenhousetab.GreenhouseTabFragment;
 import com.example.growbro.ui.home.rv.GreenhouseRVAdapter;
 import com.google.android.material.chip.Chip;
 
@@ -48,7 +46,6 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
         showingTextView = root.findViewById(R.id.showingTextView);
 
         greenhouseRV = root.findViewById(R.id.greenhouseListRV);
-        greenhouseRV.hasFixedSize();
         greenhouseRV.setLayoutManager(new LinearLayoutManager(getContext()));
 
         greenhouseRVAdapter = new GreenhouseRVAdapter(this);
@@ -61,6 +58,7 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
 
                 greenhouseRVAdapter.setDataset((ArrayList<Greenhouse>) data);
                 greenhouseRV.setAdapter(greenhouseRVAdapter);
+
                 //if (data != null) {
                 //    for (SensorData sensorData : data) {
                 //        switch (sensorData.getType().toLowerCase()) {
@@ -123,16 +121,6 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
                 }
             }
         });
-        addCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavOptions navOptions = new NavOptions.Builder()
-                        .setPopUpTo(R.id.nav_home, true)
-                        .build();
-
-                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_editGreenhouseFragment, null, navOptions);
-            }
-        });
 
         homeViewModel.getMinutesToNextMeasurement().observe(getViewLifecycleOwner(), new Observer<HashMap<Integer, Integer>>() {
             @Override
@@ -152,8 +140,9 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
 
     @Override
     public void onListItemClick(int clickedItemIndex) {
-        GreenhouseTabFragment greenhouseTabFragment = new GreenhouseTabFragment();
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        NavOptions navOptions = new NavOptions.Builder()
+                .setPopUpTo(R.id.nav_home, true)
+                .build();
         Bundle bundle = new Bundle();
         List<Greenhouse> greenhouseList;
         if (showingTextView.getText().equals(MY_GROWBROS))
@@ -161,7 +150,6 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
         else
             greenhouseList = homeViewModel.getFriendsGreenhouseList().getValue();
         bundle.putString("selectedGreenhouseId", greenhouseList.get(clickedItemIndex).getId()+"");
-        greenhouseTabFragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, greenhouseTabFragment).addToBackStack("TAG").commit();
+        Navigation.findNavController(getView()).navigate(R.id.action_nav_home_to_greenhouseFragment, bundle, navOptions);
     }
 }

@@ -100,4 +100,8 @@ public class GreenhouseRepository {
         greenhouseDAO.apiGetFriendsGreenhouseList(1);
         return greenhouseDAO.getFriendsGreenhouseListAsLiveData();
     }
+
+    public void addGreenhouse(Greenhouse g) {
+        greenhouseDAO.apiAddGreenhouse(g.getOwnerId(), g);
+    }
 }

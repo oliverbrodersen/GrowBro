@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,8 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,7 +37,7 @@ import com.google.android.material.chip.Chip;
 
 import java.util.List;
 
-public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnListItemClickListener {
+public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnListItemClickListener, PlantRVAdapter.OnListItemClickListener {
 
     public static final String ARG_SELECTED_GREENHOUSE_ID = "selectedGreenhouseId";
     public Greenhouse greenhouse;
@@ -69,6 +72,7 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
         Button settingsButton = root.findViewById(R.id.settingsButton);
         Button deleteButton = root.findViewById(R.id.deleteButton);
         ImageButton sendInviteButton = root.findViewById(R.id.sendInviteButton);
+        ImageView edit = root.findViewById(R.id.edit);
         CardView inviteView = root.findViewById(R.id.inviteFriendView);
         EditText inviteEditText = root.findViewById(R.id.inviteEditText);
         sharedRV = root.findViewById(R.id.sharedRV);
@@ -83,7 +87,7 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
                 = new LinearLayoutManager(root.getContext(), LinearLayoutManager.HORIZONTAL, false);
 
         plantRV.setLayoutManager(layoutManager);
-        plantRVAdapter = new PlantRVAdapter();
+        plantRVAdapter = new PlantRVAdapter(this, false);
 
         plantRVAdapter.setPlantArrayList(greenhouse.getListPlants());
         plantRV.setAdapter(plantRVAdapter);
@@ -234,7 +238,17 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
             }
         });
 
-
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavOptions navOptions = new NavOptions.Builder()
+                        .setPopUpTo(R.id.greenhouseFragment, true)
+                        .build();
+                Bundle bundle = new Bundle();
+                bundle.putString("selectedGreenhouseId", greenhouse.getId() + "");
+                Navigation.findNavController(getView()).navigate(R.id.action_greenhouseFragment_to_editGreenhouseFragment, bundle, navOptions);
+            }
+        });
         return root;
     }
 
@@ -257,7 +271,7 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
     }
 
     @Override
-    public void onListItemClick(int clickedItemIndex) {
+    public void onListItemClick (int clickedItemIndex) {
         new AlertDialog.Builder(getContext())
                 .setTitle("Revoke access")
                 .setMessage("Are you sure you want revoke " + greenhouse.getSharedWith().get(clickedItemIndex) + "'s access to your GrowBro?")
@@ -275,5 +289,10 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
                 .setNegativeButton(android.R.string.no, null)
                 .setIcon(R.drawable.ic_exclamation_mark)
                 .show();
+    }
+
+    @Override
+    public void onPlantListItemClick(int clickedItemIndex) {
+        //Unclickable
     }
 }

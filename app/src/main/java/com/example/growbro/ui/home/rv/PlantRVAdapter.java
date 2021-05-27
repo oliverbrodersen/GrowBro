@@ -8,9 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintHelper;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -23,6 +20,13 @@ import java.util.ArrayList;
 
 public class PlantRVAdapter extends RecyclerView.Adapter<PlantRVAdapter.ViewHolder> {
     ArrayList<Plant> plantArrayList;
+    final private OnListItemClickListener mOnListItemClickListener;
+    boolean clickable;
+
+    public PlantRVAdapter(OnListItemClickListener mOnListItemClickListener, boolean clickable) {
+        this.mOnListItemClickListener = mOnListItemClickListener;
+        this.clickable = clickable;
+    }
 
     public void setPlantArrayList(ArrayList<Plant> plantArrayList) {
         this.plantArrayList = plantArrayList;
@@ -51,17 +55,26 @@ public class PlantRVAdapter extends RecyclerView.Adapter<PlantRVAdapter.ViewHold
         return plantArrayList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView plantName;
         ImageView plantImage;
-        CardView plantHealth;
         Context context;
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             context = itemView.getContext();
             plantName = itemView.findViewById(R.id.plantName);
             plantImage = itemView.findViewById(R.id.plantImage);
-            plantHealth = itemView.findViewById(R.id.plantHealth);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (clickable)
+                mOnListItemClickListener.onPlantListItemClick(getAdapterPosition());
         }
     }
+    public interface OnListItemClickListener {
+        void onPlantListItemClick(int clickedItemIndex);
+    }
+
 }

@@ -9,6 +9,7 @@ import com.example.growbro.Models.Data.SensorData;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Greenhouse {
@@ -21,6 +22,9 @@ public class Greenhouse {
     private String waterTimeOfDay;
     private boolean windowIsOpen;
     private MutableLiveData<List<SensorData>> currentData;
+    private ArrayList<Float> temperatureThreshold;
+    private ArrayList<Float> humidityThreshold;
+    private ArrayList<Float> co2Threshold;
 
     private Timestamp lastMeasurement;
     private CountDownTimer countDownTimerNextMeasurement;
@@ -35,6 +39,31 @@ public class Greenhouse {
     private static final int MEASUREMENT_INTERVAL_IN_MINUTES = 15;
     private ArrayList<String> sharedWith;
 
+    public Greenhouse(){
+        currentData = new MutableLiveData<>();
+        listPlants = new ArrayList<>();
+        windowIsOpen = false;
+        lastMeasurement = new Timestamp(new Date().getTime());
+        lastWaterDate = new Timestamp(new Date().getTime());
+        minutesToNextMeasurement = new MutableLiveData<>();
+        isTimeToRestartMeasurementTimer = false;
+        minutesToNextWater = new MutableLiveData<>();
+        sharedWith = new ArrayList<>();
+        temperatureThreshold = new ArrayList<>();
+        humidityThreshold = new ArrayList<>();
+        co2Threshold = new ArrayList<>();
+
+        temperatureThreshold.add(new Float(0));
+        temperatureThreshold.add(new Float(30));
+        humidityThreshold.add(new Float(15));
+        humidityThreshold.add(new Float(80));
+        co2Threshold.add(new Float(200));
+        co2Threshold.add(new Float(1200));
+
+        isTimeToRestartWaterTimer = false;
+
+
+    }
     public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, Timestamp lastMeasurement, List<SensorData> currentData, boolean windowIsOpen) {
         this.name = name;
         this.id = id;
@@ -53,12 +82,23 @@ public class Greenhouse {
 
         this.lastMeasurement = lastMeasurement;
         minutesToNextMeasurement = new MutableLiveData<>();
-        setMinutesToNextMeasurement();
+        isTimeToRestartMeasurementTimer = false;
+
+        temperatureThreshold = new ArrayList<>();
+        humidityThreshold = new ArrayList<>();
+        co2Threshold = new ArrayList<>();
+
         sharedWith = new ArrayList<>();
         sharedWith.add("Bobber");
         sharedWith.add("Bob");
         sharedWith.add("Bopper");
-        isTimeToRestartMeasurementTimer = false;
+
+        temperatureThreshold.add(new Float(0));
+        temperatureThreshold.add(new Float(30));
+        humidityThreshold.add(new Float(15));
+        humidityThreshold.add(new Float(80));
+        co2Threshold.add(new Float(200));
+        co2Threshold.add(new Float(1200));
     }
 
     public boolean isWindowIsOpen() {
@@ -313,5 +353,29 @@ public void startCountDownTimerNextMeasurement(){
 
     public void setIsTimeToRestartWaterTimer(boolean restartWaterTimer) {
         this.isTimeToRestartWaterTimer = restartWaterTimer;
+    }
+
+    public ArrayList<Float> getTemperatureThreshold() {
+        return temperatureThreshold;
+    }
+
+    public void setTemperatureThreshold(ArrayList<Float> temperatureThreshold) {
+        this.temperatureThreshold = temperatureThreshold;
+    }
+
+    public ArrayList<Float> getHumidityThreshold() {
+        return humidityThreshold;
+    }
+
+    public void setHumidityThreshold(ArrayList<Float> humidityThreshold) {
+        this.humidityThreshold = humidityThreshold;
+    }
+
+    public ArrayList<Float> getCo2Threshold() {
+        return co2Threshold;
+    }
+
+    public void setCo2Threshold(ArrayList<Float> co2Threshold) {
+        this.co2Threshold = co2Threshold;
     }
 }

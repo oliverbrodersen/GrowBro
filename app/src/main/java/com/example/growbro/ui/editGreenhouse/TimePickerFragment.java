@@ -32,7 +32,7 @@ public class TimePickerFragment extends DialogFragment
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        listener.onTimePicked("Waters at: " + Integer.toString(hourOfDay) + ":" + (minute<10?0 + "" + minute:minute));
+        listener.onTimePicked(Integer.toString(hourOfDay) + ":" + (minute<10?0 + "" + minute:minute));
     }
 
     public static interface TimePickedListener {
