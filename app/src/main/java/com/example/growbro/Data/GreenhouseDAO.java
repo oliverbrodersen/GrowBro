@@ -62,11 +62,12 @@ public class GreenhouseDAO {
         plantArrayList2.add(new Plant("Citron træ", 7, "https://www.gardeningknowhow.com/wp-content/uploads/2015/05/lemon-tree.jpg"));
         plantArrayList2.add(new Plant("Basilikum", 8, "https://kaere-hjem.imgix.net/s3fs-public/media/article/is-12854_preview.jpg"));
 
-        Timestamp lastMeasurement1 = new Timestamp(System.currentTimeMillis() - (2 * 60 * 1000)); //Stue drivhus, 2 minutes ago
-        Timestamp lastMeasurement2 = new Timestamp(System.currentTimeMillis() - (14 * 60 * 1000)); //Altan drivhus, 14 minutes ago
+        Timestamp timeStamp1 = new Timestamp(System.currentTimeMillis() - (2 * 60 * 1000)); //Stue drivhus last water and Altan drivhus last measurement 2 minutes ago
+        Timestamp timeStamp2 = new Timestamp(System.currentTimeMillis() - (14 * 60 * 1000)); //Altan drivhus last water and Stue drivhus last measurement 14 minutes ago
 
-        Greenhouse greenhouse1 = new Greenhouse("Stue drivhus",1,1,plantArrayList,3,3,"idk",lastMeasurement1, data, true);
-        Greenhouse greenhouse2 = new Greenhouse("Altan drivhus",2,1,plantArrayList2,3,3,"idk",lastMeasurement2, data, false);
+        Greenhouse greenhouse1 = new Greenhouse("Stue drivhus",1,1,plantArrayList,3,3,"idk",timeStamp1, timeStamp2, data, true);
+        Greenhouse greenhouse2 = new Greenhouse("Altan drivhus",2,1,plantArrayList2,3,3,"idk",timeStamp2, timeStamp1, data, false);
+
         greenhouseArrayList.add(greenhouse1);
         greenhouseArrayList.add(greenhouse2);
 
@@ -77,7 +78,7 @@ public class GreenhouseDAO {
         plantArrayList3.add(new Plant("Aglaonema", 3, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1603654887-1427228256-chinese-evergreen-plants-little-water.jpg"));
         plantArrayList3.add(new Plant("Asparagus Fern", 4, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1554477330-beautiful-asparagus-fern-plant-in-a-basket-royalty-free-image-972247932-1546889240.jpg"));
 
-        Greenhouse greenhouse3 = new Greenhouse("Adams drivhus",3,2, plantArrayList3,3,3,"idk",lastMeasurement2, data, true);
+        Greenhouse greenhouse3 = new Greenhouse("Adams drivhus",3,2, plantArrayList3,3,3,"idk",new Timestamp(new Date().getTime()),new Timestamp(new Date().getTime()), data, true);
         friendsGreenhouseArrayList.add(greenhouse3);
 
         greenhouseList.setValue(greenhouseArrayList);
@@ -160,7 +161,7 @@ public class GreenhouseDAO {
                             //Timestamp bliver sat her og IKKE hentet fra api
                             //Ændre når vi er færdige med at bruge mock api
                             //getGreenhouse(greenhouseId).setLastMeasurement(response.body().getLastDataPoint());
-                            getGreenhouse(greenhouseId).setLastMeasurement(new Timestamp(new Date().getTime()));
+                            getGreenhouse(greenhouseId).setLastMeasurementAndResetLiveData(new Timestamp(new Date().getTime()));
                             getGreenhouse(greenhouseId).setCurrentData(response.body().getData());
                         }
                     }
@@ -180,7 +181,7 @@ public class GreenhouseDAO {
                     @Override
                     public void onResponse(Call<ApiReceipt> call, Response<ApiReceipt> response) {
                         if (response.code() == 200){
-                            getGreenhouse(greenhouseId).setLastWaterDate(response.body().getTimeOfExecution());
+                            getGreenhouse(greenhouseId).setLastWaterDateAndResetLiveData(response.body().getTimeOfExecution());
                         }
                     }
 

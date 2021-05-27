@@ -140,6 +140,13 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
                 greenhouseRVAdapter.setNextMeasurementMinutesByGreenhouseId((HashMap<Integer, Integer>) data);
             }
         });
+
+        homeViewModel.getMinutesToNextWater().observe(getViewLifecycleOwner(), new Observer<HashMap<Integer, Integer>>() {
+            @Override
+            public void onChanged(HashMap<Integer, Integer> data) {
+                greenhouseRVAdapter.setNextWaterMinutesByGreenhouseId((HashMap<Integer, Integer>) data);
+            }
+        });
         return root;
     }
 

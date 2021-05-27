@@ -84,6 +84,7 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
 
         plantRV.setLayoutManager(layoutManager);
         plantRVAdapter = new PlantRVAdapter();
+
         plantRVAdapter.setPlantArrayList(greenhouse.getListPlants());
         plantRV.setAdapter(plantRVAdapter);
 
@@ -125,12 +126,32 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
         greenhouse.getMinutesToNextMeasurementLiveData().observeForever(new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
+
+                if (greenhouse.isTimeToRestartMeasurementTimer()) {
+                    greenhouse.startCountDownTimerNextMeasurement();
+                    greenhouse.setIsTimeToRestartMeasurementTimer(false);
+                }
+
                 nextMeasureValue.setText(integer+" minutes");
-                nextWaterValue.setText(integer+" minutes");
             }
         });
+        //greenhouse.startCountDownTimerNextMeasurement(); Not necessary to start countdown here since it was already started in HomeFragment
 
-        greenhouse.startCountDownTimer();
+        greenhouse.getMinutesToNextWaterLiveData().observeForever(new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+
+                if (greenhouse.isTimeToRestartWaterTimer()) {
+                    greenhouse.startCountDownTimerNextWater();
+                    greenhouse.setIsTimeToRestartWaterTimer(false);
+                }
+
+                nextWaterValue.setText(integer+" minutes");
+
+            }
+        });
+        //greenhouse.startCountDownTimerNextMeasurement();  Not necessary to start countdown here since it was already started in HomeFragment
+
         name.setText(greenhouse.getName());
 
         //Remove functionality, if the greenhouse belongs to a friend

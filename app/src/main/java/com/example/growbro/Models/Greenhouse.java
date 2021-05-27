@@ -19,16 +19,23 @@ public class Greenhouse {
     private int waterFrequency;
     private double waterVolume;
     private String waterTimeOfDay;
-    private Timestamp lastWaterDate;
-    private Timestamp lastMeasurement;
     private boolean windowIsOpen;
     private MutableLiveData<List<SensorData>> currentData;
+
+    private Timestamp lastMeasurement;
+    private CountDownTimer countDownTimerNextMeasurement;
     private MutableLiveData<Integer> minutesToNextMeasurement;
-    private CountDownTimer countDownTimer;
+    private boolean isTimeToRestartMeasurementTimer;
+
+    private Timestamp lastWaterDate;
+    private CountDownTimer countDownTimerNextWater;
+    private MutableLiveData<Integer> minutesToNextWater;
+    private boolean isTimeToRestartWaterTimer;
+
     private static final int MEASUREMENT_INTERVAL_IN_MINUTES = 15;
     private ArrayList<String> sharedWith;
 
-    public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, List<SensorData> currentData, boolean windowIsOpen) {
+    public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, Timestamp lastMeasurement, List<SensorData> currentData, boolean windowIsOpen) {
         this.name = name;
         this.id = id;
         this.ownerId = ownerId;
@@ -36,16 +43,22 @@ public class Greenhouse {
         this.waterFrequency = waterFrequency;
         this.waterVolume = waterVolume;
         this.waterTimeOfDay = waterTimeOfDay;
-        this.lastWaterDate = lastWaterDate;
         this.currentData = new MutableLiveData<>();
         this.currentData.setValue(currentData);
         this.windowIsOpen = windowIsOpen;
+
+        this.lastWaterDate = lastWaterDate;
+        minutesToNextWater = new MutableLiveData<>();
+        isTimeToRestartWaterTimer = false;
+
+        this.lastMeasurement = lastMeasurement;
         minutesToNextMeasurement = new MutableLiveData<>();
         setMinutesToNextMeasurement();
         sharedWith = new ArrayList<>();
         sharedWith.add("Bobber");
         sharedWith.add("Bob");
         sharedWith.add("Bopper");
+        isTimeToRestartMeasurementTimer = false;
     }
 
     public boolean isWindowIsOpen() {
@@ -68,8 +81,9 @@ public class Greenhouse {
         return lastMeasurement;
     }
 
-    public void setLastMeasurement(Timestamp lastMeasurement) {
+    public void setLastMeasurementAndResetLiveData(Timestamp lastMeasurement) {
         this.lastMeasurement = lastMeasurement;
+        reSetLiveDataMinutesToNextMeasurement();
     }
 
     public void setCurrentData(MutableLiveData<List<SensorData>> currentData) {
@@ -183,8 +197,9 @@ public class Greenhouse {
         this.waterTimeOfDay = waterTimeOfDay;
     }
 
-    public void setLastWaterDate(Timestamp lastWaterDate) {
+    public void setLastWaterDateAndResetLiveData(Timestamp lastWaterDate) {
         this.lastWaterDate = lastWaterDate;
+        reSetLiveDataMinutesToNextWater();
     }
     public void addPlant(Plant plant){
         listPlants.add(plant);
@@ -194,8 +209,24 @@ public class Greenhouse {
         return minutesToNextMeasurement;
     }
 
-    public void setMinutesToNextMeasurement() {
-        minutesToNextMeasurement.setValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastWaterDate));
+    public void reSetLiveDataMinutesToNextMeasurement() {
+        minutesToNextMeasurement.setValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastMeasurement));
+    }
+
+    public void rePostLiveDataMinutesToNextMeasurement() {
+        minutesToNextMeasurement.postValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastMeasurement));
+    }
+
+    public LiveData<Integer> getMinutesToNextWaterLiveData() {
+        return minutesToNextWater;
+    }
+
+    public void reSetLiveDataMinutesToNextWater() {
+        minutesToNextWater.setValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastWaterDate));
+    }
+
+    public void rePostLiveDataMinutesToNextWater() {
+        minutesToNextWater.postValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastWaterDate));
     }
 
     public static long getMinutesSince(Timestamp timestamp)
@@ -206,16 +237,18 @@ public class Greenhouse {
         return (now - before) / (1000 * 60);
     }
 
-public void startCountDownTimer(){
-    setMinutesToNextMeasurement();
+
+
+public void startCountDownTimerNextMeasurement(){
+    reSetLiveDataMinutesToNextMeasurement();
     long millisInFuture = getMinutesToNextMeasurementLiveData().getValue();
 
-    millisInFuture = millisInFuture*60*1000; //Countdown kan testes hurtigere ved at fjerne et nul (så countdown hurtigere er forbi)
+    millisInFuture = millisInFuture*60*1000; //Countdown kan testes hurtigere ved at skrive 100 i stedet for 1000 (så countdown hurtigere er forbi)
 
-    if(countDownTimer != null)
-        countDownTimer.cancel();
+    if(countDownTimerNextMeasurement != null)
+        countDownTimerNextMeasurement.cancel();
 
-    countDownTimer = new CountDownTimer(millisInFuture, 1000) {
+    countDownTimerNextMeasurement = new CountDownTimer(millisInFuture, 1000) {
         long remainingTime;
 
         public void onTick(long millisUntilFinished) {
@@ -227,10 +260,58 @@ public void startCountDownTimer(){
         }
 
         public void onFinish() {
-            lastWaterDate.setTime(System.currentTimeMillis()); //TODO call API via GreenhouseRepository instead?
+            setIsTimeToRestartMeasurementTimer(true);
             this.cancel();
-            startCountDownTimer();
+
+            lastMeasurement.setTime(System.currentTimeMillis()); //Dummy data version --> TODO: GreenhouseDAO has to call this onResponse from api
+            rePostLiveDataMinutesToNextMeasurement(); //Dummy data version --> TODO: GreenhouseDAO has to call this onResponse from api
         }
     }.start();
 }
+
+    public void startCountDownTimerNextWater(){
+        reSetLiveDataMinutesToNextWater();
+        long millisInFuture = getMinutesToNextWaterLiveData().getValue();
+
+        millisInFuture = millisInFuture*60*1000; //Countdown kan testes hurtigere ved at skrive 100 i stedet for 1000 (så countdown hurtigere er forbi)
+
+        if(countDownTimerNextWater != null)
+            countDownTimerNextWater.cancel();
+
+        countDownTimerNextWater = new CountDownTimer(millisInFuture, 1000) {
+            long remainingTime;
+
+            public void onTick(long millisUntilFinished) {
+                remainingTime = millisUntilFinished;
+                long seconds = remainingTime / 1000;
+                long minutes = 1 + seconds / 60;
+
+                minutesToNextWater.postValue((int) minutes);   //Countdown kan testes hurtigere ved at bruge seconds i stedet for minutes (så værdien opdateres ved hvert countdown-interval)
+            }
+
+            public void onFinish() {
+                setIsTimeToRestartWaterTimer(true);
+                this.cancel();
+
+                lastWaterDate.setTime(System.currentTimeMillis()); //Dummy data version --> TODO: GreenhouseDAO has to call this on response from api
+                rePostLiveDataMinutesToNextWater(); //Dummy data version --> TODO: GreenhouseDAO has to call this on response from api
+            }
+        }.start();
+    }
+
+    public boolean isTimeToRestartMeasurementTimer() {
+        return isTimeToRestartMeasurementTimer;
+    }
+
+    public void setIsTimeToRestartMeasurementTimer(boolean restartMeasurementTimer) {
+        this.isTimeToRestartMeasurementTimer = restartMeasurementTimer;
+    }
+
+    public boolean isTimeToRestartWaterTimer() {
+        return isTimeToRestartWaterTimer;
+    }
+
+    public void setIsTimeToRestartWaterTimer(boolean restartWaterTimer) {
+        this.isTimeToRestartWaterTimer = restartWaterTimer;
+    }
 }
