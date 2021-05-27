@@ -48,6 +48,8 @@ public class Greenhouse {
         sharedWith.add("Bopper");
     }
 
+    //region getters,setters
+
     public boolean isWindowIsOpen() {
         return windowIsOpen;
     }
@@ -79,13 +81,7 @@ public class Greenhouse {
     public ArrayList<String> getSharedWith() {
         return sharedWith;
     }
-     public void shareGreenhouse(String username){
-        sharedWith.add(username);
-     }
 
-     public void removeShare(String username){
-        sharedWith.remove(username);
-     }
 
     public int getOwnerId() {
         return ownerId;
@@ -186,12 +182,24 @@ public class Greenhouse {
     public void setLastWaterDate(Timestamp lastWaterDate) {
         this.lastWaterDate = lastWaterDate;
     }
-    public void addPlant(Plant plant){
-        listPlants.add(plant);
-    }
 
     public LiveData<Integer> getMinutesToNextMeasurementLiveData() {
         return minutesToNextMeasurement;
+    }
+
+    //endregion
+
+    public void shareGreenhouse(String username){
+        sharedWith.add(username);
+    }
+
+    public void removeShare(String username){
+        sharedWith.remove(username);
+    }
+
+
+    public void addPlant(Plant plant){
+        listPlants.add(plant);
     }
 
     public void setMinutesToNextMeasurement() {
