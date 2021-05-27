@@ -241,9 +241,6 @@ public class Greenhouse {
         this.lastWaterDate = lastWaterDate;
         reSetLiveDataMinutesToNextWater();
     }
-    public void addPlant(Plant plant){
-        listPlants.add(plant);
-    }
 
     public LiveData<Integer> getMinutesToNextMeasurementLiveData() {
         return minutesToNextMeasurement;
@@ -267,6 +264,15 @@ public class Greenhouse {
 
     public void rePostLiveDataMinutesToNextWater() {
         minutesToNextWater.postValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastWaterDate));
+    }
+
+
+    public void addPlant(Plant plant){
+        listPlants.add(plant);
+    }
+
+    public void setMinutesToNextMeasurement() {
+        minutesToNextMeasurement.setValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastWaterDate));
     }
 
     public static long getMinutesSince(Timestamp timestamp)
