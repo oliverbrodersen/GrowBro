@@ -8,8 +8,12 @@
     <fragment
         android:id="@+id/nav_home"
         android:name="com.example.growbro.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:label=""
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_editGreenhouseFragment"
+            app:destination="@id/editGreenhouseFragment" />
+    </fragment>
     <fragment
         android:id="@+id/greenhouseTabFragment"
         android:name="com.example.growbro.ui.greenhousetab.GreenhouseTabFragment"
@@ -30,4 +34,9 @@
         android:name="com.example.growbro.ui.friends.FriendsFragment"
         android:label="friends_fragment"
         tools:layout="@layout/friends_fragment" />
+    <fragment
+        android:id="@+id/editGreenhouseFragment"
+        android:name="com.example.growbro.ui.editGreenhouse.EditGreenhouseFragment"
+        android:label=""
+        tools:layout="@layout/edit_greenhouse_fragment" />
 </navigation>

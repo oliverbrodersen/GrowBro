@@ -77,10 +77,11 @@ public class GreenhouseDAO {
         plantArrayList3.add(new Plant("Aglaonema", 3, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1603654887-1427228256-chinese-evergreen-plants-little-water.jpg"));
         plantArrayList3.add(new Plant("Asparagus Fern", 4, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1554477330-beautiful-asparagus-fern-plant-in-a-basket-royalty-free-image-972247932-1546889240.jpg"));
 
-        Greenhouse greenhouse3 = new Greenhouse("Adams drivhus",3,2, plantArrayList3,3,3,"idk",new Timestamp(new Date().getTime()), data, true);
+        Greenhouse greenhouse3 = new Greenhouse("Adams drivhus",3,2, plantArrayList3,3,3,"idk",lastMeasurement2, data, true);
         friendsGreenhouseArrayList.add(greenhouse3);
 
         greenhouseList.setValue(greenhouseArrayList);
+        friendsGreenhouseList.setValue(friendsGreenhouseArrayList);
     }
 
     public static GreenhouseDAO getInstance() {
@@ -314,6 +315,7 @@ public class GreenhouseDAO {
     }
 
     public void apiOpenWindow(int userId, int greenhouseId){
+        //TODO DAI vil have 0 hvis vinduiet skal lukke sog 1 hvis det skal lukkes
         GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
         Call<ApiReceipt> call = growBroApi.openWindow(userId,greenhouseId);
         call.enqueue(

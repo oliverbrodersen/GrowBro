@@ -1,6 +1,8 @@
 package com.example.growbro.ui.greenhousetab.greenhouse;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -11,7 +13,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,18 +28,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.R;
+import com.example.growbro.ui.greenhousetab.greenhouse.rv.SharedRVAdapter;
 import com.example.growbro.ui.home.rv.PlantRVAdapter;
 import com.google.android.material.chip.Chip;
 
 import java.util.List;
 
-public class GreenhouseFragment extends Fragment {
+public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnListItemClickListener {
 
     public static final String ARG_SELECTED_GREENHOUSE_ID = "selectedGreenhouseId";
     public Greenhouse greenhouse;
     private String selectedGreenhouseId;
     private RecyclerView plantRV;
     private PlantRVAdapter plantRVAdapter;
+    private RecyclerView sharedRV;
+    private SharedRVAdapter sharedRVAdapter;
 
     private GreenhouseViewModel mViewModel;
 
@@ -60,15 +64,19 @@ public class GreenhouseFragment extends Fragment {
         TextView valueCO2 = root.findViewById(R.id.valueCO2);
         TextView valueHumidity = root.findViewById(R.id.valueHumidity);
         TextView valueTemperature = root.findViewById(R.id.valueTemperature);
+        TextView sharedHeading = root.findViewById(R.id.textView5);
         Button inviteButton = root.findViewById(R.id.inviteButton);
         Button settingsButton = root.findViewById(R.id.settingsButton);
         Button deleteButton = root.findViewById(R.id.deleteButton);
         ImageButton sendInviteButton = root.findViewById(R.id.sendInviteButton);
         CardView inviteView = root.findViewById(R.id.inviteFriendView);
         EditText inviteEditText = root.findViewById(R.id.inviteEditText);
+        sharedRV = root.findViewById(R.id.sharedRV);
 
         TextView nextMeasureValue = root.findViewById(R.id.next_measure_value_greenhouse_fragment);
         TextView nextWaterValue = root.findViewById(R.id.next_water_value_greenhouse_fragment);
+
+        //Setup plant Recycler view
         plantRV = root.findViewById(R.id.plantRVgreenhouse);
         plantRV.hasFixedSize();
         LinearLayoutManager layoutManager
@@ -76,7 +84,6 @@ public class GreenhouseFragment extends Fragment {
 
         plantRV.setLayoutManager(layoutManager);
         plantRVAdapter = new PlantRVAdapter();
-
         plantRVAdapter.setPlantArrayList(greenhouse.getListPlants());
         plantRV.setAdapter(plantRVAdapter);
 
@@ -122,20 +129,56 @@ public class GreenhouseFragment extends Fragment {
                 nextWaterValue.setText(integer+" minutes");
             }
         });
-        greenhouse.startCountDownTimer();
 
+        greenhouse.startCountDownTimer();
         name.setText(greenhouse.getName());
 
         //Remove functionality, if the greenhouse belongs to a friend
         if (mViewModel.getCurrentUserId() != greenhouse.getOwnerId()){
             inviteButton.setVisibility(View.GONE);
             settingsButton.setVisibility(View.GONE);
+            sharedHeading.setVisibility(View.GONE);
+            sharedRV.setVisibility(View.GONE);
             deleteButton.setVisibility(View.VISIBLE);
+
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Leave GrowBro")
+                            .setMessage("Are you sure you want to remove your access to " + greenhouse.getName() + "? Only the owner can invite you again.")
+
+                            // Specifying a listener allows you to take an action before dismissing the dialog.
+                            // The dialog is automatically dismissed when a dialog button is clicked.
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //mViewModel.removeAccess
+                                }
+                            })
+                            // A null listener allows the button to dismiss the dialog and take no further action.
+                            .setNegativeButton(android.R.string.no, null)
+                            .setIcon(R.drawable.ic_exclamation_mark)
+                            .show();
+                }
+            });
         }
         else {
+            //Setup shared Recycler view
+            sharedRV.hasFixedSize();
+            LinearLayoutManager layoutManagerShared
+                    = new LinearLayoutManager(root.getContext(), LinearLayoutManager.HORIZONTAL, false);
+
+            sharedRV.setLayoutManager(layoutManagerShared);
+            sharedRVAdapter = new SharedRVAdapter(this);
+            sharedRVAdapter.setItemList(greenhouse.getSharedWith());
+            sharedRV.setAdapter(sharedRVAdapter);
+
             inviteButton.setVisibility(View.VISIBLE);
             settingsButton.setVisibility(View.VISIBLE);
             deleteButton.setVisibility(View.GONE);
+
+            sharedHeading.setVisibility(View.VISIBLE);
+            sharedRV.setVisibility(View.VISIBLE);
         }
 
         //Set onclick listeners for buttons
@@ -159,11 +202,18 @@ public class GreenhouseFragment extends Fragment {
                 else{
                     Toast.makeText(getContext(), "Invite sent to " + inviteEditText.getText(), Toast.LENGTH_SHORT).show();
                     inviteView.setVisibility(View.GONE);
+                    greenhouse.shareGreenhouse(inviteEditText.getText().toString());
                     inviteEditText.setText("");
+
+                    sharedRVAdapter.setItemList(greenhouse.getSharedWith());
+                    sharedRV.setAdapter(sharedRVAdapter);
+
                     hideKeyboard(getActivity());
                 }
             }
         });
+
+
         return root;
     }
 
@@ -183,5 +233,26 @@ public class GreenhouseFragment extends Fragment {
         view.clearFocus();
         view.requestFocus();
         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Revoke access")
+                .setMessage("Are you sure you want revoke " + greenhouse.getSharedWith().get(clickedItemIndex) + "'s access to your GrowBro?")
+
+                // Specifying a listener allows you to take an action before dismissing the dialog.
+                // The dialog is automatically dismissed when a dialog button is clicked.
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        greenhouse.removeShare(greenhouse.getSharedWith().get(clickedItemIndex));
+                        sharedRVAdapter.setItemList(greenhouse.getSharedWith());
+                        sharedRV.setAdapter(sharedRVAdapter);
+                    }
+                })
+                // A null listener allows the button to dismiss the dialog and take no further action.
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(R.drawable.ic_exclamation_mark)
+                .show();
     }
 }

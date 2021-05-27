@@ -26,6 +26,7 @@ public class Greenhouse {
     private MutableLiveData<Integer> minutesToNextMeasurement;
     private CountDownTimer countDownTimer;
     private static final int MEASUREMENT_INTERVAL_IN_MINUTES = 15;
+    private ArrayList<String> sharedWith;
 
     public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, List<SensorData> currentData, boolean windowIsOpen) {
         this.name = name;
@@ -41,6 +42,10 @@ public class Greenhouse {
         this.windowIsOpen = windowIsOpen;
         minutesToNextMeasurement = new MutableLiveData<>();
         setMinutesToNextMeasurement();
+        sharedWith = new ArrayList<>();
+        sharedWith.add("Bobber");
+        sharedWith.add("Bob");
+        sharedWith.add("Bopper");
     }
 
     public boolean isWindowIsOpen() {
@@ -70,6 +75,17 @@ public class Greenhouse {
     public void setCurrentData(MutableLiveData<List<SensorData>> currentData) {
         this.currentData = currentData;
     }
+
+    public ArrayList<String> getSharedWith() {
+        return sharedWith;
+    }
+     public void shareGreenhouse(String username){
+        sharedWith.add(username);
+     }
+
+     public void removeShare(String username){
+        sharedWith.remove(username);
+     }
 
     public int getOwnerId() {
         return ownerId;

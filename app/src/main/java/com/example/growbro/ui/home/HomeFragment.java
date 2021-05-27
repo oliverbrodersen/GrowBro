@@ -7,10 +7,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,6 +43,7 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         Chip myGrowbrosButton = root.findViewById(R.id.myGreenhousesChip);
+        CardView addCardView = root.findViewById(R.id.addCardView);
         Chip friendsGrowbrosButton = root.findViewById(R.id.friendsGreenhouses);
         showingTextView = root.findViewById(R.id.showingTextView);
 
@@ -117,6 +121,16 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
                         }
                     });
                 }
+            }
+        });
+        addCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavOptions navOptions = new NavOptions.Builder()
+                        .setPopUpTo(R.id.nav_home, true)
+                        .build();
+
+                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_editGreenhouseFragment, null, navOptions);
             }
         });
 
