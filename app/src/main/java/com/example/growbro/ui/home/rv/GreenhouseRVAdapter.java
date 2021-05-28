@@ -36,6 +36,7 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
 
     public GreenhouseRVAdapter(OnListItemClickListener mOnListItemClickListener) {
         this.mOnListItemClickListener = mOnListItemClickListener;
+        greenhouseArrayList = new ArrayList<>();
     }
 
     public void setDataset(ArrayList<Greenhouse> greenhouseArrayList){

@@ -40,6 +40,8 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
                 new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
+        homeViewModel.getGreenhouseListFromApi();
+
         Chip myGrowbrosButton = root.findViewById(R.id.myGreenhousesChip);
         CardView addCardView = root.findViewById(R.id.addCardView);
         Chip friendsGrowbrosButton = root.findViewById(R.id.friendsGreenhouses);
@@ -59,24 +61,19 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
                 greenhouseRVAdapter.setDataset((ArrayList<Greenhouse>) data);
                 greenhouseRV.setAdapter(greenhouseRVAdapter);
 
-                //if (data != null) {
-                //    for (SensorData sensorData : data) {
-                //        switch (sensorData.getType().toLowerCase()) {
-                //            case "co2":
-                //                co2TextView.setText(((int)sensorData.getData()) + "");
-                //                co2TextView.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
-                //                break;
-                //            case "temperature":
-                //                temperatureTextView.setText(sensorData.getData() + "°");
-                //                temperatureTextView.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
-                //                break;
-                //            case "humidity":
-                //                humidityTextView.setText(((int)sensorData.getData()) + "%");
-                //                humidityTextView.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
-                //                break;
-                //        }
-                //    }
-                //}
+                homeViewModel.getMinutesToNextMeasurement().observe(getViewLifecycleOwner(), new Observer<HashMap<Integer, Integer>>() {
+                    @Override
+                    public void onChanged(HashMap<Integer, Integer> data) {
+                        greenhouseRVAdapter.setNextMeasurementMinutesByGreenhouseId((HashMap<Integer, Integer>) data);
+                    }
+                });
+
+                homeViewModel.getMinutesToNextWater().observe(getViewLifecycleOwner(), new Observer<HashMap<Integer, Integer>>() {
+                    @Override
+                    public void onChanged(HashMap<Integer, Integer> data) {
+                        greenhouseRVAdapter.setNextWaterMinutesByGreenhouseId((HashMap<Integer, Integer>) data);
+                    }
+                });
             }
         });
 
@@ -122,19 +119,7 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
             }
         });
 
-        homeViewModel.getMinutesToNextMeasurement().observe(getViewLifecycleOwner(), new Observer<HashMap<Integer, Integer>>() {
-            @Override
-            public void onChanged(HashMap<Integer, Integer> data) {
-                greenhouseRVAdapter.setNextMeasurementMinutesByGreenhouseId((HashMap<Integer, Integer>) data);
-            }
-        });
 
-        homeViewModel.getMinutesToNextWater().observe(getViewLifecycleOwner(), new Observer<HashMap<Integer, Integer>>() {
-            @Override
-            public void onChanged(HashMap<Integer, Integer> data) {
-                greenhouseRVAdapter.setNextWaterMinutesByGreenhouseId((HashMap<Integer, Integer>) data);
-            }
-        });
         return root;
     }
 

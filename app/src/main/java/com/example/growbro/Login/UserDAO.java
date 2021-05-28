@@ -55,7 +55,7 @@ public class UserDAO {
     }
 
     public void apiAddUser(User user){
-        currentUser = new User(user.getUserId(), user.getUserName(), user.getPassword()); //Dummy Data
+        //currentUser = new User(user.getUserId(), user.getUserName(), user.getPassword()); //Dummy Data
         GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
         // prepare call in Retrofit 2.0
         try {
@@ -66,6 +66,7 @@ public class UserDAO {
                     new Callback<Integer>(){
                         @Override
                         public void onResponse(Call<Integer> call, Response<Integer> response) {
+                            Log.e("Api error", call.toString());
                             if (response.code() == 200){
                                 int userId = response.body();
                                 currentUser = new User(userId, user.getUserName(), user.getPassword());

@@ -6,7 +6,6 @@ import com.example.growbro.Models.Data.CurrentDataResultFromApi;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.Models.User;
 
-import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -31,6 +30,9 @@ public interface GrowBroApi {
     @GET("/user/{userId}/greenhouse")
     Call<List<Greenhouse>> getGreenhouseList(@Path("userId") int userId);
 
+    @GET("/user/{userId}/GetFriendsGreenhouses")
+    Call<List<Greenhouse>> getFriendsGreenhouses(@Path("userId") int userId);
+
     @GET("/user/{userId}/greenhouse/{greenhouseId}")
     Call<Greenhouse> getGreenhouse(@Path("userId")int userId, @Path("greenhouseId") int greenhouseId);
 
@@ -51,8 +53,8 @@ public interface GrowBroApi {
     Call<ApiReceipt> openWindow(@Path("userId")int userId, @Path("greenhouseId") int greenhouseId);
 
     @Headers("Content-Type: application/json")
-    @GET("/user/{userId}/addGreenhouse")
-    Call<Integer> addGreenhouse(@Path("userId")int userId, @Body String body);
+    @POST("/user/{userId}/addGreenhouse")
+    Call<Void> addGreenhouse(@Path("userId")int userId, @Body String body);
 
     @Headers("Content-Type: application/json")
     @GET("/user/{userId}/greenhouse/{greenhouseId}/plant")

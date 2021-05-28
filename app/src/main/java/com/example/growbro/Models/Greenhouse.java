@@ -1,6 +1,7 @@
 package com.example.growbro.Models;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -13,15 +14,17 @@ import java.util.Date;
 import java.util.List;
 
 public class Greenhouse {
-    private String name;
-    private int id;
-    private int ownerId;
+    private String Name;
+    private int greenHouseID;
+    private int userID;
     private ArrayList<Plant> listPlants;
     private int waterFrequency;
     private double waterVolume;
     private String waterTimeOfDay;
     private boolean windowIsOpen;
-    private MutableLiveData<List<SensorData>> currentData;
+    private List<SensorData> sensorData;
+    private MutableLiveData<List<SensorData>> sensorDataLive;
+
     private ArrayList<Float> temperatureThreshold;
     private ArrayList<Float> humidityThreshold;
     private ArrayList<Float> co2Threshold;
@@ -40,7 +43,7 @@ public class Greenhouse {
     private ArrayList<String> sharedWith;
 
     public Greenhouse(){
-        currentData = new MutableLiveData<>();
+        sensorDataLive = new MutableLiveData<>();
         listPlants = new ArrayList<>();
         windowIsOpen = false;
         lastMeasurement = new Timestamp(new Date().getTime());
@@ -61,19 +64,17 @@ public class Greenhouse {
         co2Threshold.add(new Float(1200));
 
         isTimeToRestartWaterTimer = false;
-
-
     }
     public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, Timestamp lastMeasurement, List<SensorData> currentData, boolean windowIsOpen) {
-        this.name = name;
-        this.id = id;
-        this.ownerId = ownerId;
+        this.Name = name;
+        greenHouseID = id;
+        userID = ownerId;
         this.listPlants = listPlants;
         this.waterFrequency = waterFrequency;
         this.waterVolume = waterVolume;
         this.waterTimeOfDay = waterTimeOfDay;
-        this.currentData = new MutableLiveData<>();
-        this.currentData.setValue(currentData);
+        sensorDataLive = new MutableLiveData<>();
+        sensorDataLive.setValue(currentData);
         this.windowIsOpen = windowIsOpen;
 
         this.lastWaterDate = lastWaterDate;
@@ -101,6 +102,18 @@ public class Greenhouse {
         co2Threshold.add(new Float(1200));
     }
 
+    public List<SensorData> getSensorData() {
+        return sensorData;
+    }
+
+    public void setSensorData(List<SensorData> sensorData) {
+        this.sensorData = sensorData;
+        for (SensorData sd : sensorData){
+            Log.i("Sensordata", sd.getType());
+        }
+        sensorDataLive.setValue(sensorData);
+    }
+
     public boolean isWindowIsOpen() {
         return windowIsOpen;
     }
@@ -110,11 +123,11 @@ public class Greenhouse {
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public int getId() {
-        return id;
+        return greenHouseID;
     }
 
     public Timestamp getLastMeasurement() {
@@ -127,7 +140,7 @@ public class Greenhouse {
     }
 
     public void setCurrentData(MutableLiveData<List<SensorData>> currentData) {
-        this.currentData = currentData;
+        sensorDataLive = currentData;
     }
 
     public ArrayList<String> getSharedWith() {
@@ -142,7 +155,7 @@ public class Greenhouse {
      }
 
     public int getOwnerId() {
-        return ownerId;
+        return userID;
     }
 
     public ArrayList<Plant> getListPlants() {
@@ -166,7 +179,7 @@ public class Greenhouse {
     }
 
     public SensorData getCurrentDataCo2(){
-        for (SensorData d:currentData.getValue()) {
+        for (SensorData d: sensorDataLive.getValue()) {
             if (d.getType().equals("CO2"))
                 return d;
         }
@@ -174,7 +187,7 @@ public class Greenhouse {
     }
     public SensorData getCurrentDataHumidity(){
 
-        for (SensorData d:currentData.getValue()) {
+        for (SensorData d: sensorDataLive.getValue()) {
             if (d.getType().equals("Humidity"))
                 return d;
         }
@@ -182,43 +195,35 @@ public class Greenhouse {
     }
     public SensorData getCurrentDataTemperature(){
 
-        for (SensorData d:currentData.getValue()) {
+        for (SensorData d: sensorDataLive.getValue()) {
             if (d.getType().equals("Temperature"))
-                return d;
-        }
-        return null;
-    }
-    public SensorData getCurrentDataLuminance(){
-
-        for (SensorData d:currentData.getValue()) {
-            if (d.getType().equals("CO2"))
                 return d;
         }
         return null;
     }
 
     public List<SensorData> getCurrentData() {
-        return currentData.getValue();
+        return sensorDataLive.getValue();
     }
 
     public MutableLiveData<List<SensorData>> getCurentLiveData(){
-        return currentData;
+        return sensorDataLive;
     }
 
     public void setCurrentData(List<SensorData> currentData) {
-        this.currentData.setValue(currentData);
+        sensorDataLive.setValue(currentData);
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.Name = name;
     }
 
     public void setId(int id) {
-        this.id = id;
+        greenHouseID = id;
     }
 
     public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
+        userID = ownerId;
     }
 
     public void setListPlants(ArrayList<Plant> listPlants) {
@@ -277,7 +282,13 @@ public class Greenhouse {
 
     public static long getMinutesSince(Timestamp timestamp)
     {
-        long before = timestamp.getTime();
+        long before;
+
+        if (timestamp == null)
+            before = new Timestamp(System.currentTimeMillis()).getTime();
+        else
+            before = timestamp.getTime();
+
         long now = new Timestamp(System.currentTimeMillis()).getTime();
 
         return (now - before) / (1000 * 60);
@@ -308,16 +319,21 @@ public void startCountDownTimerNextMeasurement(){
         public void onFinish() {
             setIsTimeToRestartMeasurementTimer(true);
             this.cancel();
-
-            lastMeasurement.setTime(System.currentTimeMillis()); //Dummy data version --> TODO: GreenhouseDAO has to call this onResponse from api
-            rePostLiveDataMinutesToNextMeasurement(); //Dummy data version --> TODO: GreenhouseDAO has to call this onResponse from api
+            if (lastMeasurement == null)
+                lastMeasurement = new Timestamp(System.currentTimeMillis());
+            //lastMeasurement.setTime(System.currentTimeMillis()); //Dummy data version --> TODO: GreenhouseDAO has to call this onResponse from api
+            //rePostLiveDataMinutesToNextMeasurement(); //Dummy data version --> TODO: GreenhouseDAO has to call this onResponse from api
         }
     }.start();
 }
 
     public void startCountDownTimerNextWater(){
         reSetLiveDataMinutesToNextWater();
-        long millisInFuture = getMinutesToNextWaterLiveData().getValue();
+        long millisInFuture;
+        if (getMinutesToNextWaterLiveData() == null)
+            millisInFuture = MEASUREMENT_INTERVAL_IN_MINUTES * 60 * 1000;
+        else
+            millisInFuture = getMinutesToNextWaterLiveData().getValue();
 
         millisInFuture = millisInFuture*60*1000; //Countdown kan testes hurtigere ved at skrive 100 i stedet for 1000 (så countdown hurtigere er forbi)
 
@@ -339,8 +355,11 @@ public void startCountDownTimerNextMeasurement(){
                 setIsTimeToRestartWaterTimer(true);
                 this.cancel();
 
-                lastWaterDate.setTime(System.currentTimeMillis()); //Dummy data version --> TODO: GreenhouseDAO has to call this on response from api
-                rePostLiveDataMinutesToNextWater(); //Dummy data version --> TODO: GreenhouseDAO has to call this on response from api
+                if (lastWaterDate == null)
+                    lastWaterDate = new Timestamp(System.currentTimeMillis());
+
+                //lastWaterDate.setTime(System.currentTimeMillis()); //Dummy data version --> TODO: GreenhouseDAO has to call this on response from api
+                //rePostLiveDataMinutesToNextWater(); //Dummy data version --> TODO: GreenhouseDAO has to call this on response from api
             }
         }.start();
     }

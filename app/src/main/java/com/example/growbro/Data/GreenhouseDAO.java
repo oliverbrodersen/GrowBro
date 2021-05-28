@@ -7,10 +7,12 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.growbro.Models.Data.ApiCurrentDataPackage;
 import com.example.growbro.Models.Data.ApiReceipt;
 import com.example.growbro.Models.Data.CurrentDataResultFromApi;
+import com.example.growbro.Models.Data.GreenhouseUpload;
 import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.Models.Plant;
 import com.example.growbro.Models.User;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,7 +35,7 @@ public class GreenhouseDAO {
     private static GreenhouseDAO instance;
     private MutableLiveData<List<Greenhouse>> greenhouseList;
     private MutableLiveData<List<Greenhouse>> friendsGreenhouseList;
-    private MutableLiveData<List<ApiCurrentDataPackage>> sensorDataHistory; //TODO rename ApiCurrentDataPackage to DataPackage ?
+    private MutableLiveData<List<ApiCurrentDataPackage>> sensorDataHistory;
 
     private GreenhouseDAO() {
         //Dummy data
@@ -44,45 +46,45 @@ public class GreenhouseDAO {
         ArrayList<Greenhouse> friendsGreenhouseArrayList = new ArrayList<>();
 
         //Responsible for getting data from postman
-        getDummyData(1);
+        //getDummyData(1);
+        //
+        //ArrayList<SensorData> data = new ArrayList<>();
+        //SensorData d = new SensorData("CO2",5);
+        //data.add(d);
+        //ArrayList<Plant> plantArrayList = new ArrayList<>();
+        //ArrayList<Plant> plantArrayList2 = new ArrayList<>();
+        //ArrayList<Plant> plantArrayList3 = new ArrayList<>();
+        //plantArrayList.add(new Plant("Monstera", 1, "https://cdn.shopify.com/s/files/1/0059/8835/2052/products/Monstera_delisiosa_4_FGT_450x.jpg"));
+        //plantArrayList.add(new Plant("Pothos", 2, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1603654968-il_570xN.2485154742_kpa5.jpg"));
+        //plantArrayList.add(new Plant("Aglaonema", 3, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1603654887-1427228256-chinese-evergreen-plants-little-water.jpg"));
+        //plantArrayList.add(new Plant("Asparagus Fern", 4, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1554477330-beautiful-asparagus-fern-plant-in-a-basket-royalty-free-image-972247932-1546889240.jpg"));
+        //plantArrayList.add(new Plant("Chinese Money Plant", 5, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1557177323-pilea-peperomioides-money-plant-in-the-pot-single-royalty-free-image-917778022-1557177295.jpg"));
+        //
+        //plantArrayList2.add(new Plant("Jordbær plante", 6, "https://drupaller-prod.imgix.net/familiejournal/s3fs-public/storage_1/media/jordbaer5.jpg"));
+        //plantArrayList2.add(new Plant("Citron træ", 7, "https://www.gardeningknowhow.com/wp-content/uploads/2015/05/lemon-tree.jpg"));
+        //plantArrayList2.add(new Plant("Basilikum", 8, "https://kaere-hjem.imgix.net/s3fs-public/media/article/is-12854_preview.jpg"));
+        //
+        //Timestamp timeStamp1 = new Timestamp(System.currentTimeMillis() - (2 * 60 * 1000)); //Stue drivhus last water and Altan drivhus last measurement 2 minutes ago
+        //Timestamp timeStamp2 = new Timestamp(System.currentTimeMillis() - (14 * 60 * 1000)); //Altan drivhus last water and Stue drivhus last measurement 14 minutes ago
+        //
+        //Greenhouse greenhouse1 = new Greenhouse("Stue drivhus",1,1,plantArrayList,3,3,"idk",timeStamp1, timeStamp2, data, true);
+        //Greenhouse greenhouse2 = new Greenhouse("Altan drivhus",2,1,plantArrayList2,3,3,"idk",timeStamp2, timeStamp1, data, false);
+        //
+        //greenhouseArrayList.add(greenhouse1);
+        //greenhouseArrayList.add(greenhouse2);
+        //
+        //plantArrayList3.add(new Plant("Citron træ", 7, "https://www.gardeningknowhow.com/wp-content/uploads/2015/05/lemon-tree.jpg"));
+        //plantArrayList3.add(new Plant("Chinese Money Plant", 5, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1557177323-pilea-peperomioides-money-plant-in-the-pot-single-royalty-free-image-917778022-1557177295.jpg"));
+        //plantArrayList3.add(new Plant("Monstera", 1, "https://cdn.shopify.com/s/files/1/0059/8835/2052/products/Monstera_delisiosa_4_FGT_450x.jpg"));
+        //plantArrayList3.add(new Plant("Pothos", 2, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1603654968-il_570xN.2485154742_kpa5.jpg"));
+        //plantArrayList3.add(new Plant("Aglaonema", 3, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1603654887-1427228256-chinese-evergreen-plants-little-water.jpg"));
+        //plantArrayList3.add(new Plant("Asparagus Fern", 4, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1554477330-beautiful-asparagus-fern-plant-in-a-basket-royalty-free-image-972247932-1546889240.jpg"));
 
-        ArrayList<SensorData> data = new ArrayList<>();
-        SensorData d = new SensorData("CO2",5);
-        data.add(d);
-        ArrayList<Plant> plantArrayList = new ArrayList<>();
-        ArrayList<Plant> plantArrayList2 = new ArrayList<>();
-        ArrayList<Plant> plantArrayList3 = new ArrayList<>();
-        plantArrayList.add(new Plant("Monstera", 1, "https://cdn.shopify.com/s/files/1/0059/8835/2052/products/Monstera_delisiosa_4_FGT_450x.jpg"));
-        plantArrayList.add(new Plant("Pothos", 2, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1603654968-il_570xN.2485154742_kpa5.jpg"));
-        plantArrayList.add(new Plant("Aglaonema", 3, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1603654887-1427228256-chinese-evergreen-plants-little-water.jpg"));
-        plantArrayList.add(new Plant("Asparagus Fern", 4, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1554477330-beautiful-asparagus-fern-plant-in-a-basket-royalty-free-image-972247932-1546889240.jpg"));
-        plantArrayList.add(new Plant("Chinese Money Plant", 5, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1557177323-pilea-peperomioides-money-plant-in-the-pot-single-royalty-free-image-917778022-1557177295.jpg"));
+        //Greenhouse greenhouse3 = new Greenhouse("Adams drivhus",3,2, plantArrayList3,3,3,"idk",new Timestamp(new Date().getTime()),new Timestamp(new Date().getTime()), data, true);
+        //friendsGreenhouseArrayList.add(greenhouse3);
 
-        plantArrayList2.add(new Plant("Jordbær plante", 6, "https://drupaller-prod.imgix.net/familiejournal/s3fs-public/storage_1/media/jordbaer5.jpg"));
-        plantArrayList2.add(new Plant("Citron træ", 7, "https://www.gardeningknowhow.com/wp-content/uploads/2015/05/lemon-tree.jpg"));
-        plantArrayList2.add(new Plant("Basilikum", 8, "https://kaere-hjem.imgix.net/s3fs-public/media/article/is-12854_preview.jpg"));
-
-        Timestamp timeStamp1 = new Timestamp(System.currentTimeMillis() - (2 * 60 * 1000)); //Stue drivhus last water and Altan drivhus last measurement 2 minutes ago
-        Timestamp timeStamp2 = new Timestamp(System.currentTimeMillis() - (14 * 60 * 1000)); //Altan drivhus last water and Stue drivhus last measurement 14 minutes ago
-
-        Greenhouse greenhouse1 = new Greenhouse("Stue drivhus",1,1,plantArrayList,3,3,"idk",timeStamp1, timeStamp2, data, true);
-        Greenhouse greenhouse2 = new Greenhouse("Altan drivhus",2,1,plantArrayList2,3,3,"idk",timeStamp2, timeStamp1, data, false);
-
-        greenhouseArrayList.add(greenhouse1);
-        greenhouseArrayList.add(greenhouse2);
-
-        plantArrayList3.add(new Plant("Citron træ", 7, "https://www.gardeningknowhow.com/wp-content/uploads/2015/05/lemon-tree.jpg"));
-        plantArrayList3.add(new Plant("Chinese Money Plant", 5, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1557177323-pilea-peperomioides-money-plant-in-the-pot-single-royalty-free-image-917778022-1557177295.jpg"));
-        plantArrayList3.add(new Plant("Monstera", 1, "https://cdn.shopify.com/s/files/1/0059/8835/2052/products/Monstera_delisiosa_4_FGT_450x.jpg"));
-        plantArrayList3.add(new Plant("Pothos", 2, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1603654968-il_570xN.2485154742_kpa5.jpg"));
-        plantArrayList3.add(new Plant("Aglaonema", 3, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1603654887-1427228256-chinese-evergreen-plants-little-water.jpg"));
-        plantArrayList3.add(new Plant("Asparagus Fern", 4, "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1554477330-beautiful-asparagus-fern-plant-in-a-basket-royalty-free-image-972247932-1546889240.jpg"));
-
-        Greenhouse greenhouse3 = new Greenhouse("Adams drivhus",3,2, plantArrayList3,3,3,"idk",new Timestamp(new Date().getTime()),new Timestamp(new Date().getTime()), data, true);
-        friendsGreenhouseArrayList.add(greenhouse3);
-
-        greenhouseList.setValue(greenhouseArrayList);
-        friendsGreenhouseList.setValue(friendsGreenhouseArrayList);
+        //greenhouseList.setValue(greenhouseArrayList);
+        //friendsGreenhouseList.setValue(friendsGreenhouseArrayList);
     }
 
     public static GreenhouseDAO getInstance() {
@@ -258,6 +260,10 @@ public class GreenhouseDAO {
                     @Override
                     public void onResponse(Call<List<Greenhouse>> call, Response<List<Greenhouse>> response) {
                         if (response.code() == 200){
+                            //Set sensordata
+                            for (Greenhouse g: response.body())
+                                g.setCurrentData(g.getSensorData());
+
                             greenhouseList.setValue(response.body());
                         }
                     }
@@ -265,13 +271,14 @@ public class GreenhouseDAO {
                     @Override
                     public void onFailure(Call<List<Greenhouse>> call, Throwable t) {
                         Log.e("Api error", t.toString());
+                        Log.e("Api error", call.toString());
                     }
                 }
         );
     }
     public void apiGetFriendsGreenhouseList(int userId){
         GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
-        Call<List<Greenhouse>> call = growBroApi.getGreenhouseList(userId);
+        Call<List<Greenhouse>> call = growBroApi.getFriendsGreenhouses(userId);
         call.enqueue(
                 new Callback<List<Greenhouse>>(){
                     @Override
@@ -339,36 +346,35 @@ public class GreenhouseDAO {
         this.greenhouseList.setValue(greenhouseList);
     }
     public void apiAddGreenhouse(int userId, Greenhouse greenhouse){
-        //Så længe den er lokal
-        ArrayList<Greenhouse> glist = (ArrayList<Greenhouse>) greenhouseList.getValue();
-        glist.add(greenhouse);
-        greenhouseList.setValue(glist);
+        GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
+        // prepare call in Retrofit 2.0
+        try {
+            GreenhouseUpload greenhouseUpload = new GreenhouseUpload(greenhouse);
+            JSONObject paramObject = new JSONObject();
+            paramObject.put("Greenhouse", new Gson().toJson(greenhouseUpload));
+            Log.i("JSON", new Gson().toJson(greenhouseUpload));
+            Call<Void> call = growBroApi.addGreenhouse(userId, paramObject.toString());
+            call.enqueue(
+                    new Callback<Void>(){
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            Log.i("Api response", response.code() + "");
+                            if (response.code() == 200){
+                                ArrayList<Greenhouse> glist = (ArrayList<Greenhouse>) greenhouseList.getValue();
+                                glist.add(greenhouse);
+                                greenhouseList.setValue(glist);
+                            }
+                        }
 
-        //GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
-        //// prepare call in Retrofit 2.0
-        //try {
-        //    JSONObject paramObject = new JSONObject();
-        //    paramObject.put("Greenhouse", greenhouse);
-        //    Call<Integer> call = growBroApi.addGreenhouse(userId, paramObject.toString());
-        //    call.enqueue(
-        //            new Callback<Integer>(){
-        //                @Override
-        //                public void onResponse(Call<Integer> call, Response<Integer> response) {
-        //                    if (response.code() == 200){
-        //                        greenhouse.setId(response.body());
-        //                        updateGreenhouse(greenhouse);
-        //                    }
-        //                }
-//
-        //                @Override
-        //                public void onFailure(Call<Integer> call, Throwable t) {
-        //                    Log.e("Api error", t.toString());
-        //                }
-        //            }
-        //    );
-        //} catch (JSONException e) {
-        //    e.printStackTrace();
-        //}
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Log.e("Api error", t.toString());
+                        }
+                    }
+            );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
     public void apiAddPlant(int userId, int greenhouseId, Plant plant){
         GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();

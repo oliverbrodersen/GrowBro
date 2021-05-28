@@ -36,7 +36,8 @@ public class SharedRVAdapter extends RecyclerView.Adapter<SharedRVAdapter.ViewHo
     }
 
     public void setItemList(ArrayList<String> sharedUsers) {
-        friends = sharedUsers;
+        if (sharedUsers != null)
+            friends = sharedUsers;
     }
 
     public interface OnListItemClickListener {
