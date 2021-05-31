@@ -2,13 +2,15 @@ package com.example.growbro.Models.Data;
 
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.Models.Plant;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GreenhouseUpload {
     private ArrayList<Plant> Plants;
     private int greenHouseID;
-    private int WindowIsOpen;
+    private boolean WindowIsOpen;
     private int userID;
     private String Name;
     private int waterFrequency;
@@ -18,9 +20,14 @@ public class GreenhouseUpload {
     private String lastMeasurement;
     private ArrayList<SensorData> sensorData;
     private ArrayList<String> sharedWith;
+    @SerializedName(value = "tempteratureThreshhold")
+    private List<Float> temperatureThreshold;
+    private List<Float> humidityThreshold;
+    @SerializedName(value = "co2Threshhold")
+    private List<Float> co2Threshold;
 
     public GreenhouseUpload(Greenhouse greenhouse) {
-        Plants = greenhouse.getListPlants();
+        Plants = greenhouse.getPlants();
         greenHouseID = greenhouse.getId();
         WindowIsOpen = greenhouse.isWindowIsOpen();
         userID = greenhouse.getOwnerId();
@@ -28,10 +35,41 @@ public class GreenhouseUpload {
         waterFrequency = greenhouse.getWaterFrequency();
         waterVolume = greenhouse.getWaterVolume();
         waterTimeOfDay = greenhouse.getWaterTimeOfDay();
-        lastWaterDate = greenhouse.getLastWaterDate().toString();
-        lastMeasurement = greenhouse.getLastMeasurement().toString();
+        lastWaterDate = greenhouse.getLastWaterDateTimestamp().toString();
+        lastMeasurement = greenhouse.getLastMeasurementTimestamp().toString();
         sensorData = (ArrayList<SensorData>) greenhouse.getSensorData();
         sharedWith = greenhouse.getSharedWith();
+        temperatureThreshold = greenhouse.getTemperatureThreshold();
+        humidityThreshold = greenhouse.getHumidityThreshold();
+        co2Threshold = greenhouse.getCo2Threshold();
+    }
+
+    public boolean isWindowIsOpen() {
+        return WindowIsOpen;
+    }
+
+    public List<Float> getTemperatureThreshold() {
+        return temperatureThreshold;
+    }
+
+    public void setTemperatureThreshold(List<Float> temperatureThreshold) {
+        this.temperatureThreshold = temperatureThreshold;
+    }
+
+    public List<Float> getHumidityThreshold() {
+        return humidityThreshold;
+    }
+
+    public void setHumidityThreshold(List<Float> humidityThreshold) {
+        this.humidityThreshold = humidityThreshold;
+    }
+
+    public List<Float> getCo2Threshold() {
+        return co2Threshold;
+    }
+
+    public void setCo2Threshold(List<Float> co2Threshold) {
+        this.co2Threshold = co2Threshold;
     }
 
     public ArrayList getPlants() {
@@ -50,11 +88,11 @@ public class GreenhouseUpload {
         this.greenHouseID = greenHouseID;
     }
 
-    public int getWindowIsOpen() {
+    public boolean getWindowIsOpen() {
         return WindowIsOpen;
     }
 
-    public void setWindowIsOpen(int windowIsOpen) {
+    public void setWindowIsOpen(boolean windowIsOpen) {
         WindowIsOpen = windowIsOpen;
     }
 

@@ -92,7 +92,7 @@ public class EditGreenhouseFragment extends Fragment implements TimePickerFragme
             daysBetweenWater.setValue(greenhouse.getWaterFrequency());
             amountOfWater.setValue((float) greenhouse.getWaterVolume());
             onTimePicked(greenhouse.getWaterTimeOfDay());
-            plantList = greenhouse.getListPlants();
+            plantList = greenhouse.getPlants();
             addGrowBro.setText("Save changes");
 
             tempRange.setValues(greenhouse.getTemperatureThreshold());
@@ -222,7 +222,7 @@ public class EditGreenhouseFragment extends Fragment implements TimePickerFragme
                         g.setWaterFrequency((int) daysBetweenWater.getValue());
                         g.setWaterVolume(amountOfWater.getValue());
                         g.setWaterTimeOfDay(time);
-                        g.setListPlants(plantList);
+                        g.setPlants(plantList);
                         g.setTemperatureThreshold((ArrayList<Float>) tempRange.getValues());
                         g.setHumidityThreshold((ArrayList<Float>) humRange.getValues());
                         g.setCo2Threshold((ArrayList<Float>) coRange.getValues());
@@ -234,7 +234,7 @@ public class EditGreenhouseFragment extends Fragment implements TimePickerFragme
                         greenhouse.setWaterFrequency((int) daysBetweenWater.getValue());
                         greenhouse.setWaterVolume(amountOfWater.getValue());
                         greenhouse.setWaterTimeOfDay(time);
-                        greenhouse.setListPlants(plantList);
+                        greenhouse.setPlants(plantList);
                         greenhouse.setTemperatureThreshold((ArrayList<Float>) tempRange.getValues());
                         greenhouse.setHumidityThreshold((ArrayList<Float>) humRange.getValues());
                         greenhouse.setCo2Threshold((ArrayList<Float>) coRange.getValues());

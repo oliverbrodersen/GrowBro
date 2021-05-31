@@ -65,7 +65,7 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         Greenhouse greenhouse = greenhouseArrayList.get(position);
         holder.greenhouseName.setText(greenhouse.getName());
-        holder.plantRVAdapter.setPlantArrayList(greenhouse.getListPlants());
+        holder.plantRVAdapter.setPlantArrayList(greenhouse.getPlants());
         holder.plantRV.setAdapter(holder.plantRVAdapter);
 
         holder.addPlantCard.setVisibility(View.GONE);
@@ -83,7 +83,7 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
             holder.addPlantCard.setVisibility(View.VISIBLE);
         }
 
-        if (greenhouse.isWindowIsOpen() == 1)
+        if (greenhouse.isWindowIsOpen())
             holder.windowIsOpen.setVisibility(View.VISIBLE);
         else
             holder.windowIsOpen.setVisibility(View.GONE);

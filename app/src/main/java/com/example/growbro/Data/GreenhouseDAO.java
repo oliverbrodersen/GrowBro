@@ -328,9 +328,9 @@ public class GreenhouseDAO {
                     public void onResponse(Call<ApiReceipt> call, Response<ApiReceipt> response) {
                         if (response.code() == 200){
                             if(openWindow == 1)
-                                greenhouseList.getValue().get(greenhouseId).setWindowIsOpen(1);
+                                greenhouseList.getValue().get(greenhouseId).setWindowIsOpen(true);
                             else
-                                greenhouseList.getValue().get(greenhouseId).setWindowIsOpen(0);
+                                greenhouseList.getValue().get(greenhouseId).setWindowIsOpen(false);
                         }
                     }
 

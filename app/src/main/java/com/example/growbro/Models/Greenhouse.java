@@ -7,36 +7,42 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.growbro.Models.Data.SensorData;
+import com.google.gson.annotations.SerializedName;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Greenhouse {
     private String Name;
     private int greenHouseID;
     private int userID;
-    private ArrayList<Plant> listPlants;
+    private ArrayList<Plant> Plants;
     private int waterFrequency;
+    private boolean WindowIsOpen;
     private double waterVolume;
     private String waterTimeOfDay;
-    private int windowIsOpen;
     private List<SensorData> sensorData;
     private MutableLiveData<List<SensorData>> sensorDataLive;
+    private SimpleDateFormat sdf;
 
-    private ArrayList<Float> temperatureThreshold;
-    private ArrayList<Float> humidityThreshold;
-    private ArrayList<Float> co2Threshold;
+    @SerializedName(value = "tempteratureThreshhold")
+    private List<Float> temperatureThreshold;
+    private List<Float> humidityThreshold;
+    @SerializedName(value = "co2Threshhold")
+    private List<Float> co2Threshold;
 
-    private Timestamp lastMeasurement;
+    private String lastMeasurement;
+    private Timestamp lastMeasurementTimestamp;
     private CountDownTimer countDownTimerNextMeasurement;
     private MutableLiveData<Integer> minutesToNextMeasurement;
     private boolean isTimeToRestartMeasurementTimer;
 
     private boolean stopCheckForNewMeasurement;
 
-    private Timestamp lastWaterDate;
+    private String lastWaterDate;
+    private Timestamp lastWaterDateTimestamp;
     private CountDownTimer countDownTimerNextWater;
     private MutableLiveData<Integer> minutesToNextWater;
     private boolean isTimeToRestartWaterTimer;
@@ -45,12 +51,11 @@ public class Greenhouse {
     private ArrayList<String> sharedWith;
 
     public Greenhouse(){
+        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        WindowIsOpen = false;
         stopCheckForNewMeasurement = false;
         sensorDataLive = new MutableLiveData<>();
-        listPlants = new ArrayList<>();
-        windowIsOpen = 0;
-        lastMeasurement = new Timestamp(new Date().getTime());
-        lastWaterDate = new Timestamp(new Date().getTime());
+        Plants = new ArrayList<>();
         minutesToNextMeasurement = new MutableLiveData<>();
         isTimeToRestartMeasurementTimer = false;
         minutesToNextWater = new MutableLiveData<>();
@@ -68,24 +73,25 @@ public class Greenhouse {
 
         isTimeToRestartWaterTimer = false;
     }
-    public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, Timestamp lastMeasurement, List<SensorData> currentData, int windowIsOpen) {
+    public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, Timestamp lastMeasurement, List<SensorData> currentData, boolean WindowIsOpen) {
+        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         stopCheckForNewMeasurement = false;
         this.Name = name;
         greenHouseID = id;
         userID = ownerId;
-        this.listPlants = listPlants;
+        this.Plants = listPlants;
         this.waterFrequency = waterFrequency;
         this.waterVolume = waterVolume;
         this.waterTimeOfDay = waterTimeOfDay;
         sensorDataLive = new MutableLiveData<>();
         sensorDataLive.setValue(currentData);
-        this.windowIsOpen = windowIsOpen;
+        this.WindowIsOpen = WindowIsOpen;
 
-        this.lastWaterDate = lastWaterDate;
+        this.lastWaterDateTimestamp = lastWaterDate;
         minutesToNextWater = new MutableLiveData<>();
         isTimeToRestartWaterTimer = false;
 
-        this.lastMeasurement = lastMeasurement;
+        this.lastMeasurementTimestamp = lastMeasurement;
         minutesToNextMeasurement = new MutableLiveData<>();
         isTimeToRestartMeasurementTimer = false;
 
@@ -104,6 +110,30 @@ public class Greenhouse {
         humidityThreshold.add(new Float(80));
         co2Threshold.add(new Float(200));
         co2Threshold.add(new Float(1200));
+    }
+
+    public String getLastMeasurement() {
+        return lastMeasurement;
+    }
+
+    public void setLastMeasurement(String lastMeasurement) {
+        this.lastMeasurement = lastMeasurement;
+    }
+
+    public String getLastWaterDate() {
+        return lastWaterDate;
+    }
+
+    public void setLastWaterDate(String lastWaterDate) {
+        this.lastWaterDate = lastWaterDate;
+    }
+
+    public boolean isWindowIsOpen() {
+        return WindowIsOpen;
+    }
+
+    public void setWindowIsOpen(boolean windowIsOpen) {
+        WindowIsOpen = windowIsOpen;
     }
 
     public boolean isStopCheckForNewMeasurement() {
@@ -126,14 +156,6 @@ public class Greenhouse {
         sensorDataLive.setValue(sensorData);
     }
 
-    public int isWindowIsOpen() {
-        return windowIsOpen;
-    }
-
-    public void setWindowIsOpen(int windowIsOpen) {
-        this.windowIsOpen = windowIsOpen;
-    }
-
     public String getName() {
         return Name;
     }
@@ -142,12 +164,12 @@ public class Greenhouse {
         return greenHouseID;
     }
 
-    public Timestamp getLastMeasurement() {
-        return lastMeasurement;
+    public Timestamp getLastMeasurementTimestamp() {
+        return lastMeasurementTimestamp;
     }
 
     public void setLastMeasurementAndResetLiveData(Timestamp lastMeasurement) {
-        this.lastMeasurement = lastMeasurement;
+        this.lastMeasurementTimestamp = lastMeasurement;
         reSetLiveDataMinutesToNextMeasurement();
     }
 
@@ -170,8 +192,8 @@ public class Greenhouse {
         return userID;
     }
 
-    public ArrayList<Plant> getListPlants() {
-        return listPlants;
+    public ArrayList<Plant> getPlants() {
+        return Plants;
     }
 
     public int getWaterFrequency() {
@@ -186,8 +208,8 @@ public class Greenhouse {
         return waterTimeOfDay;
     }
 
-    public Timestamp getLastWaterDate() {
-        return lastWaterDate;
+    public Timestamp getLastWaterDateTimestamp() {
+        return lastWaterDateTimestamp;
     }
 
     public SensorData getCurrentDataCo2(){
@@ -238,8 +260,8 @@ public class Greenhouse {
         userID = ownerId;
     }
 
-    public void setListPlants(ArrayList<Plant> listPlants) {
-        this.listPlants = listPlants;
+    public void setPlants(ArrayList<Plant> plants) {
+        this.Plants = plants;
     }
 
     public void setWaterFrequency(int waterFrequency) {
@@ -255,7 +277,7 @@ public class Greenhouse {
     }
 
     public void setLastWaterDateAndResetLiveData(Timestamp lastWaterDate) {
-        this.lastWaterDate = lastWaterDate;
+        this.lastWaterDateTimestamp = lastWaterDate;
         reSetLiveDataMinutesToNextWater();
     }
 
@@ -264,11 +286,15 @@ public class Greenhouse {
     }
 
     public void reSetLiveDataMinutesToNextMeasurement() {
-        minutesToNextMeasurement.setValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastMeasurement));
+        if (lastMeasurementTimestamp == null)
+            lastMeasurementTimestamp = Timestamp.valueOf(lastMeasurement);
+        minutesToNextMeasurement.setValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastMeasurementTimestamp));
     }
 
     public void rePostLiveDataMinutesToNextMeasurement() {
-        minutesToNextMeasurement.postValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastMeasurement));
+        if (lastMeasurementTimestamp == null)
+            lastMeasurementTimestamp = Timestamp.valueOf(lastMeasurement);
+        minutesToNextMeasurement.postValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastMeasurementTimestamp));
     }
 
     public LiveData<Integer> getMinutesToNextWaterLiveData() {
@@ -276,21 +302,22 @@ public class Greenhouse {
     }
 
     public void reSetLiveDataMinutesToNextWater() {
-        minutesToNextWater.setValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastWaterDate));
+        if (lastWaterDateTimestamp == null)
+            lastWaterDateTimestamp = Timestamp.valueOf(lastWaterDate);
+        minutesToNextWater.setValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastWaterDateTimestamp));
     }
 
     public void rePostLiveDataMinutesToNextWater() {
-        minutesToNextWater.postValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastWaterDate));
+        if (lastWaterDateTimestamp == null)
+            lastWaterDateTimestamp = Timestamp.valueOf(lastWaterDate);
+        minutesToNextWater.postValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastWaterDateTimestamp));
     }
 
 
     public void addPlant(Plant plant){
-        listPlants.add(plant);
+        Plants.add(plant);
     }
 
-    public void setMinutesToNextMeasurement() {
-        minutesToNextMeasurement.setValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastWaterDate));
-    }
 
     public static long getMinutesSince(Timestamp timestamp)
     {
@@ -331,8 +358,8 @@ public void startCountDownTimerNextMeasurement(){
         public void onFinish() {
             setIsTimeToRestartMeasurementTimer(true);
             this.cancel();
-            if (lastMeasurement == null)
-                lastMeasurement = new Timestamp(System.currentTimeMillis());
+            if (lastMeasurementTimestamp == null)
+                lastMeasurementTimestamp = new Timestamp(System.currentTimeMillis());
             //lastMeasurement.setTime(System.currentTimeMillis()); //Dummy data version --> TODO: GreenhouseDAO has to call this onResponse from api
             //rePostLiveDataMinutesToNextMeasurement(); //Dummy data version --> TODO: GreenhouseDAO has to call this onResponse from api
         }
@@ -367,8 +394,8 @@ public void startCountDownTimerNextMeasurement(){
                 setIsTimeToRestartWaterTimer(true);
                 this.cancel();
 
-                if (lastWaterDate == null)
-                    lastWaterDate = new Timestamp(System.currentTimeMillis());
+                if (lastWaterDateTimestamp == null)
+                    lastWaterDateTimestamp = new Timestamp(System.currentTimeMillis());
 
                 //lastWaterDate.setTime(System.currentTimeMillis()); //Dummy data version --> TODO: GreenhouseDAO has to call this on response from api
                 //rePostLiveDataMinutesToNextWater(); //Dummy data version --> TODO: GreenhouseDAO has to call this on response from api
@@ -393,7 +420,7 @@ public void startCountDownTimerNextMeasurement(){
     }
 
     public ArrayList<Float> getTemperatureThreshold() {
-        return temperatureThreshold;
+        return (ArrayList<Float>) temperatureThreshold;
     }
 
     public void setTemperatureThreshold(ArrayList<Float> temperatureThreshold) {
@@ -401,7 +428,7 @@ public void startCountDownTimerNextMeasurement(){
     }
 
     public ArrayList<Float> getHumidityThreshold() {
-        return humidityThreshold;
+        return (ArrayList<Float>) humidityThreshold;
     }
 
     public void setHumidityThreshold(ArrayList<Float> humidityThreshold) {
@@ -409,7 +436,7 @@ public void startCountDownTimerNextMeasurement(){
     }
 
     public ArrayList<Float> getCo2Threshold() {
-        return co2Threshold;
+        return (ArrayList<Float>) co2Threshold;
     }
 
     public void setCo2Threshold(ArrayList<Float> co2Threshold) {
@@ -417,7 +444,7 @@ public void startCountDownTimerNextMeasurement(){
     }
 
     public String getLastMeasurementToString() {
-        return lastMeasurement.toString();
+        return lastMeasurementTimestamp.toString();
         //Todo ensure that this is formatted the same way as timestamp from currentDataResultFromAPI
     }
 }

@@ -90,7 +90,7 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
         plantRV.setLayoutManager(layoutManager);
         plantRVAdapter = new PlantRVAdapter(this, false);
 
-        plantRVAdapter.setPlantArrayList(greenhouse.getListPlants());
+        plantRVAdapter.setPlantArrayList(greenhouse.getPlants());
         plantRV.setAdapter(plantRVAdapter);
 
         Chip water = root.findViewById(R.id.waterButton);
@@ -107,7 +107,7 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
                     {
                         Log.i("førOnclick", "onClick: før greenhouse: " + greenhouse.isWindowIsOpen());
                         int openWindow;
-                        if(greenhouse.isWindowIsOpen() == 1)
+                        if(greenhouse.isWindowIsOpen())
                             {
                                 Log.i("true", "onClick: true ");
                                 openWindow = 0;
@@ -272,7 +272,7 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
                         .build();
                 Bundle bundle = new Bundle();
                 bundle.putString("selectedGreenhouseId", greenhouse.getId() + "");
-                Navigation.findNavController(getView()).navigate(R.id.action_greenhouseFragment_to_editGreenhouseFragment, bundle, navOptions);
+                Navigation.findNavController(getView()).navigate(R.id.action_greenhouseTabFragment_to_editGreenhouseFragment, bundle, navOptions);
             }
         });
         return root;
