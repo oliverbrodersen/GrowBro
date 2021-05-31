@@ -31,6 +31,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/showingTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Showing my GrowBros"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
             <LinearLayout
                 android:id="@+id/linearLayout4"
                 android:layout_width="match_parent"
@@ -56,31 +65,55 @@
                     android:text="Shared GrowBros"
                     android:textColor="@color/green_dark" />
             </LinearLayout>
-            <TextView
-                android:id="@+id/showingTextView"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/addCardViewHome"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_bold"
-                android:text="Showing my GrowBros"
-                android:textAlignment="center"
-                android:textColor="@color/white"/>
+                android:layout_height="100dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="37dp"
+                android:visibility="gone"
+                app:cardCornerRadius="32dp"
+                app:cardBackgroundColor="@color/white_bg_trans"
+                app:cardElevation="0dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/greenhouseListRV"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="32dp"
-                    android:layout_marginTop="24dp"
-                    android:clipToPadding="false"
-                    android:paddingBottom="30dp">
+                    android:layout_height="match_parent">
 
-                </androidx.recyclerview.widget.RecyclerView>
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add new GrowBro"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textColor="@color/green_dark"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+
+                    <ImageView
+                        android:id="@+id/imageView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:src="@drawable/ic_plus"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/green" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/greenhouseListRV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="24dp"
+                android:clipToPadding="false"
+                android:paddingBottom="30dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
     </ScrollView>
 

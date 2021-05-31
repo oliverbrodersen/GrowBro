@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavOptions;
@@ -44,15 +43,16 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
         homeViewModel.getGreenhouseListFromApi();
 
         Chip myGrowbrosButton = root.findViewById(R.id.myGreenhousesChip);
-        CardView addCardView = root.findViewById(R.id.addCardView);
+        CardView addCardView = root.findViewById(R.id.addCardViewHome);
         Chip friendsGrowbrosButton = root.findViewById(R.id.friendsGreenhouses);
         showingTextView = root.findViewById(R.id.showingTextView);
 
         greenhouseRV = root.findViewById(R.id.greenhouseListRV);
         greenhouseRV.setLayoutManager(new LinearLayoutManager(getContext()));
-
         greenhouseRVAdapter = new GreenhouseRVAdapter(this);
         greenhouseRV.setAdapter(greenhouseRVAdapter);
+
+        addCardView.setVisibility(View.GONE);
 
         //Binds current sensor data to view
         homeViewModel.getGreenhouseListAsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Greenhouse>>() {
@@ -78,7 +78,9 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
                     }
                 });
 
-
+                if (data.size() == 0){
+                    addCardView.setVisibility(View.VISIBLE);
+                }
 
             }
         });
@@ -138,6 +140,7 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
             greenhouseList = homeViewModel.getGreenhouseList();
         else
             greenhouseList = homeViewModel.getFriendsGreenhouseList().getValue();
+
         bundle.putString("selectedGreenhouseId", greenhouseList.get(clickedItemIndex).getId()+"");
         Navigation.findNavController(getView()).navigate(R.id.action_nav_home_to_greenhouseTabFragment, bundle, navOptions);
     }

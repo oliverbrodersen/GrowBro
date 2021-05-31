@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GrowBro"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.signin.SignInActivity">
+        <activity android:name=".ui.signin.SignInActivity"
+            android:theme="@style/Theme.GrowBro.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

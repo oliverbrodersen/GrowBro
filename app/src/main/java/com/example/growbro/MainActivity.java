@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -64,15 +65,13 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             }
-
             drawer.closeDrawer(GravityCompat.START);
+
+
             return handled;
         });
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+
         if(signInViewModel.getCurrentUser() == null && !sharedPreferences.getBoolean("signed_in",false)){
             //If the database did not return a user AND the user is not signed in from a previous session
             System.out.println("User is not signed in");
@@ -86,6 +85,12 @@ public class MainActivity extends AppCompatActivity {
             //if(signInViewModel.getCurrentUser() != null)
             //    sharedPreferences.edit().putInt("current_user_id", signInViewModel.getCurrentUser().getValue().getId()).apply();
         }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
