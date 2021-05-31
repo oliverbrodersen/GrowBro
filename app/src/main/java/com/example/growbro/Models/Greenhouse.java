@@ -21,7 +21,7 @@ public class Greenhouse {
     private int waterFrequency;
     private double waterVolume;
     private String waterTimeOfDay;
-    private boolean windowIsOpen;
+    private int windowIsOpen;
     private List<SensorData> sensorData;
     private MutableLiveData<List<SensorData>> sensorDataLive;
 
@@ -45,7 +45,7 @@ public class Greenhouse {
     public Greenhouse(){
         sensorDataLive = new MutableLiveData<>();
         listPlants = new ArrayList<>();
-        windowIsOpen = false;
+        windowIsOpen = 0;
         lastMeasurement = new Timestamp(new Date().getTime());
         lastWaterDate = new Timestamp(new Date().getTime());
         minutesToNextMeasurement = new MutableLiveData<>();
@@ -65,7 +65,7 @@ public class Greenhouse {
 
         isTimeToRestartWaterTimer = false;
     }
-    public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, Timestamp lastMeasurement, List<SensorData> currentData, boolean windowIsOpen) {
+    public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, Timestamp lastMeasurement, List<SensorData> currentData, int windowIsOpen) {
         this.Name = name;
         greenHouseID = id;
         userID = ownerId;
@@ -114,11 +114,11 @@ public class Greenhouse {
         sensorDataLive.setValue(sensorData);
     }
 
-    public boolean isWindowIsOpen() {
+    public int isWindowIsOpen() {
         return windowIsOpen;
     }
 
-    public void setWindowIsOpen(boolean windowIsOpen) {
+    public void setWindowIsOpen(int windowIsOpen) {
         this.windowIsOpen = windowIsOpen;
     }
 

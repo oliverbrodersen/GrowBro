@@ -50,8 +50,8 @@ public interface GrowBroApi {
     @POST("/user/{userId}/greenhouse/{greenhouseId}/waternow")
     Call<ApiReceipt> waterNow(@Path("userId")int userId, @Path("greenhouseId") int greenhouseId);
 
-    @POST("/user/{userId}/greenhouse/{greenhouseId}/openWindow")
-    Call<ApiReceipt> openWindow(@Path("userId")int userId, @Path("greenhouseId") int greenhouseId);
+    @POST("/user/{userId}/greenhouse/{greenhouseId}/openWindow/{openWindow}")
+    Call<ApiReceipt> openWindow(@Path("userId")int userId, @Path("greenhouseId") int greenhouseId, @Path("openWindow") int openWindow);
 
     @Headers("Content-Type: application/json")
     @POST("/user/{userId}/addGreenhouse")

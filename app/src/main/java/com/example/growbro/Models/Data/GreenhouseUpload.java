@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class GreenhouseUpload {
     private ArrayList<Plant> Plants;
     private int greenHouseID;
-    private Boolean WindowIsOpen;
+    private int WindowIsOpen;
     private int userID;
     private String Name;
     private int waterFrequency;
@@ -50,11 +50,11 @@ public class GreenhouseUpload {
         this.greenHouseID = greenHouseID;
     }
 
-    public Boolean getWindowIsOpen() {
+    public int getWindowIsOpen() {
         return WindowIsOpen;
     }
 
-    public void setWindowIsOpen(Boolean windowIsOpen) {
+    public void setWindowIsOpen(int windowIsOpen) {
         WindowIsOpen = windowIsOpen;
     }
 
