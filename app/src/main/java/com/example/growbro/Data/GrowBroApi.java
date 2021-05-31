@@ -26,7 +26,7 @@ public interface GrowBroApi {
     Call<User> login(@Query("username") String username, @Query("password") String password);
 
     @Headers("Content-Type: application/json")
-    @POST("/user/adduser")
+    @POST("/user/addUser")
     Call<ApiResponseId> addUser(@Body String body);
 
     @GET("/user/{userId}/greenhouse")

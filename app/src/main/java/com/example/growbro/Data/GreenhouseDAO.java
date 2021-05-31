@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -189,6 +190,14 @@ public class GreenhouseDAO {
                 new Callback<ApiReceipt>(){
                     @Override
                     public void onResponse(Call<ApiReceipt> call, Response<ApiReceipt> response) {
+                        Log.i("Api response", response.toString());
+                        if (response.code() == 400) {
+                            try {
+                                Log.i("Api 400", response.errorBody().string());
+                            } catch (IOException e) {
+                                // handle failure to read error
+                            }
+                        }
                         if (response.code() == 200){
                             getGreenhouse(greenhouseId).setLastWaterDateAndResetLiveData(response.body().getTimeOfExecution());
                         }
