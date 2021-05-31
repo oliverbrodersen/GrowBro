@@ -14,6 +14,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface GrowBroApi {
     @GET("/CurrentData")
@@ -21,7 +22,7 @@ public interface GrowBroApi {
 
     @Headers("Content-Type: application/json")
     @GET("/user")
-    Call<User> login(@Body String body);
+    Call<User> login(@Query("username") String username, @Query("password") String password);
 
     @Headers("Content-Type: application/json")
     @POST("/user/adduser")

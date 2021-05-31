@@ -265,7 +265,6 @@ public class EditGreenhouseFragment extends Fragment implements TimePickerFragme
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // TODO: Use the ViewModel
     }
 
     @Override

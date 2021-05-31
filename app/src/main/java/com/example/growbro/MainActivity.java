@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
                 int id = item.getItemId();
                 if (id == R.id.nav_signout) {
                     signInViewModel.signOut();
-
                     sharedPreferences.edit().putBoolean("signed_in", false).apply();
+
                     Intent intent = new Intent(this, SignInActivity.class);
                     startActivity(intent);
 
@@ -68,32 +68,11 @@ public class MainActivity extends AppCompatActivity {
             drawer.closeDrawer(GravityCompat.START);
             return handled;
         });
-
-        /*
-        Create sensordata json for mock api
-
-        SensorData co2 = new SensorData("CO2", 1200);
-        SensorData humidity = new SensorData("Humidity", 32);
-        SensorData temp = new SensorData("Temperature", 16);
-
-        ArrayList<SensorData> dataList = new ArrayList<SensorData>();
-
-        dataList.add(co2);
-        dataList.add(humidity);
-        dataList.add(temp);
-
-        ApiCurrentDataPackage apiCurrentDataPackage = new ApiCurrentDataPackage(dataList, new Timestamp(new Date().getTime()));
-
-        Gson gson = new Gson();
-        String json = gson.toJson(apiCurrentDataPackage);
-
-        Log.d("json", json);*/
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         if(signInViewModel.getCurrentUser() == null && !sharedPreferences.getBoolean("signed_in",false)){
             //If the database did not return a user AND the user is not signed in from a previous session
             System.out.println("User is not signed in");
@@ -101,11 +80,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             //Let user stay signed in after closing app
-            sharedPreferences.edit().putBoolean("signed_in", true).apply();
+            //sharedPreferences.edit().putBoolean("signed_in", true).apply();
 
             //Save userid for use after app restart
-            if(signInViewModel.getCurrentUser() != null)
-                sharedPreferences.edit().putInt("current_user_id", signInViewModel.getCurrentUser().getUserId()).apply();
+            //if(signInViewModel.getCurrentUser() != null)
+            //    sharedPreferences.edit().putInt("current_user_id", signInViewModel.getCurrentUser().getValue().getId()).apply();
         }
     }
 

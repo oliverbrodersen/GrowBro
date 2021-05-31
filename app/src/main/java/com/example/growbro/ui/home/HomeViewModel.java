@@ -76,7 +76,7 @@ public class HomeViewModel extends ViewModel {
         return repository.getGreenhouseListAsLiveData();
     }
 
-    public User getCurrentUser() {
+    public MutableLiveData<User> getCurrentUser() {
         return UserRepository.getInstance().getCurrentUser();
     }
 
@@ -85,7 +85,7 @@ public class HomeViewModel extends ViewModel {
     }
 
     public void getGreenhouseListFromApi() {
-        //TODO change static user id to userRepository.getCurrentUser().getUserId() when sign in works
-        repository.apiGetGreenhouseList(1);
+        if (userRepository.getCurrentUser().getValue() != null)
+            repository.apiGetGreenhouseList(userRepository.getCurrentUser().getValue().getId());
     }
 }

@@ -12,7 +12,6 @@ import com.example.growbro.Models.Data.GreenhouseUpload;
 import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.Models.Plant;
-import com.example.growbro.Models.User;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -201,36 +200,6 @@ public class GreenhouseDAO {
                     }
                 }
         );
-    }
-    public void apiLogin(String username, String password){
-        GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
-
-        // prepare call in Retrofit 2.0
-        try {
-            JSONObject paramObject = new JSONObject();
-            paramObject.put("username", username);
-            paramObject.put("pass", password);
-
-            Call<User> call = growBroApi.login(paramObject.toString());
-            call.enqueue(
-                    new Callback<User>(){
-                        @Override
-                        public void onResponse(Call<User> call, Response<User> response) {
-                            if (response.code() == 200){
-                                apiGetGreenhouseList(response.body().getUserId());
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<User> call, Throwable t) {
-                            Log.e("Api error", t.toString());
-                        }
-                    }
-            );
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
     }
     public void apiGetAverageData(int userId, int greenhouseId, Timestamp timeFrom, Timestamp timeTo){
         GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();

@@ -109,7 +109,6 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
             public void onClick(View v) {
                 if (showingTextView.getText().equals(MY_GROWBROS)){
                     showingTextView.setText(FRIENDS_GROWBROS);
-
                     greenhouseRVAdapter.setDataset(new ArrayList<Greenhouse>());
                     greenhouseRV.setAdapter(greenhouseRVAdapter);
 
@@ -124,7 +123,6 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
                 }
             }
         });
-
 
         return root;
     }
@@ -141,6 +139,6 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
         else
             greenhouseList = homeViewModel.getFriendsGreenhouseList().getValue();
         bundle.putString("selectedGreenhouseId", greenhouseList.get(clickedItemIndex).getId()+"");
-        Navigation.findNavController(getView()).navigate(R.id.action_nav_home_to_greenhouseFragment, bundle, navOptions);
+        Navigation.findNavController(getView()).navigate(R.id.action_nav_home_to_greenhouseTabFragment, bundle, navOptions);
     }
 }
