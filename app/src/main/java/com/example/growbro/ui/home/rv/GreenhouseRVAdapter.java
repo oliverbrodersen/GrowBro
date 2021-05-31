@@ -120,9 +120,12 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
             public void onChanged(Integer integer) {
 
                 if (greenhouse.isTimeToRestartMeasurementTimer()) {
+
                     greenhouse.startCountDownTimerNextMeasurement();
                     greenhouse.setIsTimeToRestartMeasurementTimer(false);
                 }
+
+
 
                 holder.nextMeasureValue.setText(integer+" minutes");
             }

@@ -34,6 +34,8 @@ public class Greenhouse {
     private MutableLiveData<Integer> minutesToNextMeasurement;
     private boolean isTimeToRestartMeasurementTimer;
 
+    private boolean stopCheckForNewMeasurement;
+
     private Timestamp lastWaterDate;
     private CountDownTimer countDownTimerNextWater;
     private MutableLiveData<Integer> minutesToNextWater;
@@ -43,6 +45,7 @@ public class Greenhouse {
     private ArrayList<String> sharedWith;
 
     public Greenhouse(){
+        stopCheckForNewMeasurement = false;
         sensorDataLive = new MutableLiveData<>();
         listPlants = new ArrayList<>();
         windowIsOpen = 0;
@@ -66,6 +69,7 @@ public class Greenhouse {
         isTimeToRestartWaterTimer = false;
     }
     public Greenhouse(String name, int id, int ownerId, ArrayList<Plant> listPlants, int waterFrequency, double waterVolume, String waterTimeOfDay, Timestamp lastWaterDate, Timestamp lastMeasurement, List<SensorData> currentData, int windowIsOpen) {
+        stopCheckForNewMeasurement = false;
         this.Name = name;
         greenHouseID = id;
         userID = ownerId;
@@ -100,6 +104,14 @@ public class Greenhouse {
         humidityThreshold.add(new Float(80));
         co2Threshold.add(new Float(200));
         co2Threshold.add(new Float(1200));
+    }
+
+    public boolean isStopCheckForNewMeasurement() {
+        return stopCheckForNewMeasurement;
+    }
+
+    public void setStopCheckForNewMeasurement(boolean stopCheckForNewMeasurement) {
+        this.stopCheckForNewMeasurement = stopCheckForNewMeasurement;
     }
 
     public List<SensorData> getSensorData() {
@@ -402,5 +414,10 @@ public void startCountDownTimerNextMeasurement(){
 
     public void setCo2Threshold(ArrayList<Float> co2Threshold) {
         this.co2Threshold = co2Threshold;
+    }
+
+    public String getLastMeasurementToString() {
+        return lastMeasurement.toString();
+        //Todo ensure that this is formatted the same way as timestamp from currentDataResultFromAPI
     }
 }

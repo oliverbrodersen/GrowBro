@@ -3,6 +3,7 @@ package com.example.growbro.Data;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.example.growbro.Models.Data.ApiCurrentDataPackage;
 import com.example.growbro.Models.Data.ApiReceipt;
@@ -25,6 +26,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,6 +39,7 @@ public class GreenhouseDAO {
     private MutableLiveData<List<Greenhouse>> greenhouseList;
     private MutableLiveData<List<Greenhouse>> friendsGreenhouseList;
     private MutableLiveData<List<ApiCurrentDataPackage>> sensorDataHistory;
+    private final int SECONDS_BETWEEN_CHECK = 1000;
 
     private GreenhouseDAO() {
         //Dummy data
@@ -130,6 +134,7 @@ public class GreenhouseDAO {
         Log.d("Greenhouse", "Greenhouse to be updated, was not found in DAO");
         return false;
     }
+
     public void apiGetCurrentData(int userId, int greenhouseId){
         GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
         Call<CurrentDataResultFromApi> call = growBroApi.getCurrentData(userId,greenhouseId);
@@ -141,6 +146,9 @@ public class GreenhouseDAO {
                             Log.d("Api", "Response: " + response.body().getData());
 
                             getGreenhouse(greenhouseId).setCurrentData(response.body().getData());
+
+                            if (!response.body().getLastDataPoint().equals(getGreenhouse(greenhouseId).getLastMeasurementToString()))
+                                getGreenhouse(greenhouseId).setStopCheckForNewMeasurement(false);
                         }
                     }
 
@@ -261,8 +269,27 @@ public class GreenhouseDAO {
                     public void onResponse(Call<List<Greenhouse>> call, Response<List<Greenhouse>> response) {
                         if (response.code() == 200){
                             //Set sensordata
-                            for (Greenhouse g: response.body())
+                            for (Greenhouse g: response.body()) {
                                 g.setCurrentData(g.getSensorData());
+                                g.getMinutesToNextMeasurementLiveData().observeForever(new Observer<Integer>() {
+                                    @Override
+                                    public void onChanged(Integer integer) {
+                                        if (integer == 0) {
+                                            TimerTask task = new TimerTask() {
+                                                @Override
+                                                public void run() {
+                                                    if (g.isStopCheckForNewMeasurement())
+                                                        return;
+                                                    apiGetCurrentData(userId, g.getId());
+                                                }
+                                            };
+
+                                            Timer timer = new Timer("apiDataListener/" + g.getId());
+                                            timer.scheduleAtFixedRate(task, SECONDS_BETWEEN_CHECK, SECONDS_BETWEEN_CHECK);
+                                        }
+                                    }
+                                });
+                            }
 
                             greenhouseList.setValue(response.body());
                         }
