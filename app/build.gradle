@@ -56,4 +56,7 @@ dependencies {
 
     //MPAndroidChart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    //For Settings
+    implementation 'androidx.preference:preference:1.1.1'
 }

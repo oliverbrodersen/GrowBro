@@ -36,7 +36,7 @@ public class SignInActivity extends AppCompatActivity {
 
         //Check if user is signed in
         if (sharedPreferences.getBoolean("signed_in",false)) {
-            goToActivity();
+           // goToActivity();
         }
 
         editTextUsername = findViewById(R.id.edtUsername);

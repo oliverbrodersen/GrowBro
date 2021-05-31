@@ -1,5 +1,7 @@
 package com.example.growbro.ui.home.rv;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +13,15 @@ import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.growbro.MainActivity;
 import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.R;
+import com.example.growbro.Settings.SettingsActivity;
 import com.example.growbro.ui.home.HomeViewModel;
 import com.google.android.material.chip.Chip;
 
@@ -32,10 +37,24 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
     private HashMap<Integer, Integer> nextMeasurementMinutesByGreenhouseId;
     private HashMap<Integer, Integer> nextWaterMinutesByGreenhouseId;
     final private OnListItemClickListener mOnListItemClickListener;
+    SharedPreferences sharedPreferences;
+    private boolean fahrenheit;
+    private String unit;
 
 
-    public GreenhouseRVAdapter(OnListItemClickListener mOnListItemClickListener) {
+
+    public GreenhouseRVAdapter(OnListItemClickListener mOnListItemClickListener, Context ctx) {
         this.mOnListItemClickListener = mOnListItemClickListener;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        fahrenheit = sharedPreferences.getBoolean
+                (SettingsActivity.KEY_PREF_FAHRENHEIT_SWITCH, false);
+
+        if(fahrenheit)
+            unit = ctx.getString(R.string.fahrenheit);
+        else
+            unit = ctx.getString(R.string.celsius);
+
+        //System.out.println("#TTT: TEST after merge: GreenhouseRVAdapter constructor: unit: " + unit);
     }
 
     public void setDataset(ArrayList<Greenhouse> greenhouseArrayList){
@@ -98,10 +117,18 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
                                 holder.valueCO2.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
                                 break;
                             case "temperature":
-                                if (sensorData.getValue() % 1 == 0)
-                                    holder.valueTemperature.setText((int)sensorData.getValue() + "°");
-                                else
-                                    holder.valueTemperature.setText(sensorData.getValue() + "°");
+                                if (sensorData.getValue() % 1 == 0) {
+                                    if(fahrenheit)
+                                        holder.valueTemperature.setText((int) sensorData.getValue() * MainActivity.getFahrenheitConversionValue() + unit);
+                                    else
+                                        holder.valueTemperature.setText((int) sensorData.getValue() + unit);
+                                }
+                                else {
+                                    if(fahrenheit)
+                                        holder.valueTemperature.setText(sensorData.getValue() * MainActivity.getFahrenheitConversionValue() + unit);
+                                    else
+                                        holder.valueTemperature.setText(sensorData.getValue() + unit);
+                                }
                                 holder.valueTemperature.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
                                 break;
                             case "humidity":

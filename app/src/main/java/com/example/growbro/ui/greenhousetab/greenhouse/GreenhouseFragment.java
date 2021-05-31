@@ -3,6 +3,7 @@ package com.example.growbro.ui.greenhousetab.greenhouse;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -25,12 +26,15 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.growbro.MainActivity;
 import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.R;
+import com.example.growbro.Settings.SettingsActivity;
 import com.example.growbro.ui.greenhousetab.greenhouse.rv.SharedRVAdapter;
 import com.example.growbro.ui.home.rv.PlantRVAdapter;
 import com.google.android.material.chip.Chip;
@@ -42,6 +46,7 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
     public static final String ARG_SELECTED_GREENHOUSE_ID = "selectedGreenhouseId";
     public Greenhouse greenhouse;
     private String selectedGreenhouseId;
+    private String unit;
     private RecyclerView plantRV;
     private PlantRVAdapter plantRVAdapter;
     private RecyclerView sharedRV;
@@ -55,6 +60,7 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
 
         Bundle args = getArguments();
         selectedGreenhouseId = args.getString(ARG_SELECTED_GREENHOUSE_ID);
+        unit = getString(R.string.celsius); //default
     }
 
     @Override
@@ -100,7 +106,17 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
         window.setOnClickListener(v ->
                 mViewModel.openWindow(greenhouse.getOwnerId(),greenhouse.getId()));
 
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        Boolean fahrenheit = sharedPref.getBoolean
+                (SettingsActivity.KEY_PREF_FAHRENHEIT_SWITCH, false);
+
+        if(fahrenheit)
+            unit = getString(R.string.fahrenheit);
+
+        //valueTemperature.setText(unit); //Used for testing temperature unit settings
+
         greenhouse.getCurentLiveData().observeForever(new Observer<List<SensorData>>() {
+
             @Override
             public void onChanged(List<SensorData> data) {
                 if (data != null) {
@@ -111,10 +127,18 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
                                 valueCO2.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
                                 break;
                             case "temperature":
-                                if (sensorData.getValue() % 1 == 0)
-                                    valueTemperature.setText((int)sensorData.getValue() + "°");
-                                else
-                                    valueTemperature.setText(sensorData.getValue() + "°");
+                                if (sensorData.getValue() % 1 == 0) {
+                                    if(fahrenheit)
+                                        valueTemperature.setText((int) sensorData.getValue() * MainActivity.getFahrenheitConversionValue() + unit);
+                                    else
+                                        valueTemperature.setText((int) sensorData.getValue() + unit);
+                                }
+                                else {
+                                    if(fahrenheit)
+                                        valueTemperature.setText(sensorData.getValue() * MainActivity.getFahrenheitConversionValue() + unit);
+                                    else
+                                        valueTemperature.setText(sensorData.getValue() + unit);
+                                }
                                 valueTemperature.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
                                 break;
                             case "humidity":
