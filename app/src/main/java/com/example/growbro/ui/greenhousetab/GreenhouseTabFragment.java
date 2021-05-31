@@ -1,17 +1,15 @@
 package com.example.growbro.ui.greenhousetab;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.growbro.R;
 import com.google.android.material.tabs.TabLayout;
@@ -59,7 +57,6 @@ public class GreenhouseTabFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(GreenhouseTabViewModel.class);
-        // TODO: Use the ViewModel
     }
 
 }

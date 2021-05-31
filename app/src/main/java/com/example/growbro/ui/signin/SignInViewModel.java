@@ -1,5 +1,6 @@
 package com.example.growbro.ui.signin;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.growbro.Login.UserRepository;
@@ -12,7 +13,7 @@ public class SignInViewModel extends ViewModel {
        userRepository = UserRepository.getInstance();
     }
 
-    public User getCurrentUser() {
+    public MutableLiveData<User> getCurrentUser() {
         return UserRepository.getInstance().getCurrentUser();
     }
 

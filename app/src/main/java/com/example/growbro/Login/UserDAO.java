@@ -7,11 +7,12 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.growbro.Data.GrowBroApi;
 import com.example.growbro.Data.ServiceGenerator;
 import com.example.growbro.Models.User;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,12 +20,10 @@ import retrofit2.Response;
 
 public class UserDAO {
     private static UserDAO instance;
-    private User currentUser;
-    private MutableLiveData<ArrayList<User>> friendList;
+    private MutableLiveData<User> currentUser;
 
     public UserDAO() {
-        friendList = new MutableLiveData<>();
-        friendList.setValue(new ArrayList<User>());
+        currentUser = new MutableLiveData<>();
     }
 
     public static UserDAO getInstance() {
@@ -34,42 +33,34 @@ public class UserDAO {
         return instance;
     }
 
-    public MutableLiveData<ArrayList<User>> getFriendList() {
-        if (friendList.getValue().isEmpty())
-            apiGetFriends();
-        return friendList;
-    }
-
-    public void apiGetFriends(){
-        //TODO get from api
-        User user1 = new User(5,"Markus", "123456");
-        User user2 = new User(5,"Anne", "123456");
-        User user3 = new User(5,"Sonny", "123456");
-
-        ArrayList<User> userArrayList = new ArrayList<>();
-        userArrayList.add(user1);
-        userArrayList.add(user2);
-        userArrayList.add(user3);
-
-        friendList.setValue(userArrayList);
-    }
-
-    public void apiAddUser(User user){
-        //currentUser = new User(user.getUserId(), user.getUserName(), user.getPassword()); //Dummy Data
+    public void apiAddUser(User user) {
         GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
         // prepare call in Retrofit 2.0
-        try {
+
+        try{
             JSONObject paramObject = new JSONObject();
-            paramObject.put("User", user);
-            Call<Integer> call = growBroApi.addUser(paramObject.toString());
+            paramObject.put("user", user);
+            //new Gson().toJson(user)
+
+            Log.i("Api json", new Gson().toJson(user));
+
+            Call<Integer> call = growBroApi.addUser(new Gson().toJson(user));
             call.enqueue(
                     new Callback<Integer>(){
                         @Override
                         public void onResponse(Call<Integer> call, Response<Integer> response) {
-                            Log.e("Api error", call.toString());
+                            Log.i("Api response", response.toString());
+                            if (response.code() == 400) {
+                                try {
+                                    Log.i("Api 400", response.errorBody().string());
+                                } catch (IOException e) {
+                                    // handle failure to read error
+                                }
+                            }
                             if (response.code() == 200){
-                                int userId = response.body();
-                                currentUser = new User(userId, user.getUserName(), user.getPassword());
+                                //int userId = response.body();
+                                Log.i("Api response", response.body().toString());
+                                currentUser.postValue(new User(response.body(), user.getUsername(), user.getPassword()));
                             }
                         }
 
@@ -79,33 +70,32 @@ public class UserDAO {
                         }
                     }
             );
-        } catch (JSONException e) {
-            e.printStackTrace();
+        }catch (JSONException e){
+
         }
     }
 
-    public User getCurrentUser() {
+    public MutableLiveData<User> getCurrentUser() {
         return currentUser;
     }
 
     public void signOut() {
-        currentUser = null;
+        Log.i("login", "Current user: " + currentUser.getValue().toString());
+        currentUser.setValue(null);
+        Log.i("login", "Current user: " + currentUser.getValue());
     }
 
     public void apiSignIn(String userName, String password) {
-        currentUser = new User(-1, userName, password); //Dummy Data
-        /*
-        User userToLogin = new User(-1, userName, password);
-        //TODO Find ud af (snak med DAI?) om login skal ske med query-parameters (GET-request) eller via info i body på en måde
-        //https://i.imgur.com/tdKpReE.png , https://i.imgur.com/7oFXQRE.png , https://i.imgur.com/2g5jEMN.png
         GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
         // prepare call in Retrofit 2.0
             Call<User> call = growBroApi.login(userName, password);
             call.enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
+                    Log.i("Login", response.message().toString() + "");
                     if (response.code() == 200) {
-                        currentUser = response.body();
+                        currentUser.postValue(response.body());
+                        Log.i("Login", response.body().toString() + "");
                     }
                 }
 
@@ -113,6 +103,6 @@ public class UserDAO {
                 public void onFailure(Call<User> call, Throwable t) {
                     Log.e("Api error", t.toString());
                 }
-            }); */
+            });
     }
 }

@@ -16,9 +16,7 @@ public class EditGreenhouseViewModel extends ViewModel {
     }
 
     public void addGreenhouse(Greenhouse g) {
-        //TODO update når login går gennem api
-        //userRepository.getCurrentUser().getUserId();
-        g.setOwnerId(1);
+        g.setOwnerId(userRepository.getCurrentUser().getValue().getId());
         greenhouseRepository.addGreenhouse(g);
     }
 

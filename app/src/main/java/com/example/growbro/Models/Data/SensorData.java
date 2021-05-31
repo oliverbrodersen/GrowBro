@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 public class SensorData {
     private String type;
     private int value;
-    //TODO value hedder data når den kommer fra den rigtige API
+
     public SensorData() {
     }
 

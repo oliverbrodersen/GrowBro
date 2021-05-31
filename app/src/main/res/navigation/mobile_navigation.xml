@@ -14,13 +14,13 @@
             android:id="@+id/action_nav_home_to_editGreenhouseFragment"
             app:destination="@id/editGreenhouseFragment" />
         <action
-            android:id="@+id/action_nav_home_to_greenhouseFragment"
-            app:destination="@id/greenhouseFragment" />
+            android:id="@+id/action_nav_home_to_greenhouseTabFragment"
+            app:destination="@id/greenhouseTabFragment" />
     </fragment>
     <fragment
         android:id="@+id/greenhouseTabFragment"
         android:name="com.example.growbro.ui.greenhousetab.GreenhouseTabFragment"
-        android:label="greenhouse_tab_fragment"
+        android:label=""
         tools:layout="@layout/greenhouse_tab_fragment" />
     <fragment
         android:id="@+id/greenhouseFragment"

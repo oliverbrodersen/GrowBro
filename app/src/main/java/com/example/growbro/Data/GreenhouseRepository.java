@@ -52,9 +52,6 @@ public class GreenhouseRepository {
         {
             greenhouseDAO.apiOpenWindow(userId,greenhouseId);
         }
-    public void apiLogin(String username, String password){
-        greenhouseDAO.apiLogin(username, password);
-    }
     public void apiGetGreenhouseList(int userId){
         greenhouseDAO.apiGetGreenhouseList(userId);
     }
@@ -66,10 +63,6 @@ public class GreenhouseRepository {
     }
     public void apiAddPlant(int userId, int greenhouseId, Plant plant){
         greenhouseDAO.apiAddPlant(userId, greenhouseId, plant);
-    }
-
-    public void sendText(String value) {
-        //TODO: make it
     }
 
     public MutableLiveData<List<Greenhouse>> getGreenhouseListAsLiveData() {
@@ -96,8 +89,7 @@ public class GreenhouseRepository {
     }
 
     public MutableLiveData<List<Greenhouse>> getFriendsGreenhouseList() {
-        //TODO insert userID from userRepository.getCurrentUser().getUserId() instead of static value
-        greenhouseDAO.apiGetFriendsGreenhouseList(1);
+        greenhouseDAO.apiGetFriendsGreenhouseList(userRepository.getCurrentUser().getValue().getId());
         return greenhouseDAO.getFriendsGreenhouseListAsLiveData();
     }
 

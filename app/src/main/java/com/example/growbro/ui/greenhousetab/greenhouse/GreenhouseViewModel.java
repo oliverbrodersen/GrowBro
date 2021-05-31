@@ -20,8 +20,7 @@ public class GreenhouseViewModel extends ViewModel {
     }
 
     public int getCurrentUserId(){
-        //TODO update method so that it is not static and returns from userRepository.getCurrentUser().getUserId()
-        return 1;
+        return userRepository.getCurrentUser().getValue().getId();
     }
 
     public void openWindow(int userId, int greenhouseId)
@@ -33,8 +32,4 @@ public class GreenhouseViewModel extends ViewModel {
         {
             greenhouseRepository.apiWaterNow(userId,greenhouseId);
         }
-
-
-
-    // TODO: Implement the ViewModel
 }

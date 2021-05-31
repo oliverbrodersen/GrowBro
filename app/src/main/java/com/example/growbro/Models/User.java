@@ -1,28 +1,47 @@
 package com.example.growbro.Models;
 
 public class User {
-    private int userId;
-    private String userName;
-    private String passWord;
+    private int Id;
+    private String Username;
+    private String Password;
 
-    public User(int userId, String userName, String passWord) {
-        this.userId = userId;
-        this.userName = userName;
-        this.passWord = passWord;
+    public User() {
     }
 
-    public int getUserId() {
-        return userId;
+    public User(int Id, String Username, String Password) {
+        this.Id = Id;
+        this.Username = Username;
+        this.Password = Password;
     }
 
-    public String getUserName() {
-        return userName;
+    public int getId() {
+        return Id;
     }
 
-    public void setUserId(int userId) {
+    public String getUsername() {
+        return Username;
+    }
+
+    public void setId(int Id) {
+        this.Id = Id;
+    }
+
+    public void setUsername(String Username) {
+        this.Username = Username;
+    }
+
+    public void setPassword(String Password) {
+        this.Password = Password;
     }
 
     public String getPassword() {
-        return passWord;
+        return Password;
+    }
+
+    @Override
+    public String toString() {
+        return  "Id=" + Id +
+                ", Username='" + Username + '\'' +
+                ", Password='" + Password + '\'';
     }
 }

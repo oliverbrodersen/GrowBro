@@ -4,8 +4,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.growbro.Models.User;
 
-import java.util.ArrayList;
-
 public class UserRepository {
     private static UserRepository instance;
     private UserDAO userDAO;
@@ -20,13 +18,8 @@ public class UserRepository {
         }
         return instance;
     }
-    public MutableLiveData<ArrayList<User>> getFriendList(){
-        return userDAO.getFriendList();
-    }
-    public void apiGetFriends(){
-        userDAO.apiGetFriends();
-    }
-    public User getCurrentUser() {
+
+    public MutableLiveData<User> getCurrentUser() {
         return userDAO.getCurrentUser();
     }
 
