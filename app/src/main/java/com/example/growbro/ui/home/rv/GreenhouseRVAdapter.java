@@ -83,7 +83,7 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
             holder.addPlantCard.setVisibility(View.VISIBLE);
         }
 
-        if (greenhouse.isWindowIsOpen())
+        if (greenhouse.isWindowIsOpen() == 1)
             holder.windowIsOpen.setVisibility(View.VISIBLE);
         else
             holder.windowIsOpen.setVisibility(View.GONE);

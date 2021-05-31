@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,9 +97,34 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
         water.setOnClickListener(v ->
                 mViewModel.water(greenhouse.getOwnerId(),greenhouse.getId()));
 
-        Chip window = root.findViewById(R.id.windowButton);
-        window.setOnClickListener(v ->
-                mViewModel.openWindow(greenhouse.getOwnerId(),greenhouse.getId()));
+
+
+        Button window = root.findViewById(R.id.windowButton);
+        window.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                    {
+                        Log.i("førOnclick", "onClick: før greenhouse: " + greenhouse.isWindowIsOpen());
+                        int openWindow;
+                        if(greenhouse.isWindowIsOpen() == 1)
+                            {
+                                Log.i("true", "onClick: true ");
+                                openWindow = 0;
+
+                                window.setText("Open window");
+
+                            }
+                        else
+                            {
+                                Log.i("false", "onClick: false ");
+                                openWindow = 1;
+                                window.setText("Close window");
+                            }
+                        mViewModel.openWindow(greenhouse.getOwnerId(),greenhouse.getId(),openWindow);
+                    }
+            });
+
 
         greenhouse.getCurentLiveData().observeForever(new Observer<List<SensorData>>() {
             @Override

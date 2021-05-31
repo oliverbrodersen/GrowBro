@@ -24,9 +24,9 @@ public class GreenhouseViewModel extends ViewModel {
         return 1;
     }
 
-    public void openWindow(int userId, int greenhouseId)
+    public void openWindow(int userId, int greenhouseId, int openWindow)
         {
-            greenhouseRepository.openWindow(userId,greenhouseId);
+            greenhouseRepository.openWindow(userId,greenhouseId, openWindow);
         }
 
     public void water(int userId, int greenhouseId)

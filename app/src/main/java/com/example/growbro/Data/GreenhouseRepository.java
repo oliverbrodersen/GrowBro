@@ -48,9 +48,9 @@ public class GreenhouseRepository {
     public void apiWaterNow(int userId, int greenhouseId){
         greenhouseDAO.apiWaterNow(userId, greenhouseId);
     }
-    public void openWindow(int userId, int greenhouseId)
+    public void openWindow(int userId, int greenhouseId, int openWindow)
         {
-            greenhouseDAO.apiOpenWindow(userId,greenhouseId);
+            greenhouseDAO.apiOpenWindow(userId,greenhouseId, openWindow);
         }
     public void apiLogin(String username, String password){
         greenhouseDAO.apiLogin(username, password);

@@ -322,16 +322,19 @@ public class GreenhouseDAO {
         greenhouseList.setValue(greenhouseArrayList);
     }
 
-    public void apiOpenWindow(int userId, int greenhouseId){
+    public void apiOpenWindow(int userId, int greenhouseId, int openWindow){
         //TODO DAI vil have 0 hvis vinduiet skal lukke sog 1 hvis det skal lukkes
         GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
-        Call<ApiReceipt> call = growBroApi.openWindow(userId,greenhouseId);
+        Call<ApiReceipt> call = growBroApi.openWindow(userId,greenhouseId, openWindow);
         call.enqueue(
                 new Callback<ApiReceipt>(){
                     @Override
                     public void onResponse(Call<ApiReceipt> call, Response<ApiReceipt> response) {
                         if (response.code() == 200){
-                            //TODO
+                            if(openWindow == 1)
+                                greenhouseList.getValue().get(greenhouseId).setWindowIsOpen(1);
+                            else
+                                greenhouseList.getValue().get(greenhouseId).setWindowIsOpen(0);
                         }
                     }
 
