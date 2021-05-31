@@ -4,21 +4,27 @@ import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.Models.Plant;
 import com.google.gson.annotations.SerializedName;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class GreenhouseUpload {
-    private ArrayList<Plant> Plants;
-    private int greenHouseID;
-    private boolean WindowIsOpen;
-    private int userID;
+
+
+
+
     private String Name;
+    private int greenHouseID;
+    private int userID;
+    private ArrayList<Plant> Plants;
     private int waterFrequency;
+    private boolean WindowIsOpen;
     private double waterVolume;
     private String waterTimeOfDay;
+    private ArrayList<SensorData> sensorData;
     private String lastWaterDate;
     private String lastMeasurement;
-    private ArrayList<SensorData> sensorData;
     private ArrayList<String> sharedWith;
     @SerializedName(value = "tempteratureThreshhold")
     private List<Float> temperatureThreshold;
@@ -35,8 +41,8 @@ public class GreenhouseUpload {
         waterFrequency = greenhouse.getWaterFrequency();
         waterVolume = greenhouse.getWaterVolume();
         waterTimeOfDay = greenhouse.getWaterTimeOfDay();
-        lastWaterDate = greenhouse.getLastWaterDateTimestamp().toString();
-        lastMeasurement = greenhouse.getLastMeasurementTimestamp().toString();
+        lastWaterDate = new Timestamp(new Date().getTime()).toString();
+        lastMeasurement = new Timestamp(new Date().getTime()).toString();
         sensorData = (ArrayList<SensorData>) greenhouse.getSensorData();
         sharedWith = greenhouse.getSharedWith();
         temperatureThreshold = greenhouse.getTemperatureThreshold();
