@@ -21,6 +21,7 @@ import androidx.preference.PreferenceManager;
 
 import com.example.growbro.R;
 import com.example.growbro.Settings.SettingsActivity;
+import com.example.growbro.util.Converter;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -47,6 +48,7 @@ public class StatisticsFragment extends Fragment {
     private String temperatureUnit;
     private StatisticsViewModel statisticsViewModel;
     private LineChart lineChart;
+    private boolean fahrenheit;
 
     private static final int DEFAULT_TIME_RANGE = 14; //14 days
 
@@ -96,7 +98,7 @@ public class StatisticsFragment extends Fragment {
         });
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        Boolean fahrenheit = sharedPref.getBoolean
+         fahrenheit = sharedPref.getBoolean
                 (SettingsActivity.KEY_PREF_FAHRENHEIT_SWITCH, false);
 
         if(fahrenheit)
@@ -109,6 +111,13 @@ public class StatisticsFragment extends Fragment {
     //https://learntodroid.com/how-to-display-a-line-chart-in-your-android-app/
     private void setLineData(int userId, String parameterName, Timestamp timeFrom, Timestamp timeTo) {
         ArrayList<Entry> chartEntries = statisticsViewModel.getChartEntries(userId, parameterName, selectedGreenhouseId, timeFrom, timeTo);
+
+        if(fahrenheit)
+            for (Entry entry : chartEntries) {
+                double dEntry = Converter.convertToFahrenheit(entry.getY());
+                entry.setY((float) dEntry);
+            }
+
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         String unit = "";
         switch (parameterName) {
