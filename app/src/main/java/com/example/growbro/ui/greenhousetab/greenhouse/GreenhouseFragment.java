@@ -106,6 +106,11 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
 
 
         Button window = root.findViewById(R.id.windowButton);
+        if (greenhouse.isWindowIsOpen())
+            window.setText("Close window");
+        else
+            window.setText("Open window");
+
         window.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -113,21 +118,21 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
                     {
                         Log.i("førOnclick", "onClick: før greenhouse: " + greenhouse.isWindowIsOpen());
                         int openWindow;
-                        if(greenhouse.isWindowIsOpen())
-                            {
+                        if(greenhouse.isWindowIsOpen()) {
                                 Log.i("true", "onClick: true ");
                                 openWindow = 0;
 
                                 window.setText("Open window");
 
                             }
-                        else
-                            {
+
+                        else {
                                 Log.i("false", "onClick: false ");
                                 openWindow = 1;
                                 window.setText("Close window");
                             }
-                        mViewModel.openWindow(greenhouse.getOwnerId(),greenhouse.getId(),openWindow);
+                        Log.i("befire viewmodel call", "onClick: openWindowValue: " + openWindow + "/ ownerId: " + greenhouse.getOwnerId() + "/ greenhouseId: " + greenhouse.getId());
+                        mViewModel.openWindow(greenhouse.getOwnerId(), greenhouse.getId(), openWindow);
                     }
             });
 

@@ -330,7 +330,8 @@ public class GreenhouseDAO {
     public void apiOpenWindow(int userId, int greenhouseId, int openWindow){
         //TODO DAI vil have 0 hvis vinduiet skal lukke sog 1 hvis det skal lukkes
         GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
-        Call<ApiReceipt> call = growBroApi.openWindow(userId,greenhouseId, openWindow);
+        Call<ApiReceipt> call = growBroApi.openWindow(userId, greenhouseId, openWindow);
+        Log.i("DAO after call to ", "apiOpenWindow: ");
         call.enqueue(
                 new Callback<ApiReceipt>(){
                     @Override

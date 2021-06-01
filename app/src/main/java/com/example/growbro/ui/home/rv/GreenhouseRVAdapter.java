@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.FloatRange;
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
@@ -27,6 +29,7 @@ import com.google.android.material.chip.Chip;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -112,6 +115,7 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
             public void onChanged(List<SensorData> data) {
                 if (data != null) {
                     for (SensorData sensorData : data) {
+
                         switch (sensorData.getType().toLowerCase()) {
                             case "co2":
                                 holder.valueCO2.setText(((int)sensorData.getValue()) + "");
@@ -119,22 +123,24 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
 
                                 if(sensorData.getValue() < greenhouse.getCo2Threshold().get(0) || sensorData.getValue() > greenhouse.getCo2Threshold().get(1))
                                     holder.accentC02.setBackgroundResource(R.color.criticalHealth);
+
                                 else
                                     holder.accentC02.setBackgroundResource(R.color.goodHealth);
 
-
-
                                 break;
+
                             case "temperature":
                                 if (sensorData.getValue() % 1 == 0) {
                                     if(fahrenheit)
                                         holder.valueTemperature.setText((int) Converter.convertToFahrenheit(sensorData.getValue()) + temperatureUnit);
+
                                     else
                                         holder.valueTemperature.setText((int) sensorData.getValue() + temperatureUnit);
                                 }
                                 else {
                                     if(fahrenheit)
                                         holder.valueTemperature.setText(Converter.convertToFahrenheit(sensorData.getValue()) + temperatureUnit);
+
                                     else
                                         holder.valueTemperature.setText(sensorData.getValue() + temperatureUnit);
                                 }
@@ -142,16 +148,19 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
 
                                 if(sensorData.getValue() < greenhouse.getTemperatureThreshold().get(0) || sensorData.getValue() > greenhouse.getTemperatureThreshold().get(1))
                                     holder.accentTemperature.setBackgroundResource(R.color.criticalHealth);
+
                                 else
                                     holder.accentTemperature.setBackgroundResource(R.color.goodHealth);
 
                                 break;
+
                             case "humidity":
                                 holder.valueHumidity.setText(((int)sensorData.getValue()) + "%");
                                 holder.valueHumidity.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
 
                                 if(sensorData.getValue() < greenhouse.getHumidityThreshold().get(0) || sensorData.getValue() > greenhouse.getHumidityThreshold().get(1))
                                     holder.accentHumidity.setBackgroundResource(R.color.criticalHealth);
+
                                 else
                                     holder.accentHumidity.setBackgroundResource(R.color.goodHealth);
 
