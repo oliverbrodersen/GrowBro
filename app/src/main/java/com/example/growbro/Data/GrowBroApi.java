@@ -50,10 +50,10 @@ public interface GrowBroApi {
     Call<List<ApiCurrentDataPackage>> getAverageDataHistory(@Path("userId") int userId, @Path("greenhouseId") String greenhouseId, @Body String body);
 
     @POST("/user/{userId}/greenhouse/{greenhouseId}/waternow")
-    Call<ApiReceipt> waterNow(@Path("userId")int userId, @Path("greenhouseId") int greenhouseId);
+    Call<Void> waterNow(@Path("userId")int userId, @Path("greenhouseId") int greenhouseId);
 
     @GET("/user/{userId}/greenhouse/{greenhouseId}/openWindow/{openWindow}")
-    Call<ApiReceipt> openWindow(@Path("userId")int userId, @Path("greenhouseId") int greenhouseId, @Path("openWindow") int openWindow);
+    Call<Void> openWindow(@Path("userId")int userId, @Path("greenhouseId") int greenhouseId, @Path("openWindow") int openWindow);
 
     @Headers("Content-Type: application/json")
     @POST("/user/{userId}/addGreenhouse")

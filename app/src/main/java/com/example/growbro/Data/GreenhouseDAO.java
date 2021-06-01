@@ -185,11 +185,11 @@ public class GreenhouseDAO {
     }
     public void apiWaterNow(int userId, int greenhouseId){
         GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
-        Call<ApiReceipt> call = growBroApi.waterNow(userId,greenhouseId);
+        Call<Void> call = growBroApi.waterNow(userId,greenhouseId);
         call.enqueue(
-                new Callback<ApiReceipt>(){
+                new Callback<Void>(){
                     @Override
-                    public void onResponse(Call<ApiReceipt> call, Response<ApiReceipt> response) {
+                    public void onResponse(Call<Void> call, Response<Void> response) {
                         Log.i("Api response", response.toString());
                         if (response.code() == 400) {
                             try {
@@ -199,12 +199,13 @@ public class GreenhouseDAO {
                             }
                         }
                         if (response.code() == 200){
-                            getGreenhouse(greenhouseId).setLastWaterDateAndResetLiveData(response.body().getTimeOfExecution());
+                            //getGreenhouse(greenhouseId).setLastWaterDateAndResetLiveData(response.body().getTimeOfExecution());
+
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<ApiReceipt> call, Throwable t) {
+                    public void onFailure(Call<Void> call, Throwable t) {
                         Log.e("Api error", "apiWaterNow failed: " + t.toString());
                     }
                 }
@@ -328,24 +329,31 @@ public class GreenhouseDAO {
     }
 
     public void apiOpenWindow(int userId, int greenhouseId, int openWindow){
-        //TODO DAI vil have 0 hvis vinduiet skal lukke sog 1 hvis det skal lukkes
         GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
-        Call<ApiReceipt> call = growBroApi.openWindow(userId, greenhouseId, openWindow);
+        Call<Void> call = growBroApi.openWindow(userId, greenhouseId, openWindow);
         Log.i("DAO after call to ", "apiOpenWindow: ");
         call.enqueue(
-                new Callback<ApiReceipt>(){
+                new Callback<Void>(){
                     @Override
-                    public void onResponse(Call<ApiReceipt> call, Response<ApiReceipt> response) {
+                    public void onResponse(Call<Void> call, Response<Void> response) {
                         if (response.code() == 200){
+                            int position = 0;
+                            for (int i = 0; i < greenhouseList.getValue().size(); i++) {
+                                if (greenhouseList.getValue().get(i).getId() == greenhouseId) {
+                                    position = i;
+                                    break;
+                                }
+                            }
+
                             if(openWindow == 1)
-                                greenhouseList.getValue().get(greenhouseId).setWindowIsOpen(true);
+                                greenhouseList.getValue().get(position).setWindowIsOpen(true);
                             else
-                                greenhouseList.getValue().get(greenhouseId).setWindowIsOpen(false);
+                                greenhouseList.getValue().get(position).setWindowIsOpen(false);
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<ApiReceipt> call, Throwable t) {
+                    public void onFailure(Call<Void> call, Throwable t) {
                         Log.e("Api error", t.toString());
                     }
                 }

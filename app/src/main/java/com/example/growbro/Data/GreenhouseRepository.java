@@ -50,7 +50,7 @@ public class GreenhouseRepository {
     }
     public void openWindow(int userId, int greenhouseId, int openWindow)
         {
-            greenhouseDAO.apiOpenWindow(userId,greenhouseId, openWindow);
+            greenhouseDAO.apiOpenWindow(userId, greenhouseId, openWindow);
         }
     public void apiGetGreenhouseList(int userId){
         greenhouseDAO.apiGetGreenhouseList(userId);
