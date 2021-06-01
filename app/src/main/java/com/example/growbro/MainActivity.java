@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.preference.PreferenceManager;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SignInViewModel signInViewModel;
     Boolean fahrenheit;
-    private final static double FAHRENHEIT_CONVERSION_VALUE = 57.6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,12 +81,12 @@ public class MainActivity extends AppCompatActivity {
         //Default value for preferences: false
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        SharedPreferences sharedPref =
+
+        /* SharedPreferences sharedPref =
                 PreferenceManager.getDefaultSharedPreferences(this);
         fahrenheit = sharedPref.getBoolean
                 (SettingsActivity.KEY_PREF_FAHRENHEIT_SWITCH, false);
-
-        //Toast.makeText(this, fahrenheit.toString(), Toast.LENGTH_LONG).show(); //For testing
+        Toast.makeText(this, fahrenheit.toString(), Toast.LENGTH_LONG).show(); //For testing */
 
         /*
         Create sensordata json for mock api
@@ -155,11 +155,4 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    public Boolean getFahrenheit() {
-        return fahrenheit;
-    }
-
-    public static double getFahrenheitConversionValue() {
-        return FAHRENHEIT_CONVERSION_VALUE;
-    }
 }
