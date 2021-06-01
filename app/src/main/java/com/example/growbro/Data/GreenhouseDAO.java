@@ -199,7 +199,6 @@ public class GreenhouseDAO {
                             }
                         }
                         if (response.code() == 200){
-                            //getGreenhouse(greenhouseId).setLastWaterDateAndResetLiveData(response.body().getTimeOfExecution());
 
                         }
                     }

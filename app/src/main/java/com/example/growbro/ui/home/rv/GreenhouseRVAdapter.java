@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.FloatRange;
-import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
@@ -29,7 +27,6 @@ import com.google.android.material.chip.Chip;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -122,25 +119,21 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
                                 holder.valueCO2.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
 
                                 if(sensorData.getValue() < greenhouse.getCo2Threshold().get(0) || sensorData.getValue() > greenhouse.getCo2Threshold().get(1))
-                                    holder.accentC02.setBackgroundResource(R.color.criticalHealth);
-
+                                    holder.accentCO2.setBackgroundResource(R.color.criticalHealth);
                                 else
-                                    holder.accentC02.setBackgroundResource(R.color.goodHealth);
-
+                                    holder.accentCO2.setBackgroundResource(R.color.goodHealth);
                                 break;
 
                             case "temperature":
                                 if (sensorData.getValue() % 1 == 0) {
                                     if(fahrenheit)
                                         holder.valueTemperature.setText((int) Converter.convertToFahrenheit(sensorData.getValue()) + temperatureUnit);
-
                                     else
                                         holder.valueTemperature.setText((int) sensorData.getValue() + temperatureUnit);
                                 }
                                 else {
                                     if(fahrenheit)
                                         holder.valueTemperature.setText(Converter.convertToFahrenheit(sensorData.getValue()) + temperatureUnit);
-
                                     else
                                         holder.valueTemperature.setText(sensorData.getValue() + temperatureUnit);
                                 }
@@ -148,10 +141,8 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
 
                                 if(sensorData.getValue() < greenhouse.getTemperatureThreshold().get(0) || sensorData.getValue() > greenhouse.getTemperatureThreshold().get(1))
                                     holder.accentTemperature.setBackgroundResource(R.color.criticalHealth);
-
                                 else
                                     holder.accentTemperature.setBackgroundResource(R.color.goodHealth);
-
                                 break;
 
                             case "humidity":
@@ -160,10 +151,8 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
 
                                 if(sensorData.getValue() < greenhouse.getHumidityThreshold().get(0) || sensorData.getValue() > greenhouse.getHumidityThreshold().get(1))
                                     holder.accentHumidity.setBackgroundResource(R.color.criticalHealth);
-
                                 else
                                     holder.accentHumidity.setBackgroundResource(R.color.goodHealth);
-
                                 break;
                         }
                     }
@@ -224,7 +213,7 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
 
         TextView accentTemperature;
         TextView accentHumidity;
-        TextView accentC02;
+        TextView accentCO2;
 
         Chip windowIsOpen;
         RecyclerView plantRV;
@@ -248,7 +237,7 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
 
             accentTemperature = itemView.findViewById(R.id.accentTemperature);
             accentHumidity = itemView.findViewById(R.id.accentHumidity);
-            accentC02 = itemView.findViewById(R.id.accentCO2);
+            accentCO2 = itemView.findViewById(R.id.accentCO2);
 
             plantRV.hasFixedSize();
             LinearLayoutManager layoutManager

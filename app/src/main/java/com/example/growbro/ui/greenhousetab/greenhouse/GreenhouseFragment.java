@@ -75,6 +75,10 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
         TextView valueHumidity = root.findViewById(R.id.valueHumidity);
         TextView valueTemperature = root.findViewById(R.id.valueTemperature);
         TextView sharedHeading = root.findViewById(R.id.textView5);
+        TextView accentTemperature = root.findViewById(R.id.accentTemperature);
+        TextView accentHumidity = root.findViewById(R.id.accentHumidity);
+        TextView accentCO2 = root.findViewById(R.id.accentCO2);
+
         Button inviteButton = root.findViewById(R.id.inviteButton);
         Button settingsButton = root.findViewById(R.id.settingsButton);
         Button deleteButton = root.findViewById(R.id.deleteButton);
@@ -156,6 +160,10 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
                             case "co2":
                                 valueCO2.setText(((int)sensorData.getValue()) + "");
                                 valueCO2.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
+                                if(sensorData.getValue() < greenhouse.getCo2Threshold().get(0) || sensorData.getValue() > greenhouse.getCo2Threshold().get(1))
+                                    accentCO2.setBackgroundResource(R.color.criticalHealth);
+                                else
+                                    accentCO2.setBackgroundResource(R.color.goodHealth);
                                 break;
                             case "temperature":
                                 if (sensorData.getValue() % 1 == 0) {
@@ -163,6 +171,11 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
                                         valueTemperature.setText((int) Converter.convertToFahrenheit(sensorData.getValue()) + temperatureUnit);
                                     else
                                         valueTemperature.setText((int) sensorData.getValue() + temperatureUnit);
+
+                                    if(sensorData.getValue() < greenhouse.getTemperatureThreshold().get(0) || sensorData.getValue() > greenhouse.getTemperatureThreshold().get(1))
+                                        accentTemperature.setBackgroundResource(R.color.criticalHealth);
+                                    else
+                                        accentTemperature.setBackgroundResource(R.color.goodHealth);
                                 }
                                 else {
                                     if(fahrenheit)
@@ -175,6 +188,10 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
                             case "humidity":
                                 valueHumidity.setText(((int)sensorData.getValue()) + "%");
                                 valueHumidity.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
+                                if(sensorData.getValue() < greenhouse.getHumidityThreshold().get(0) || sensorData.getValue() > greenhouse.getHumidityThreshold().get(1))
+                                    accentHumidity.setBackgroundResource(R.color.criticalHealth);
+                                else
+                                    accentHumidity.setBackgroundResource(R.color.goodHealth);
                                 break;
                         }
                     }
