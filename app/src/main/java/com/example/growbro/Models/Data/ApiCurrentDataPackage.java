@@ -12,7 +12,7 @@ public class ApiCurrentDataPackage {
     @SerializedName("data")
     private List<SensorData> data;
 
-    //Præcist tidspunkt for målingen på hardwaren
+    //Exact time for measurement from the Hardware
     private Timestamp lastDataPoint;
 
     public ApiCurrentDataPackage(){

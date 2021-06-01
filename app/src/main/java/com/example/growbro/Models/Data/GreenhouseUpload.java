@@ -11,9 +11,6 @@ import java.util.List;
 
 public class GreenhouseUpload {
 
-
-
-
     private String Name;
     private int greenHouseID;
     private int userID;
