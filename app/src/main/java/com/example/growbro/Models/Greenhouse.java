@@ -99,12 +99,7 @@ public class Greenhouse {
         temperatureThreshold = new ArrayList<>();
         humidityThreshold = new ArrayList<>();
         co2Threshold = new ArrayList<>();
-
-        sharedWith = new ArrayList<>();
-        sharedWith.add("Bobber");
-        sharedWith.add("Bob");
-        sharedWith.add("Bopper");
-
+        
         temperatureThreshold.add(new Float(0));
         temperatureThreshold.add(new Float(30));
         humidityThreshold.add(new Float(15));
@@ -277,10 +272,6 @@ public class Greenhouse {
         this.waterTimeOfDay = waterTimeOfDay;
     }
 
-    public void setLastWaterDateAndResetLiveData(Timestamp lastWaterDate) {
-        this.lastWaterDateTimestamp = lastWaterDate;
-        reSetLiveDataMinutesToNextWater();
-    }
 
     public LiveData<Integer> getMinutesToNextMeasurementLiveData() {
         return minutesToNextMeasurement;
@@ -292,12 +283,6 @@ public class Greenhouse {
         minutesToNextMeasurement.setValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastMeasurementTimestamp));
     }
 
-    public void rePostLiveDataMinutesToNextMeasurement() {
-        if (lastMeasurementTimestamp == null)
-            lastMeasurementTimestamp = Timestamp.valueOf(lastMeasurement);
-        minutesToNextMeasurement.postValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastMeasurementTimestamp));
-    }
-
     public LiveData<Integer> getMinutesToNextWaterLiveData() {
         return minutesToNextWater;
     }
@@ -307,13 +292,6 @@ public class Greenhouse {
             lastWaterDateTimestamp = Timestamp.valueOf(lastWaterDate);
         minutesToNextWater.setValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastWaterDateTimestamp));
     }
-
-    public void rePostLiveDataMinutesToNextWater() {
-        if (lastWaterDateTimestamp == null)
-            lastWaterDateTimestamp = Timestamp.valueOf(lastWaterDate);
-        minutesToNextWater.postValue(MEASUREMENT_INTERVAL_IN_MINUTES - (int) getMinutesSince(lastWaterDateTimestamp));
-    }
-
 
     public void addPlant(Plant plant){
         Plants.add(plant);
@@ -441,7 +419,6 @@ public void startCountDownTimerNextMeasurement(){
 
     public String getLastMeasurementToString() {
         return lastMeasurementTimestamp.toString();
-        //Todo ensure that this is formatted the same way as timestamp from currentDataResultFromAPI
     }
     public int gethealthColor(String type){
         ArrayList<Float> thresholds;

@@ -342,15 +342,6 @@
             android:textColor="@color/green_dark" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/settingsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:backgroundTint="@color/white"
-            android:text="Settings"
-            android:textColor="@color/green_dark" />
-
-        <com.google.android.material.chip.Chip
             android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

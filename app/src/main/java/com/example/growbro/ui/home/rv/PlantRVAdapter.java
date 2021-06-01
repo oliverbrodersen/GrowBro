@@ -76,5 +76,4 @@ public class PlantRVAdapter extends RecyclerView.Adapter<PlantRVAdapter.ViewHold
     public interface OnListItemClickListener {
         void onPlantListItemClick(int clickedItemIndex);
     }
-
 }

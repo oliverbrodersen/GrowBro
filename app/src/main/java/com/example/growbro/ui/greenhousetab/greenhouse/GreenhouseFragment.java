@@ -1,17 +1,12 @@
 package com.example.growbro.ui.greenhousetab.greenhouse;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -27,7 +22,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
-import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,6 +48,7 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
     private SharedRVAdapter sharedRVAdapter;
 
     private GreenhouseViewModel mViewModel;
+    private android.preference.PreferenceManager PreferenceManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,7 +75,6 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
         TextView accentCO2 = root.findViewById(R.id.accentCO2);
 
         Button inviteButton = root.findViewById(R.id.inviteButton);
-        Button settingsButton = root.findViewById(R.id.settingsButton);
         Button deleteButton = root.findViewById(R.id.deleteButton);
         ImageButton sendInviteButton = root.findViewById(R.id.sendInviteButton);
         ImageView edit = root.findViewById(R.id.edit);
@@ -107,8 +101,6 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
         water.setOnClickListener(v ->
                 mViewModel.water(greenhouse.getOwnerId(),greenhouse.getId()));
 
-
-
         Button window = root.findViewById(R.id.windowButton);
         if (greenhouse.isWindowIsOpen())
             window.setText("Close window");
@@ -120,38 +112,28 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
                 @Override
                 public void onClick(View v)
                     {
-                        Log.i("førOnclick", "onClick: før greenhouse: " + greenhouse.isWindowIsOpen());
                         int openWindow;
                         if(greenhouse.isWindowIsOpen()) {
-                                Log.i("true", "onClick: true ");
                                 openWindow = 0;
-
                                 window.setText("Open window");
-
                             }
 
                         else {
-                                Log.i("false", "onClick: false ");
                                 openWindow = 1;
                                 window.setText("Close window");
                             }
-                        Log.i("befire viewmodel call", "onClick: openWindowValue: " + openWindow + "/ ownerId: " + greenhouse.getOwnerId() + "/ greenhouseId: " + greenhouse.getId());
                         mViewModel.openWindow(greenhouse.getOwnerId(), greenhouse.getId(), openWindow);
                     }
             });
 
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        Boolean fahrenheit = sharedPref.getBoolean
-                (SettingsActivity.KEY_PREF_FAHRENHEIT_SWITCH, false);
+        Boolean fahrenheit = sharedPref.getBoolean(SettingsActivity.KEY_PREF_FAHRENHEIT_SWITCH, false);
 
         if(fahrenheit)
             temperatureUnit = getString(R.string.fahrenheit);
 
-        //valueTemperature.setText(unit); //Used for testing temperature unit settings
-
         greenhouse.getCurentLiveData().observeForever(new Observer<List<SensorData>>() {
-
             @Override
             public void onChanged(List<SensorData> data) {
                 if (data != null) {
@@ -159,12 +141,8 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
                         switch (sensorData.getType().toLowerCase()) {
                             case "co2":
                                 valueCO2.setText(((int)sensorData.getValue()) + "");
-                                valueCO2.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
-
-                                if(sensorData.getValue() < greenhouse.getCo2Threshold().get(0) || sensorData.getValue() > greenhouse.getCo2Threshold().get(1))
-                                    accentCO2.setBackgroundResource(R.color.criticalHealth);
-                                else
-                                    accentCO2.setBackgroundResource(R.color.goodHealth);
+                                //Sets co2 health color
+                                accentCO2.setBackgroundResource(greenhouse.gethealthColor(sensorData.getType().toLowerCase()));
                                 break;
                             case "temperature":
                                 if (sensorData.getValue() % 1 == 0) {
@@ -172,11 +150,6 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
                                         valueTemperature.setText((int) Converter.convertToFahrenheit(sensorData.getValue()) + temperatureUnit);
                                     else
                                         valueTemperature.setText((int) sensorData.getValue() + temperatureUnit);
-
-                                    if(sensorData.getValue() < greenhouse.getTemperatureThreshold().get(0) || sensorData.getValue() > greenhouse.getTemperatureThreshold().get(1))
-                                        accentTemperature.setBackgroundResource(R.color.criticalHealth);
-                                    else
-                                        accentTemperature.setBackgroundResource(R.color.goodHealth);
                                 }
                                 else {
                                     if(fahrenheit)
@@ -184,16 +157,13 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
                                     else
                                         valueTemperature.setText(sensorData.getValue() + temperatureUnit);
                                 }
-                                valueTemperature.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
+                                //Sets co2 health color
+                                accentTemperature.setBackgroundResource(greenhouse.gethealthColor(sensorData.getType().toLowerCase()));
                                 break;
                             case "humidity":
                                 valueHumidity.setText(((int)sensorData.getValue()) + "%");
-                                valueHumidity.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
-
-                                if(sensorData.getValue() < greenhouse.getHumidityThreshold().get(0) || sensorData.getValue() > greenhouse.getHumidityThreshold().get(1))
-                                    accentHumidity.setBackgroundResource(R.color.criticalHealth);
-                                else
-                                    accentHumidity.setBackgroundResource(R.color.goodHealth);
+                                //Sets co2 health color
+                                accentHumidity.setBackgroundResource(greenhouse.gethealthColor(sensorData.getType().toLowerCase()));
                                 break;
                         }
                     }
@@ -215,7 +185,6 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
                     nextMeasureValue.setText(integer+" minutes");
             }
         });
-        //greenhouse.startCountDownTimerNextMeasurement(); Not necessary to start countdown here since it was already started in HomeFragment
 
         greenhouse.getMinutesToNextWaterLiveData().observeForever(new Observer<Integer>() {
             @Override
@@ -233,14 +202,12 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
 
             }
         });
-        //greenhouse.startCountDownTimerNextMeasurement();  Not necessary to start countdown here since it was already started in HomeFragment
 
         name.setText(greenhouse.getName());
 
         //Remove functionality, if the greenhouse belongs to a friend
         if (mViewModel.getCurrentUserId() != greenhouse.getOwnerId()){
             inviteButton.setVisibility(View.GONE);
-            settingsButton.setVisibility(View.GONE);
             sharedHeading.setVisibility(View.GONE);
             sharedRV.setVisibility(View.GONE);
             deleteButton.setVisibility(View.VISIBLE);
@@ -278,7 +245,6 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
             sharedRV.setAdapter(sharedRVAdapter);
 
             inviteButton.setVisibility(View.VISIBLE);
-            settingsButton.setVisibility(View.VISIBLE);
             deleteButton.setVisibility(View.GONE);
 
             sharedHeading.setVisibility(View.VISIBLE);
@@ -291,7 +257,6 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
             public void onClick(View v) {
                 if (inviteView.getVisibility() == View.VISIBLE){
                     inviteView.setVisibility(View.GONE);
-                    hideKeyboard(getActivity());
                 }
                 else
                     inviteView.setVisibility(View.VISIBLE);
@@ -311,8 +276,6 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
 
                     sharedRVAdapter.setItemList(greenhouse.getSharedWith());
                     sharedRV.setAdapter(sharedRVAdapter);
-
-                    hideKeyboard(getActivity());
                 }
             }
         });
@@ -335,20 +298,6 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
-    public static void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
-        View view = activity.getCurrentFocus();
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = new View(activity);
-        }
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        view.clearFocus();
-        view.requestFocus();
-        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-    }
-
     @Override
     public void onListItemClick (int clickedItemIndex) {
         new AlertDialog.Builder(getContext())

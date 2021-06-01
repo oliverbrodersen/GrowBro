@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.growbro.Login.UserRepository;
 import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
-import com.example.growbro.Models.Plant;
 import com.github.mikephil.charting.data.Entry;
 
 import java.sql.Timestamp;
@@ -54,15 +53,6 @@ public class GreenhouseRepository {
         }
     public void apiGetGreenhouseList(int userId){
         greenhouseDAO.apiGetGreenhouseList(userId);
-    }
-    public void apiGetGreenhouse(int userId, int greenhouseId){
-        greenhouseDAO.apiGetGreenhouse(userId, greenhouseId);
-    }
-    public void getDummyData(int greenhouseId){
-        greenhouseDAO.getDummyData(greenhouseId);
-    }
-    public void apiAddPlant(int userId, int greenhouseId, Plant plant){
-        greenhouseDAO.apiAddPlant(userId, greenhouseId, plant);
     }
 
     public MutableLiveData<List<Greenhouse>> getGreenhouseListAsLiveData() {

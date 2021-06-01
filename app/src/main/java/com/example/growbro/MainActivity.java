@@ -3,11 +3,10 @@ package com.example.growbro;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import androidx.preference.PreferenceManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -80,53 +79,11 @@ public class MainActivity extends AppCompatActivity {
         //https://google-developer-training.github.io/android-developer-fundamentals-course-practicals/en/Unit%204/92_p_adding_settings_to_an_app.html
         //Default value for preferences: false
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-
-
-        /* SharedPreferences sharedPref =
-                PreferenceManager.getDefaultSharedPreferences(this);
-        fahrenheit = sharedPref.getBoolean
-                (SettingsActivity.KEY_PREF_FAHRENHEIT_SWITCH, false);
-        Toast.makeText(this, fahrenheit.toString(), Toast.LENGTH_LONG).show(); //For testing */
-
-        /*
-        Create sensordata json for mock api
-
-        SensorData co2 = new SensorData("CO2", 1200);
-        SensorData humidity = new SensorData("Humidity", 32);
-        SensorData temp = new SensorData("Temperature", 16);
-
-        ArrayList<SensorData> dataList = new ArrayList<SensorData>();
-
-        dataList.add(co2);
-        dataList.add(humidity);
-        dataList.add(temp);
-
-        ApiCurrentDataPackage apiCurrentDataPackage = new ApiCurrentDataPackage(dataList, new Timestamp(new Date().getTime()));
-
-        Gson gson = new Gson();
-        String json = gson.toJson(apiCurrentDataPackage);
-
-        Log.d("json", json);*/
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        if(signInViewModel.getCurrentUser() == null && !sharedPreferences.getBoolean("signed_in",false)){
-            //If the database did not return a user AND the user is not signed in from a previous session
-            System.out.println("User is not signed in");
-            Intent intent = new Intent(this, SignInActivity.class);
-            startActivity(intent);
-        } else {
-            //Let user stay signed in after closing app
-            //sharedPreferences.edit().putBoolean("signed_in", true).apply();
-
-            //Save userid for use after app restart
-            //if(signInViewModel.getCurrentUser() != null)
-            //    sharedPreferences.edit().putInt("current_user_id", signInViewModel.getCurrentUser().getValue().getId()).apply();
-        }
-
     }
 
     @Override

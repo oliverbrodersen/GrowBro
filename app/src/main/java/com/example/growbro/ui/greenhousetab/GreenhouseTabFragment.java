@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.growbro.R;
@@ -16,12 +15,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 public class GreenhouseTabFragment extends Fragment {
-
-    private GreenhouseTabViewModel mViewModel;
-
-    public static GreenhouseTabFragment newInstance() {
-        return new GreenhouseTabFragment();
-    }
 
     GreenhouseFragmentStateAdapter greenhouseFragmentStateAdapter;
     ViewPager2 viewPager;
@@ -56,7 +49,5 @@ public class GreenhouseTabFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(GreenhouseTabViewModel.class);
     }
-
 }

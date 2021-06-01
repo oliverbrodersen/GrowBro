@@ -21,7 +21,6 @@ import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.R;
 import com.example.growbro.Settings.SettingsActivity;
-import com.example.growbro.ui.home.HomeViewModel;
 import com.example.growbro.util.Converter;
 import com.google.android.material.chip.Chip;
 
@@ -32,7 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapter.ViewHolder> {
-
     private ArrayList<Greenhouse> greenhouseArrayList;
     private HashMap<Integer, Integer> nextMeasurementMinutesByGreenhouseId;
     private HashMap<Integer, Integer> nextWaterMinutesByGreenhouseId;
@@ -40,8 +38,6 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
     SharedPreferences sharedPreferences;
     private boolean fahrenheit;
     private String temperatureUnit;
-
-
 
     public GreenhouseRVAdapter(OnListItemClickListener mOnListItemClickListener, Context ctx) {
         this.mOnListItemClickListener = mOnListItemClickListener;
@@ -55,7 +51,6 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
         else
             temperatureUnit = ctx.getString(R.string.celsius);
 
-        //System.out.println("#TTT: TEST after merge: GreenhouseRVAdapter constructor: unit: " + unit);
     }
 
     public void setDataset(ArrayList<Greenhouse> greenhouseArrayList){
@@ -214,8 +209,6 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
         RecyclerView plantRV;
         PlantRVAdapter plantRVAdapter;
         CardView addPlantCard;
-
-        HomeViewModel homeViewModel;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);

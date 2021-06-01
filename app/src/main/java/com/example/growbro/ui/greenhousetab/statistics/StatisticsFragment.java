@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.PreferenceManager;
 
 import com.example.growbro.R;
 import com.example.growbro.Settings.SettingsActivity;
@@ -153,16 +153,10 @@ public class StatisticsFragment extends Fragment {
     }
 
     private void configureLineChart() {
-        /*Description description = new Description();
-        description.setText("Stock Price History");
-        description.setTextSize(28);
-        lineChart.setDescription(description);*/
         lineChart.setDescription(null);
-
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setValueFormatter(new ValueFormatter() {
             private final SimpleDateFormat mFormat = new SimpleDateFormat("dd MMM", Locale.ENGLISH);
-
             @Override
             public String getFormattedValue(float value) {
                 long millis = (long) value * 1000L;

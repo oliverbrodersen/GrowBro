@@ -8,12 +8,6 @@ import com.example.growbro.Data.GrowBroApi;
 import com.example.growbro.Data.ServiceGenerator;
 import com.example.growbro.Models.Data.ApiResponseId;
 import com.example.growbro.Models.User;
-import com.google.gson.Gson;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,42 +32,22 @@ public class UserDAO {
         GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
         // prepare call in Retrofit 2.0
 
-        Log.i("Api json", new Gson().toJson(user));
-
-        JSONObject param = new JSONObject();
-        try {
-            param.put("User", new Gson().toJson(user));
-            Log.i("Api json param", param.toString());
-
-            Call<ApiResponseId> call = growBroApi.addUser(user);
-            call.enqueue(
-                    new Callback<ApiResponseId>(){
-                        @Override
-                        public void onResponse(Call<ApiResponseId> call, Response<ApiResponseId> response) {
-                            Log.i("Api response", response.toString());
-                            if (response.code() == 400) {
-                                try {
-                                    Log.i("Api 400", response.errorBody().string());
-                                } catch (IOException e) {
-                                    // handle failure to read error
-                                }
-                            }
-                            if (response.code() == 200){
-                                //int userId = response.body();
-                                Log.i("Api response", response.body().toString());
-                                currentUser.postValue(new User(response.body().getValue(), user.getUsername(), user.getPassword()));
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<ApiResponseId> call, Throwable t) {
-                            Log.e("Api error", t.toString());
+        Call<ApiResponseId> call = growBroApi.addUser(user);
+        call.enqueue(
+                new Callback<ApiResponseId>(){
+                    @Override
+                    public void onResponse(Call<ApiResponseId> call, Response<ApiResponseId> response) {
+                        if (response.code() == 200){
+                            currentUser.postValue(new User(response.body().getValue(), user.getUsername(), user.getPassword()));
                         }
                     }
-            );
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
+                    @Override
+                    public void onFailure(Call<ApiResponseId> call, Throwable t) {
+                        Log.e("Api error", t.toString());
+                    }
+                }
+        );
     }
 
     public MutableLiveData<User> getCurrentUser() {

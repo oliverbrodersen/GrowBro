@@ -37,12 +37,6 @@ public class SignInActivity extends AppCompatActivity {
         editTextUsername = findViewById(R.id.edtEmailLogin);
         editTextPassword = findViewById(R.id.edtextPasswordLogin);
         editTextPassword2 = findViewById(R.id.edtextPasswordLogin2);
-        sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
-
-        //Check if user is signed in
-        if (sharedPreferences.getBoolean("signed_in",false)) {
-           // goToActivity();
-        }
 
         btnLogin = findViewById(R.id.btnLogin);
         textView = findViewById(R.id.txtNewUser);
@@ -70,11 +64,6 @@ public class SignInActivity extends AppCompatActivity {
                 noError = false;
             }
 
-            //if (password.length() < 6) {
-            //    editTextPassword.setError("Password must be more than 6 Characters");
-            //    noError = false;
-            //}
-
             if (newUser && !editTextPassword2.getEditText().getText().toString().equals(password)) {
                 editTextPassword2.setError("Passwords must be identical");
                 noError = false;
@@ -85,7 +74,13 @@ public class SignInActivity extends AppCompatActivity {
                 signInViewModel.getCurrentUser().observe(this, new Observer<User>() {
                     @Override
                     public void onChanged(User user) {
-                        goToActivity();
+                        if (user.getUsername() != null)
+                            goToActivity();
+                        else{
+                            loading.setVisibility(View.GONE);
+                            editTextPassword.getEditText().setText("");
+                            editTextPassword.setError("Incorrect login information");
+                        }
                     }
                 });
 

@@ -43,11 +43,6 @@ public class SettingsActivity extends AppCompatActivity {
                 .commit();
     }
 
-    //stackoverflow.com/questions/49096135/resume-fragments-from-another-activity
-    //Workaround:
-    //Good: This way the UI in HomeFragment gets updated without user having to restart app
-    //Bad: This way the user is forced back to HomeFragment no matter where user entered the settings page from
-    //Todo: Måske optimere logikken, så brugeren sendes tilbage hvor brugeren kom fra...
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);

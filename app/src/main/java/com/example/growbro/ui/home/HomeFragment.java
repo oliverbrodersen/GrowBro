@@ -77,8 +77,6 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
                     @Override
                     public void onChanged(HashMap<Integer, Integer> data) {
                         greenhouseRVAdapter.setNextMeasurementMinutesByGreenhouseId((HashMap<Integer, Integer>) data);
-
-
                     }
                 });
 
@@ -91,11 +89,19 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
 
                 if (data.size() == 0){
                     addCardView.setVisibility(View.VISIBLE);
+                    addCardView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            NavOptions navOptions = new NavOptions.Builder()
+                                    .setPopUpTo(R.id.nav_home, true)
+                                    .build();
+
+                            Navigation.findNavController(v).navigate(R.id.action_nav_home_to_editGreenhouseFragment, null, navOptions);
+                        }
+                    });
                 }
                 else
                     addCardView.setVisibility(View.GONE);
-
-
 
                 homeViewModel.getMinutesToNextMeasurement().observe(getViewLifecycleOwner(), new Observer<HashMap<Integer, Integer>>() {
                     @Override
@@ -119,7 +125,6 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
             public void onClick(View v) {
                 if (showingTextView.getText().equals(FRIENDS_GROWBROS)){
                     showingTextView.setText(MY_GROWBROS);
-
                     greenhouseRVAdapter.setDataset(new ArrayList<Greenhouse>());
                     greenhouseRV.setAdapter(greenhouseRVAdapter);
 

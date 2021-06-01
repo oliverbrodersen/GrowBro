@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.growbro.Data.GreenhouseRepository;
 import com.example.growbro.Login.UserRepository;
-import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
-import com.example.growbro.Models.User;
 
 import java.util.HashMap;
 import java.util.List;
@@ -56,27 +54,12 @@ public class HomeViewModel extends ViewModel {
         return mNextWaterMinutes;
     }
 
-
-
     public List<Greenhouse> getGreenhouseList(){
         return repository.getGreenhouseList();
-    }
-    public void updateGreenhouse(Greenhouse greenhouse){
-        repository.updateGreenhouse(greenhouse);
-    }
-    public Greenhouse getGreenhouse(int id){
-        return repository.getGreenhouse(id);
-    }
-    public MutableLiveData<List<SensorData>> getLiveData(int greenhouseId){
-        return repository.getLiveData(greenhouseId);
     }
 
     public LiveData<List<Greenhouse>> getGreenhouseListAsLiveData() {
         return repository.getGreenhouseListAsLiveData();
-    }
-
-    public MutableLiveData<User> getCurrentUser() {
-        return UserRepository.getInstance().getCurrentUser();
     }
 
     public MutableLiveData<List<Greenhouse>> getFriendsGreenhouseList() {
