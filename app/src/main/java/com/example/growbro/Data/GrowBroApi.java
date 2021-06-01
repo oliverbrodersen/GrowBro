@@ -57,7 +57,7 @@ public interface GrowBroApi {
 
     @Headers("Content-Type: application/json")
     @POST("/user/{userId}/addGreenhouse")
-    Call<Void> addGreenhouse(@Path("userId")int userId, @Body GreenhouseUpload body);
+    Call<ApiResponseId> addGreenhouse(@Path("userId")int userId, @Body GreenhouseUpload body);
 
     @Headers("Content-Type: application/json")
     @GET("/user/{userId}/greenhouse/{greenhouseId}/plant")

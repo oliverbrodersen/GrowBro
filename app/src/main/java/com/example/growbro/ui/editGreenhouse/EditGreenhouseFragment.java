@@ -181,7 +181,7 @@ public class EditGreenhouseFragment extends Fragment implements TimePickerFragme
                     done = false;
                 }
                 if (done){
-                    plantList.add(new Plant(plantNameTextField.getEditText().getText().toString(), plantList.size()+1 , plantUrlTextField.getEditText().getText().toString()));
+                    plantList.add(new Plant(plantNameTextField.getEditText().getText().toString(), -1, plantUrlTextField.getEditText().getText().toString(), Integer.parseInt(growBroIdTextField.getEditText().getText().toString())));
                     plantRVAdapter.setPlantArrayList(plantList);
                     plantRVadd.setAdapter(plantRVAdapter);
 

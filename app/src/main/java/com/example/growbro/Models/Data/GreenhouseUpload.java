@@ -2,7 +2,6 @@ package com.example.growbro.Models.Data;
 
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.Models.Plant;
-import com.google.gson.annotations.SerializedName;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -10,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 public class GreenhouseUpload {
-
     private String Name;
     private int greenHouseID;
     private int userID;
@@ -23,10 +21,8 @@ public class GreenhouseUpload {
     private String lastWaterDate;
     private String lastMeasurement;
     private ArrayList<String> sharedWith;
-    @SerializedName(value = "tempteratureThreshhold")
     private List<Float> temperatureThreshold;
     private List<Float> humidityThreshold;
-    @SerializedName(value = "co2Threshhold")
     private List<Float> co2Threshold;
 
     public GreenhouseUpload(Greenhouse greenhouse) {

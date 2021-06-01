@@ -23,7 +23,7 @@
     <string name="friends">Friends</string>
     <string name="temperature_unit_section">Temperature unit</string>
     <string name="sign_out_section">Sign out</string>
-    <string name="celsius">°C</string>
+    <string name="celsius">°</string>
     <string name="fahrenheit">°F</string>
     <string name="awaiting_data">Awaiting data</string>
 </resources>

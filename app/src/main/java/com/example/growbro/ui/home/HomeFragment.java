@@ -92,6 +92,9 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
                 if (data.size() == 0){
                     addCardView.setVisibility(View.VISIBLE);
                 }
+                else
+                    addCardView.setVisibility(View.GONE);
+
 
 
                 homeViewModel.getMinutesToNextMeasurement().observe(getViewLifecycleOwner(), new Observer<HashMap<Integer, Integer>>() {

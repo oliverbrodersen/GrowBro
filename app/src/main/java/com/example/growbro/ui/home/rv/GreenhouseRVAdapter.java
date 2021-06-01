@@ -2,6 +2,7 @@ package com.example.growbro.ui.home.rv;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,6 @@ import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
-import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -117,11 +117,8 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
                             case "co2":
                                 holder.valueCO2.setText(((int)sensorData.getValue()) + "");
                                 holder.valueCO2.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
-
-                                if(sensorData.getValue() < greenhouse.getCo2Threshold().get(0) || sensorData.getValue() > greenhouse.getCo2Threshold().get(1))
-                                    holder.accentCO2.setBackgroundResource(R.color.criticalHealth);
-                                else
-                                    holder.accentCO2.setBackgroundResource(R.color.goodHealth);
+                                holder.thresholdCO2.setText(Math.round(greenhouse.getCo2Threshold().get(0)) + " - " + Math.round(greenhouse.getCo2Threshold().get(1)));
+                                holder.accentCO2.setBackgroundResource(greenhouse.gethealthColor("co2"));
                                 break;
 
                             case "temperature":
@@ -138,21 +135,15 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
                                         holder.valueTemperature.setText(sensorData.getValue() + temperatureUnit);
                                 }
                                 holder.valueTemperature.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
-
-                                if(sensorData.getValue() < greenhouse.getTemperatureThreshold().get(0) || sensorData.getValue() > greenhouse.getTemperatureThreshold().get(1))
-                                    holder.accentTemperature.setBackgroundResource(R.color.criticalHealth);
-                                else
-                                    holder.accentTemperature.setBackgroundResource(R.color.goodHealth);
+                                holder.thresholdTemperature.setText(Math.round(greenhouse.getTemperatureThreshold().get(0)) + "° - " + Math.round(greenhouse.getTemperatureThreshold().get(1)) + "°");
+                                holder.accentTemperature.setBackgroundResource(greenhouse.gethealthColor("temperature"));
                                 break;
 
                             case "humidity":
                                 holder.valueHumidity.setText(((int)sensorData.getValue()) + "%");
                                 holder.valueHumidity.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
-
-                                if(sensorData.getValue() < greenhouse.getHumidityThreshold().get(0) || sensorData.getValue() > greenhouse.getHumidityThreshold().get(1))
-                                    holder.accentHumidity.setBackgroundResource(R.color.criticalHealth);
-                                else
-                                    holder.accentHumidity.setBackgroundResource(R.color.goodHealth);
+                                holder.thresholdHumidity.setText(Math.round(greenhouse.getHumidityThreshold().get(0)) + "% - " + Math.round(greenhouse.getHumidityThreshold().get(1)) + "%");
+                                holder.accentHumidity.setBackgroundResource(greenhouse.gethealthColor("humidity"));
                                 break;
                         }
                     }
@@ -215,6 +206,10 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
         TextView accentHumidity;
         TextView accentCO2;
 
+        TextView thresholdTemperature;
+        TextView thresholdHumidity;
+        TextView thresholdCO2;
+
         Chip windowIsOpen;
         RecyclerView plantRV;
         PlantRVAdapter plantRVAdapter;
@@ -238,6 +233,10 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
             accentTemperature = itemView.findViewById(R.id.accentTemperature);
             accentHumidity = itemView.findViewById(R.id.accentHumidity);
             accentCO2 = itemView.findViewById(R.id.accentCO2);
+
+            thresholdTemperature = itemView.findViewById(R.id.thresholdTemperature);
+            thresholdHumidity = itemView.findViewById(R.id.thresholdHumidity);
+            thresholdCO2 = itemView.findViewById(R.id.thresholdCO2);
 
             plantRV.hasFixedSize();
             LinearLayoutManager layoutManager

@@ -3,18 +3,19 @@ package com.example.growbro.Models;
 import com.google.gson.annotations.SerializedName;
 
 public class Plant {
+
     @SerializedName(value = "Name")
     private String name;
     private int plantId;
     private int greenHouseID;
-
     @SerializedName(value = "Url")
     private String imageUrl;
 
-    public Plant(String name, int plantId, String imageUrl) {
+    public Plant(String name, int plantId, String imageUrl, int greenHouseID) {
         this.name = name;
         this.plantId = plantId;
         this.imageUrl = imageUrl;
+        this.greenHouseID = greenHouseID;
     }
 
     public int getGreenHouseID() {

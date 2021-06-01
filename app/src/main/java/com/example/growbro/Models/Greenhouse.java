@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.growbro.Models.Data.SensorData;
+import com.example.growbro.R;
 import com.google.gson.annotations.SerializedName;
 
 import java.sql.Timestamp;
@@ -441,5 +442,37 @@ public void startCountDownTimerNextMeasurement(){
     public String getLastMeasurementToString() {
         return lastMeasurementTimestamp.toString();
         //Todo ensure that this is formatted the same way as timestamp from currentDataResultFromAPI
+    }
+    public int gethealthColor(String type){
+        ArrayList<Float> thresholds;
+        SensorData data;
+        //Match data
+        switch (type){
+            case "temperature":
+                thresholds = (ArrayList<Float>) temperatureThreshold;
+                data = getCurrentDataTemperature();
+                break;
+            case "humidity":
+                thresholds = (ArrayList<Float>) humidityThreshold;
+                data = getCurrentDataHumidity();
+                break;
+            case "co2":
+                thresholds = (ArrayList<Float>) co2Threshold;
+                data = getCurrentDataCo2();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + type);
+        }
+
+        //Check for range
+        double buffer = (thresholds.get(1) - thresholds.get(0)) * 0.05;
+
+        if (data.getValue() > (thresholds.get(0) - buffer) && data.getValue() < (thresholds.get(1) + buffer)) {
+            if (data.getValue() > (thresholds.get(0) + buffer) && data.getValue() < (thresholds.get(1) - buffer))
+                return R.color.goodHealth;
+
+            return R.color.mediocreHealth;
+        }
+        return R.color.criticalHealth;
     }
 }

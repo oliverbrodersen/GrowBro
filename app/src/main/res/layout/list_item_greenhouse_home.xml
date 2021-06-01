@@ -141,7 +141,7 @@
             <LinearLayout
                 android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="157dp"
+                android:layout_height="168dp"
                 android:background="@color/green_extralight"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -167,6 +167,20 @@
                         android:layout_height="match_parent">
 
                         <TextView
+                            android:id="@+id/thresholdTemperature"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="@font/roboto"
+                            android:text="0° - 30°"
+                            app:layout_constraintBottom_toTopOf="@+id/accentTemperature"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:textSize="10dp"
+                            android:textAlignment="center"
+                            android:maxLines="1"/>
+
+                        <TextView
                             android:id="@+id/titleTemperature"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -188,16 +202,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="8dp"
-                            android:layout_marginBottom="16dp"
                             android:ellipsize="none"
                             android:fontFamily="@font/roboto_bold"
                             android:gravity="center"
                             android:scrollHorizontally="false"
                             android:singleLine="true"
-                            android:text="17°C"
+                            android:text="17°"
                             android:textAlignment="center"
                             android:textSize="32dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/accentTemperature"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/titleTemperature" />
@@ -229,6 +241,20 @@
                         android:layout_height="match_parent">
 
                         <TextView
+                            android:id="@+id/thresholdHumidity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="@font/roboto"
+                            android:text="20% - 80%"
+                            app:layout_constraintBottom_toTopOf="@+id/accentHumidity"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:textSize="10dp"
+                            android:textAlignment="center"
+                            android:maxLines="1"/>
+
+                        <TextView
                             android:id="@+id/titleHumidity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -247,7 +273,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="8dp"
-                            android:layout_marginBottom="16dp"
                             android:ellipsize="none"
                             android:fontFamily="@font/roboto_bold"
                             android:scrollHorizontally="false"
@@ -255,7 +280,6 @@
                             android:text="48%"
                             android:textAlignment="center"
                             android:textSize="32dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/titleHumidity" />
@@ -285,6 +309,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
+
+                        <TextView
+                            android:id="@+id/thresholdCO2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="@font/roboto"
+                            android:text="200 - 1200"
+                            app:layout_constraintBottom_toTopOf="@+id/accentCO2"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:textSize="10dp"
+                            android:textAlignment="center"
+                            android:maxLines="1"/>
                         <TextView
                             android:id="@+id/titleCO2"
                             android:layout_width="match_parent"
@@ -304,7 +342,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="8dp"
-                            android:layout_marginBottom="24dp"
                             android:ellipsize="none"
                             android:fontFamily="@font/roboto_bold"
                             android:scrollHorizontally="false"
@@ -312,7 +349,6 @@
                             android:text="707"
                             android:textAlignment="center"
                             android:textSize="24sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/accentCO2"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/titleCO2" />
@@ -321,12 +357,12 @@
                             android:id="@+id/textView4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="14dp"
+                            android:layout_marginTop="24dp"
                             android:text="ppm"
                             android:textSize="13dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/titleCO2" />
 
                         <TextView
                             android:id="@+id/accentCO2"
