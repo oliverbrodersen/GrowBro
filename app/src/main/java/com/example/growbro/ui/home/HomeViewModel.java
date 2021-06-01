@@ -23,8 +23,7 @@ public class HomeViewModel extends ViewModel {
     public HomeViewModel() {
         repository = GreenhouseRepository.getInstance();
         userRepository = UserRepository.getInstance();
-        //repository.getDummyData(1);
-        //repository.apiGetCurrentData(3,1);
+
         mNextMeasurementMinutes = new MutableLiveData<>();
         mNextMeasurementMinutes.setValue(new HashMap<>());
         mNextWaterMinutes = new MutableLiveData<>();

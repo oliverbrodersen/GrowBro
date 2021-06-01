@@ -360,7 +360,7 @@ public class GreenhouseDAO {
         GreenhouseUpload greenhouseUpload = new GreenhouseUpload(greenhouse);
 
         Log.i("-> Api in JSON", new Gson().toJson(greenhouseUpload));
-        Call<Void> call = growBroApi.addGreenhouse(userId, new Gson().toJson(greenhouseUpload));
+        Call<Void> call = growBroApi.addGreenhouse(userId, greenhouseUpload);
         call.enqueue(
                 new Callback<Void>(){
                     @Override

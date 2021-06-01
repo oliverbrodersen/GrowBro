@@ -93,6 +93,20 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
                     addCardView.setVisibility(View.VISIBLE);
                 }
 
+
+                homeViewModel.getMinutesToNextMeasurement().observe(getViewLifecycleOwner(), new Observer<HashMap<Integer, Integer>>() {
+                    @Override
+                    public void onChanged(HashMap<Integer, Integer> data) {
+                        greenhouseRVAdapter.setNextMeasurementMinutesByGreenhouseId((HashMap<Integer, Integer>) data);
+                    }
+                });
+
+                homeViewModel.getMinutesToNextWater().observe(getViewLifecycleOwner(), new Observer<HashMap<Integer, Integer>>() {
+                    @Override
+                    public void onChanged(HashMap<Integer, Integer> data) {
+                        greenhouseRVAdapter.setNextWaterMinutesByGreenhouseId((HashMap<Integer, Integer>) data);
+                    }
+                });
             }
         });
 
@@ -134,20 +148,6 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
                         }
                     });
                 }
-            }
-        });
-
-        homeViewModel.getMinutesToNextMeasurement().observe(getViewLifecycleOwner(), new Observer<HashMap<Integer, Integer>>() {
-            @Override
-            public void onChanged(HashMap<Integer, Integer> data) {
-                greenhouseRVAdapter.setNextMeasurementMinutesByGreenhouseId((HashMap<Integer, Integer>) data);
-            }
-        });
-
-        homeViewModel.getMinutesToNextWater().observe(getViewLifecycleOwner(), new Observer<HashMap<Integer, Integer>>() {
-            @Override
-            public void onChanged(HashMap<Integer, Integer> data) {
-                greenhouseRVAdapter.setNextWaterMinutesByGreenhouseId((HashMap<Integer, Integer>) data);
             }
         });
 

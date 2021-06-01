@@ -4,6 +4,7 @@ import com.example.growbro.Models.Data.ApiCurrentDataPackage;
 import com.example.growbro.Models.Data.ApiReceipt;
 import com.example.growbro.Models.Data.ApiResponseId;
 import com.example.growbro.Models.Data.CurrentDataResultFromApi;
+import com.example.growbro.Models.Data.GreenhouseUpload;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.Models.User;
 
@@ -27,7 +28,7 @@ public interface GrowBroApi {
 
     @Headers("Content-Type: application/json")
     @POST("/user/addUser")
-    Call<ApiResponseId> addUser(@Body String body);
+    Call<ApiResponseId> addUser(@Body User body);
 
     @GET("/user/{userId}/greenhouse")
     Call<List<Greenhouse>> getGreenhouseList(@Path("userId") int userId);
@@ -56,7 +57,7 @@ public interface GrowBroApi {
 
     @Headers("Content-Type: application/json")
     @POST("/user/{userId}/addGreenhouse")
-    Call<Void> addGreenhouse(@Path("userId")int userId, @Body String body);
+    Call<Void> addGreenhouse(@Path("userId")int userId, @Body GreenhouseUpload body);
 
     @Headers("Content-Type: application/json")
     @GET("/user/{userId}/greenhouse/{greenhouseId}/plant")
