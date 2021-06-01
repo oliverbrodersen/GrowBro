@@ -360,8 +360,6 @@ public void startCountDownTimerNextMeasurement(){
             this.cancel();
             if (lastMeasurementTimestamp == null)
                 lastMeasurementTimestamp = new Timestamp(System.currentTimeMillis());
-            //lastMeasurement.setTime(System.currentTimeMillis()); //Dummy data version --> TODO: GreenhouseDAO has to call this onResponse from api
-            //rePostLiveDataMinutesToNextMeasurement(); //Dummy data version --> TODO: GreenhouseDAO has to call this onResponse from api
         }
     }.start();
 }
@@ -396,9 +394,6 @@ public void startCountDownTimerNextMeasurement(){
 
                 if (lastWaterDateTimestamp == null)
                     lastWaterDateTimestamp = new Timestamp(System.currentTimeMillis());
-
-                //lastWaterDate.setTime(System.currentTimeMillis()); //Dummy data version --> TODO: GreenhouseDAO has to call this on response from api
-                //rePostLiveDataMinutesToNextWater(); //Dummy data version --> TODO: GreenhouseDAO has to call this on response from api
             }
         }.start();
     }

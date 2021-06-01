@@ -172,9 +172,10 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
                     greenhouse.setIsTimeToRestartMeasurementTimer(false);
                 }
 
-
-
-                holder.nextMeasureValue.setText(integer+" minutes");
+                if(integer < 0)
+                    holder.nextMeasureValue.setText(R.string.awaiting_data);
+                else
+                    holder.nextMeasureValue.setText(integer+" minutes");
             }
         });
         greenhouse.startCountDownTimerNextMeasurement();
@@ -188,7 +189,10 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
                     greenhouse.setIsTimeToRestartWaterTimer(false);
                 }
 
-                holder.nextWaterValue.setText(integer+" minutes");
+                if(integer < 0)
+                    holder.nextWaterValue.setText(R.string.awaiting_data);
+                else
+                    holder.nextWaterValue.setText(integer+" minutes");
             }
         });
         greenhouse.startCountDownTimerNextWater();

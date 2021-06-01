@@ -185,8 +185,10 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
                     greenhouse.startCountDownTimerNextMeasurement();
                     greenhouse.setIsTimeToRestartMeasurementTimer(false);
                 }
-
-                nextMeasureValue.setText(integer+" minutes");
+                if(integer < 0)
+                    nextMeasureValue.setText(R.string.awaiting_data);
+                else
+                    nextMeasureValue.setText(integer+" minutes");
             }
         });
         //greenhouse.startCountDownTimerNextMeasurement(); Not necessary to start countdown here since it was already started in HomeFragment
@@ -200,7 +202,10 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
                     greenhouse.setIsTimeToRestartWaterTimer(false);
                 }
 
-                nextWaterValue.setText(integer+" minutes");
+                if(integer < 0)
+                    nextWaterValue.setText(R.string.awaiting_data);
+                else
+                    nextWaterValue.setText(integer+" minutes");
 
             }
         });
