@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -189,6 +190,14 @@ public class GreenhouseDAO {
                 new Callback<ApiReceipt>(){
                     @Override
                     public void onResponse(Call<ApiReceipt> call, Response<ApiReceipt> response) {
+                        Log.i("Api response", response.toString());
+                        if (response.code() == 400) {
+                            try {
+                                Log.i("Api 400", response.errorBody().string());
+                            } catch (IOException e) {
+                                // handle failure to read error
+                            }
+                        }
                         if (response.code() == 200){
                             getGreenhouse(greenhouseId).setLastWaterDateAndResetLiveData(response.body().getTimeOfExecution());
                         }
@@ -347,33 +356,36 @@ public class GreenhouseDAO {
     public void apiAddGreenhouse(int userId, Greenhouse greenhouse){
         GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();
         // prepare call in Retrofit 2.0
-        try {
-            GreenhouseUpload greenhouseUpload = new GreenhouseUpload(greenhouse);
-            JSONObject paramObject = new JSONObject();
-            paramObject.put("Greenhouse", new Gson().toJson(greenhouseUpload));
-            Log.i("JSON", new Gson().toJson(greenhouseUpload));
-            Call<Void> call = growBroApi.addGreenhouse(userId, paramObject.toString());
-            call.enqueue(
-                    new Callback<Void>(){
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            Log.i("Api response", response.code() + "");
-                            if (response.code() == 200){
-                                ArrayList<Greenhouse> glist = (ArrayList<Greenhouse>) greenhouseList.getValue();
-                                glist.add(greenhouse);
-                                greenhouseList.setValue(glist);
+
+        GreenhouseUpload greenhouseUpload = new GreenhouseUpload(greenhouse);
+
+        Log.i("-> Api in JSON", new Gson().toJson(greenhouseUpload));
+        Call<Void> call = growBroApi.addGreenhouse(userId, new Gson().toJson(greenhouseUpload));
+        call.enqueue(
+                new Callback<Void>(){
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Log.i("Api response", response.toString() + "");
+                        if (response.code() == 200){
+                            ArrayList<Greenhouse> glist = (ArrayList<Greenhouse>) greenhouseList.getValue();
+                            glist.add(greenhouse);
+                            greenhouseList.setValue(glist);
+                        }
+                        if (response.code() == 400) {
+                            try {
+                                Log.i("Api 400", response.errorBody().string());
+                            } catch (IOException e) {
+                                // handle failure to read error
                             }
                         }
-
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            Log.e("Api error", t.toString());
-                        }
                     }
-            );
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.e("Api error", t.toString());
+                    }
+                }
+        );
     }
     public void apiAddPlant(int userId, int greenhouseId, Plant plant){
         GrowBroApi growBroApi = ServiceGenerator.getGrowBroApi();

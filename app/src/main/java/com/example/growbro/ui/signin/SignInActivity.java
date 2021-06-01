@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ import com.google.android.material.textfield.TextInputLayout;
 public class SignInActivity extends AppCompatActivity {
 
     private TextInputLayout editTextUsername, editTextPassword, editTextPassword2;
+    private LinearLayout loading;
     private Button btnLogin;
     private TextView textView;
     private SignInViewModel signInViewModel;
@@ -39,47 +41,53 @@ public class SignInActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         textView = findViewById(R.id.txtNewUser);
         newUser = false;
+        loading = findViewById(R.id.loadingOverlay);
         editTextPassword2.setVisibility(View.GONE);
 
         signInViewModel = new ViewModelProvider(this).get(SignInViewModel.class);
 
+        loading.setVisibility(View.GONE);
+
         btnLogin.setOnClickListener(view -> {
+            Boolean noError = true;
             String userName = editTextUsername.getEditText().getText().toString();
             String password = editTextPassword.getEditText().getText().toString();
             String password2 = editTextPassword2.getEditText().getText().toString();
 
             if (TextUtils.isEmpty(userName)) {
                 editTextUsername.setError("Username is required.");
-                return;
+                noError = false;
             }
 
             if (TextUtils.isEmpty(password)) {
                 editTextPassword.setError("Password is required.");
-                return;
+                noError = false;
             }
 
             //if (password.length() < 6) {
             //    editTextPassword.setError("Password must be more than 6 Characters");
-            //    return;
+            //    noError = false;
             //}
 
             if (newUser && !editTextPassword2.getEditText().getText().toString().equals(password)) {
                 editTextPassword2.setError("Passwords must be identical");
-                return;
+                noError = false;
             }
 
-            signInViewModel.getCurrentUser().observe(this, new Observer<User>() {
-                @Override
-                public void onChanged(User user) {
-                    goToActivity();
+            if (noError) {
+                loading.setVisibility(View.VISIBLE);
+                signInViewModel.getCurrentUser().observe(this, new Observer<User>() {
+                    @Override
+                    public void onChanged(User user) {
+                        goToActivity();
+                    }
+                });
+
+                if (newUser) {
+                    signInViewModel.addUser(userName, password);
+                } else {
+                    signInViewModel.signIn(userName, password);
                 }
-            });
-
-            if(newUser) {
-                signInViewModel.addUser(userName, password);
-            }
-            else {
-                signInViewModel.signIn(userName, password);
             }
         });
 
