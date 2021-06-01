@@ -1,6 +1,5 @@
 package com.example.growbro.ui.home.rv;
 
-import android.graphics.Color;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.TypedValue;
@@ -18,12 +17,12 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.growbro.MainActivity;
 import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.R;
 import com.example.growbro.Settings.SettingsActivity;
 import com.example.growbro.ui.home.HomeViewModel;
+import com.example.growbro.util.Converter;
 import com.google.android.material.chip.Chip;
 
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +39,7 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
     final private OnListItemClickListener mOnListItemClickListener;
     SharedPreferences sharedPreferences;
     private boolean fahrenheit;
-    private String unit;
+    private String temperatureUnit;
 
 
 
@@ -52,9 +51,9 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
                 (SettingsActivity.KEY_PREF_FAHRENHEIT_SWITCH, false);
 
         if(fahrenheit)
-            unit = ctx.getString(R.string.fahrenheit);
+            temperatureUnit = ctx.getString(R.string.fahrenheit);
         else
-            unit = ctx.getString(R.string.celsius);
+            temperatureUnit = ctx.getString(R.string.celsius);
 
         //System.out.println("#TTT: TEST after merge: GreenhouseRVAdapter constructor: unit: " + unit);
     }
@@ -129,15 +128,15 @@ public class GreenhouseRVAdapter extends RecyclerView.Adapter<GreenhouseRVAdapte
                             case "temperature":
                                 if (sensorData.getValue() % 1 == 0) {
                                     if(fahrenheit)
-                                        holder.valueTemperature.setText((int) sensorData.getValue() * MainActivity.getFahrenheitConversionValue() + unit);
+                                        holder.valueTemperature.setText((int) Converter.convertToFahrenheit(sensorData.getValue()) + temperatureUnit);
                                     else
-                                        holder.valueTemperature.setText((int) sensorData.getValue() + unit);
+                                        holder.valueTemperature.setText((int) sensorData.getValue() + temperatureUnit);
                                 }
                                 else {
                                     if(fahrenheit)
-                                        holder.valueTemperature.setText(sensorData.getValue() * MainActivity.getFahrenheitConversionValue() + unit);
+                                        holder.valueTemperature.setText(Converter.convertToFahrenheit(sensorData.getValue()) + temperatureUnit);
                                     else
-                                        holder.valueTemperature.setText(sensorData.getValue() + unit);
+                                        holder.valueTemperature.setText(sensorData.getValue() + temperatureUnit);
                                 }
                                 holder.valueTemperature.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
 

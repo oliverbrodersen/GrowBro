@@ -1,5 +1,6 @@
 package com.example.growbro.ui.greenhousetab.statistics;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -16,8 +17,10 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.example.growbro.R;
+import com.example.growbro.Settings.SettingsActivity;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -41,7 +44,7 @@ public class StatisticsFragment extends Fragment {
 
     public static final String ARG_SELECTED_GREENHOUSE_ID = "selectedGreenhouseId";
     private String selectedGreenhouseId;
-
+    private String temperatureUnit;
     private StatisticsViewModel statisticsViewModel;
     private LineChart lineChart;
 
@@ -52,6 +55,7 @@ public class StatisticsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         selectedGreenhouseId = args.getString(ARG_SELECTED_GREENHOUSE_ID);
+        temperatureUnit = getString(R.string.celsius); //default
     }
 
     @Override
@@ -91,6 +95,13 @@ public class StatisticsFragment extends Fragment {
             }
         });
 
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        Boolean fahrenheit = sharedPref.getBoolean
+                (SettingsActivity.KEY_PREF_FAHRENHEIT_SWITCH, false);
+
+        if(fahrenheit)
+            temperatureUnit = getString(R.string.fahrenheit);
+
 
         return root;
     }
@@ -102,7 +113,7 @@ public class StatisticsFragment extends Fragment {
         String unit = "";
         switch (parameterName) {
             case "Temperature":
-                unit = "°C";
+                unit = temperatureUnit;
                 break;
             case "CO2":
                 unit = "ppm";
