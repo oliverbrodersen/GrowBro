@@ -160,6 +160,7 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
                             case "co2":
                                 valueCO2.setText(((int)sensorData.getValue()) + "");
                                 valueCO2.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
+
                                 if(sensorData.getValue() < greenhouse.getCo2Threshold().get(0) || sensorData.getValue() > greenhouse.getCo2Threshold().get(1))
                                     accentCO2.setBackgroundResource(R.color.criticalHealth);
                                 else
@@ -188,6 +189,7 @@ public class GreenhouseFragment extends Fragment implements SharedRVAdapter.OnLi
                             case "humidity":
                                 valueHumidity.setText(((int)sensorData.getValue()) + "%");
                                 valueHumidity.setAutoSizeTextTypeUniformWithConfiguration(6, 100, 1, TypedValue.COMPLEX_UNIT_DIP);
+
                                 if(sensorData.getValue() < greenhouse.getHumidityThreshold().get(0) || sensorData.getValue() > greenhouse.getHumidityThreshold().get(1))
                                     accentHumidity.setBackgroundResource(R.color.criticalHealth);
                                 else
