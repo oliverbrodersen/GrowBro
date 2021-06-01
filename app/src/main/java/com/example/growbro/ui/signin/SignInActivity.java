@@ -32,12 +32,18 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_signin);
 
         editTextUsername = findViewById(R.id.edtEmailLogin);
         editTextPassword = findViewById(R.id.edtextPasswordLogin);
         editTextPassword2 = findViewById(R.id.edtextPasswordLogin2);
+        sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
+
+        //Check if user is signed in
+        if (sharedPreferences.getBoolean("signed_in",false)) {
+           // goToActivity();
+        }
+
         btnLogin = findViewById(R.id.btnLogin);
         textView = findViewById(R.id.txtNewUser);
         newUser = false;

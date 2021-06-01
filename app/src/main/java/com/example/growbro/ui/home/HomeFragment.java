@@ -1,5 +1,6 @@
 package com.example.growbro.ui.home;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,17 +8,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.R;
+import com.example.growbro.Settings.SettingsActivity;
 import com.example.growbro.ui.home.rv.GreenhouseRVAdapter;
 import com.google.android.material.chip.Chip;
 
@@ -32,7 +36,13 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
     private GreenhouseRVAdapter greenhouseRVAdapter;
     private TextView showingTextView;
     private static String MY_GROWBROS = "Showing my GrowBros", FRIENDS_GROWBROS = "Showing friends GrowBros";
+    private String unit;
 
+    @Override
+    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        unit = getString(R.string.celsius); //default
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -49,7 +59,8 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
 
         greenhouseRV = root.findViewById(R.id.greenhouseListRV);
         greenhouseRV.setLayoutManager(new LinearLayoutManager(getContext()));
-        greenhouseRVAdapter = new GreenhouseRVAdapter(this);
+
+        greenhouseRVAdapter = new GreenhouseRVAdapter(this, getContext());
         greenhouseRV.setAdapter(greenhouseRVAdapter);
 
         addCardView.setVisibility(View.GONE);
@@ -126,6 +137,29 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
             }
         });
 
+        homeViewModel.getMinutesToNextMeasurement().observe(getViewLifecycleOwner(), new Observer<HashMap<Integer, Integer>>() {
+            @Override
+            public void onChanged(HashMap<Integer, Integer> data) {
+                greenhouseRVAdapter.setNextMeasurementMinutesByGreenhouseId((HashMap<Integer, Integer>) data);
+            }
+        });
+
+        homeViewModel.getMinutesToNextWater().observe(getViewLifecycleOwner(), new Observer<HashMap<Integer, Integer>>() {
+            @Override
+            public void onChanged(HashMap<Integer, Integer> data) {
+                greenhouseRVAdapter.setNextWaterMinutesByGreenhouseId((HashMap<Integer, Integer>) data);
+            }
+        });
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        Boolean fahrenheit = sharedPref.getBoolean
+                (SettingsActivity.KEY_PREF_FAHRENHEIT_SWITCH, false);
+
+        if(fahrenheit)
+            unit = getString(R.string.fahrenheit);
+
+          //showingTextView.setText(unit);  //Used for testing temperature unit settings
+
         return root;
     }
 
@@ -144,4 +178,12 @@ public class HomeFragment extends Fragment implements GreenhouseRVAdapter.OnList
         bundle.putString("selectedGreenhouseId", greenhouseList.get(clickedItemIndex).getId()+"");
         Navigation.findNavController(getView()).navigate(R.id.action_nav_home_to_greenhouseTabFragment, bundle, navOptions);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //System.out.println("#TTT: TEST after merge: HomeFragment onResume");
+        greenhouseRVAdapter.notifyDataSetChanged();
+    }
+
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <PreferenceCategory
+        android:title="@string/temperature_unit_section">
+
+        <androidx.preference.SwitchPreference
+            android:defaultValue="false"
+            android:key="fahrenheit_switch"
+            android:summary="Turn this option on or off"
+            android:title="Use Fahrenheit" />
+
+        <!--TODO after merge <androidx.preference.DropDownPreference> </androidx.preference.DropDownPreference> -->
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

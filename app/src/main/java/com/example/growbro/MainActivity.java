@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,7 +16,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.preference.PreferenceManager;
 
+import com.example.growbro.Settings.SettingsActivity;
 import com.example.growbro.ui.signin.SignInActivity;
 import com.example.growbro.ui.signin.SignInViewModel;
 import com.google.android.material.navigation.NavigationView;
@@ -24,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     SharedPreferences sharedPreferences;
     SignInViewModel signInViewModel;
+    Boolean fahrenheit;
+    private final static double FAHRENHEIT_CONVERSION_VALUE = 57.6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +78,42 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        //https://google-developer-training.github.io/android-developer-fundamentals-course-practicals/en/Unit%204/92_p_adding_settings_to_an_app.html
+        //Default value for preferences: false
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+        SharedPreferences sharedPref =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        fahrenheit = sharedPref.getBoolean
+                (SettingsActivity.KEY_PREF_FAHRENHEIT_SWITCH, false);
+
+        //Toast.makeText(this, fahrenheit.toString(), Toast.LENGTH_LONG).show(); //For testing
+
+        /*
+        Create sensordata json for mock api
+
+        SensorData co2 = new SensorData("CO2", 1200);
+        SensorData humidity = new SensorData("Humidity", 32);
+        SensorData temp = new SensorData("Temperature", 16);
+
+        ArrayList<SensorData> dataList = new ArrayList<SensorData>();
+
+        dataList.add(co2);
+        dataList.add(humidity);
+        dataList.add(temp);
+
+        ApiCurrentDataPackage apiCurrentDataPackage = new ApiCurrentDataPackage(dataList, new Timestamp(new Date().getTime()));
+
+        Gson gson = new Gson();
+        String json = gson.toJson(apiCurrentDataPackage);
+
+        Log.d("json", json);*/
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         if(signInViewModel.getCurrentUser() == null && !sharedPreferences.getBoolean("signed_in",false)){
             //If the database did not return a user AND the user is not signed in from a previous session
             System.out.println("User is not signed in");
@@ -101,9 +143,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        if (item.getItemId() == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        //default:
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public Boolean getFahrenheit() {
+        return fahrenheit;
+    }
+
+    public static double getFahrenheitConversionValue() {
+        return FAHRENHEIT_CONVERSION_VALUE;
     }
 }
