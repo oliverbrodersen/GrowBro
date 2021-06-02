@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.R;
-import com.example.growbro.Settings.SettingsActivity;
+import com.example.growbro.ui.Settings.SettingsActivity;
 import com.example.growbro.ui.home.rv.GreenhouseRVAdapter;
 import com.google.android.material.chip.Chip;
 

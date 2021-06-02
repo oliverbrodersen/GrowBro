@@ -1,4 +1,4 @@
-package com.example.growbro.Settings;
+package com.example.growbro.ui.Settings;
 import android.os.Bundle;
 import androidx.preference.PreferenceFragmentCompat;
 import com.example.growbro.R;

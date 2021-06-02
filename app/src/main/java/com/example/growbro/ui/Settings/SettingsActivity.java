@@ -1,4 +1,4 @@
-package com.example.growbro.Settings;
+package com.example.growbro.ui.Settings;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

@@ -20,7 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.growbro.R;
-import com.example.growbro.Settings.SettingsActivity;
+import com.example.growbro.ui.Settings.SettingsActivity;
 import com.example.growbro.util.Converter;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;

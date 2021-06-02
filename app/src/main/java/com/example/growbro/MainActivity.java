@@ -17,7 +17,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.growbro.Settings.SettingsActivity;
+import com.example.growbro.ui.Settings.SettingsActivity;
 import com.example.growbro.ui.signin.SignInActivity;
 import com.example.growbro.ui.signin.SignInViewModel;
 import com.google.android.material.navigation.NavigationView;

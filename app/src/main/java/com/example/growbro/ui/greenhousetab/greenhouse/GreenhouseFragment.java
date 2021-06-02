@@ -28,7 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.growbro.Models.Data.SensorData;
 import com.example.growbro.Models.Greenhouse;
 import com.example.growbro.R;
-import com.example.growbro.Settings.SettingsActivity;
+import com.example.growbro.ui.Settings.SettingsActivity;
 import com.example.growbro.ui.greenhousetab.greenhouse.rv.SharedRVAdapter;
 import com.example.growbro.ui.home.rv.PlantRVAdapter;
 import com.example.growbro.util.Converter;
