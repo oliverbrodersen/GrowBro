@@ -46,7 +46,7 @@ public interface GrowBroApi {
     @GET("user/{userId}/greenhouse/{greenhouseId}/averageData")
     Call<ApiCurrentDataPackage> getAverageData(@Path("userId")int userId, @Path("greenhouseId") int greenhouseId, @Body String body);
 
-    @GET("/user/{userId}/greenhouse/{greenhouseId}/averageDataHistory") //TODO Snak med DAI om at vi nok gerne vil have sådan et endpoint her
+    @GET("/user/{userId}/greenhouse/{greenhouseId}/averageDataHistory")
     Call<List<ApiCurrentDataPackage>> getAverageDataHistory(@Path("userId") int userId, @Path("greenhouseId") String greenhouseId, @Body String body);
 
     @POST("/user/{userId}/greenhouse/{greenhouseId}/waternow")

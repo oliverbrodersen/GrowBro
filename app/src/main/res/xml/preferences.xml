@@ -12,8 +12,6 @@
             android:summary="Turn this option on or off"
             android:title="Use Fahrenheit" />
 
-        <!--TODO after merge <androidx.preference.DropDownPreference> </androidx.preference.DropDownPreference> -->
-
     </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

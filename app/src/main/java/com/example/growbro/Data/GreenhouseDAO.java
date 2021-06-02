@@ -182,7 +182,7 @@ public class GreenhouseDAO {
                         @Override
                         public void onResponse(Call<ApiCurrentDataPackage> call, Response<ApiCurrentDataPackage> response) {
                             if (response.code() == 200){
-                                //TODO
+                                //Not implemented
                             }
                         }
 
@@ -383,7 +383,7 @@ public class GreenhouseDAO {
     public HashMap<Long, Float> apiGetSensorDataHistory(int userId, String parameterName, String selectedGreenhouseId, Timestamp timeFrom, Timestamp timeTo) {
         HashMap<Long, Float> dummyHashMap = new HashMap<>();
 
-        //Dummy Data //TODO use API instead
+        //Dummy Data
         Random rn = new Random();
         int dummyDataPoints = 14;
         Long key;
